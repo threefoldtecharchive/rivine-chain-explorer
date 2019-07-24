@@ -22,11 +22,11 @@ export default class Block extends Vue {
   }
 
   handleSearch() {
-    this.$store.commit('loadBlocks', { 'height': this.getblock()});
+    this.$store.commit('loadBlocks');
   }
-
+  
   created() {
-    this.$store.commit('loadBlocks', { 'height': this.getblock()});
+    this.handleSearch();
   }
 }
 </script>

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios"; //or vue-resource
+import { API_URL } from "../common/config";
 
 Vue.use(Vuex);
 
@@ -12,16 +13,17 @@ export const store = new Vuex.Store({
   },
   mutations: {
       loadExplorer (state) {
-        axios({ method: "GET", url: "https://explorer.testnet.threefoldtoken.com/explorer"}).then(result => {
+        axios({ method: "GET", url: API_URL + "/explorer"}).then(result => {
           state.explorer = result.data;
         }, error => {
           console.error(error);
         })
       },
-      loadBlocks (state, payload) {
-        console.log(payload.heigth);
-        axios({ method: "GET", url: "https://explorer.testnet.threefoldtoken.com/blocks/" + payload.heigth}).then(result => {
-          state.explorer = result.data;
+      loadBlocks (state) {
+        console.log('stgsqqsdfssd')
+        axios({ method: "GET", url: API_URL + "explorer/blocks/5"}).then(result => {
+          state.blocks = result.data;
+          console.log(state.blocks)
         }, error => {
           console.error(error);
         })
