@@ -1,32 +1,29 @@
 <template>
   <div>
-    <search v-on:keyup.enter="handleSearch" />
-    {{ getblock() }}
+    <Navigation name="Block" />
+    {{ this.$store.getters.BLOCK }}
+    <result-table />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Search from "@/components/Search.vue";
-import ResultTable from "@/components/ResultTable.vue"
+import ResultTable from "@/components/ResultTable.vue";
+import Navigation from "@/components/Navigation.vue";
 
 @Component({
   components: {
-    Search,
-    ResultTable
+    ResultTable,
+    Navigation
   }
 })
 export default class Block extends Vue {
-  getblock() {
-    return this.$route.params.height;
-  }
-
-  handleSearch() {
-    this.$store.commit('loadBlocks');
-  }
-  
-  created() {
-    this.handleSearch();
+  beforeCreate() {
+    const { height } = this.$route.params;
+    if (height) {
+      this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+    }
   }
 }
 </script>

@@ -1,1 +1,1 @@
-export const API_URL = "https://explorer.testnet.threefoldtoken.com/"
+export const API_URL = process.env.NODE_ENV === "development" ? "https://explorer.testnet.threefoldtoken.com/" : "";
