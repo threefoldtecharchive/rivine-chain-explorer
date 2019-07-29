@@ -7,11 +7,7 @@
           <h1 class="title">
             Tf chain explorer
           </h1>
-        </div>
-        <div class="container">
-          <section class="is-light">
-            <search />
-          </section>
+          <search />
         </div>
       </div>
     </div>

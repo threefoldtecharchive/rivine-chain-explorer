@@ -11,7 +11,7 @@
           </h1>
           <div class="columns is-centered is-mobile is is-vcentered">
             <div class="column is-narrow has-text-centered">
-              <Search name="Blocks" />
+              <Search category="block" description="Block Heights" />
             </div>
           </div>
         </div>

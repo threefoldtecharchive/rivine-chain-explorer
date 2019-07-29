@@ -16,10 +16,10 @@
           <a href="/" class="navbar-item is-active">
             Home
           </a>
-          <a href="/block" class="navbar-item">
+          <a href="/blocks" class="navbar-item">
             Blocks
           </a>
-          <a href="/transaction" class="navbar-item">
+          <a href="/transactions" class="navbar-item">
             Transactions
           </a>
         </div>
