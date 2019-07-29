@@ -1,30 +1,13 @@
 <template>
-    <div>
-      <sui-table single-line>
-        <sui-table-header>
-          <sui-table-row>
-
-          </sui-table-row>
-        </sui-table-header>
-        <sui-table-body>
-          <sui-table-row>
-              
-          </sui-table-row>
-        </sui-table-body>
-      </sui-table>
-    </div>
+  <div>
+    
+  </div>
 </template>
 
 <script lang="ts">
+//https://bootstrap-vue.js.org/docs/components/layout
 import { Vue, Component } from "vue-property-decorator";
 
-@Component
-export default class ResultTable extends Vue {
-
-}
+@Component({})
+export default class ResultTable extends Vue {}
 </script>
-
-<style scoped>
-
-</style>
-

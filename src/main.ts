@@ -1,12 +1,18 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import SuiVue from "semantic-ui-vue";
-import { store } from "./store"
-import "semantic-ui-css/semantic.min.css";
+import { store } from "./store";
+import VeeValidate from 'vee-validate';
+
+import Buefy from "buefy";
+import "buefy/dist/buefy.css";
+
+Vue.use(Buefy);
+Vue.use(VeeValidate, {
+    events: ''
+});
 
 Vue.config.productionTip = false;
-Vue.use(SuiVue);
 
 new Vue({
   router,
