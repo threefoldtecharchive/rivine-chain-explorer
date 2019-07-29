@@ -1,29 +1,31 @@
 <template>
-    <div>
-      <sui-table single-line>
-        <sui-table-header>
-          <sui-table-row>
-            <sui-table-header-cell text-align="center">General Statistics</sui-table-header-cell>
-            <sui-table-header-cell></sui-table-header-cell>
-          </sui-table-row>
-        </sui-table-header>
-        <sui-table-body>
-          <sui-table-row>
-            <sui-table-cell>Current Height</sui-table-cell>
-            <sui-table-cell>{{ getExplorer().height }}</sui-table-cell>
-          </sui-table-row>
-          <sui-table-row>
-            <sui-table-cell>Current Block</sui-table-cell>
-            <sui-table-cell>{{ getExplorer().blockid }}</sui-table-cell>
-          </sui-table-row>
-          <sui-table-row>
-            <sui-table-cell>Difficulty</sui-table-cell>
-            <sui-table-cell>{{ getExplorer().difficulty }}</sui-table-cell>
-          </sui-table-row>
-        </sui-table-body>
-      </sui-table>
+  <div>
+    <sui-table single-line>
+      <sui-table-header>
+        <sui-table-row>
+          <sui-table-header-cell text-align="center"
+            >General Statistics</sui-table-header-cell
+          >
+          <sui-table-header-cell></sui-table-header-cell>
+        </sui-table-row>
+      </sui-table-header>
+      <sui-table-body>
+        <sui-table-row>
+          <sui-table-cell>Current Height</sui-table-cell>
+          <sui-table-cell>{{ getExplorer().height }}</sui-table-cell>
+        </sui-table-row>
+        <sui-table-row>
+          <sui-table-cell>Current Block</sui-table-cell>
+          <sui-table-cell>{{ getExplorer().blockid }}</sui-table-cell>
+        </sui-table-row>
+        <sui-table-row>
+          <sui-table-cell>Difficulty</sui-table-cell>
+          <sui-table-cell>{{ getExplorer().difficulty }}</sui-table-cell>
+        </sui-table-row>
+      </sui-table-body>
+    </sui-table>
 
-      <sui-card>
+    <sui-card>
       <sui-card-header text-align="center">General Statistics</sui-card-header>
       <sui-card-content>
         <div class="container">
@@ -33,14 +35,14 @@
             <li>Difficulty</li>
           </ul>
           <ul class="list">
-            <li v-for="item in getExplorer()" v-bind:key=item>
+            <li v-for="item in getExplorer()" v-bind:key="item">
               <a>{{ item }}</a>
             </li>
           </ul>
         </div>
       </sui-card-content>
     </sui-card>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,11 +52,15 @@ import { pick } from "lodash";
 @Component
 export default class GeneralStats extends Vue {
   getExplorer() {
-    return pick(this.$store.getters.EXPLORER, ["height", "blockid", "difficulty"]);
+    return pick(this.$store.getters.EXPLORER, [
+      "height",
+      "blockid",
+      "difficulty"
+    ]);
   }
 
   created() {
-    this.$store.dispatch('SET_EXPLORER');
+    this.$store.dispatch("SET_EXPLORER");
   }
 }
 </script>

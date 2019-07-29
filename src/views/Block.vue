@@ -1,28 +1,26 @@
 <template>
   <div>
-    <Navigation name="Block" />
-    {{ this.$store.getters.BLOCK }}
-    <result-table />
+    <blocks />
+    <p>{{ this.$store.getters.BLOCK }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Search from "@/components/Search.vue";
-import ResultTable from "@/components/ResultTable.vue";
-import Navigation from "@/components/Navigation.vue";
+import Blocks from "@/views/Blocks.vue";
 
 @Component({
   components: {
-    ResultTable,
-    Navigation
+    Blocks
   }
 })
 export default class Block extends Vue {
-  beforeCreate() {
-    const { height } = this.$route.params;
-    if (height) {
-      this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+  created() {
+    if (
+      !this.$route.params.block ||
+      isNaN(parseInt(this.$route.params.block))
+    ) {
+      this.$router.push("/blocks/");
     }
   }
 }

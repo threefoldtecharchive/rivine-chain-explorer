@@ -1,18 +1,21 @@
 <template>
-  <div>
-    <b-form inline @submit.stop.prevent>
-      <b-form-input 
-        min="1"
-        class="searchField" 
-        v-model="SearchVal"  
-        type="text"
-        :error="this.error" 
+  <section>
+    <b-field>
+      <b-input
+        class="searchField"
+        v-model="SearchVal"
+        type="search"
+        :error="this.error"
         :placeholder="getPlaceHolder()"
-        v-on:keyup.enter="handleSearch"/>
-      <b-button variant="primary" @click="handleSearch">Search</b-button>
-    </b-form>
+        v-on:keyup.enter="handleSearch()"
+        icon-pack="fas"
+        icon="search"
+      >
+      </b-input>
+      <b-button @click="handleSearch">Search</b-button>
+    </b-field>
     <p v-if="error">{{ error }}</p>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -39,22 +42,27 @@ export default class Search extends Vue {
 
   checkSearchInput() {
     const category = this.$props.name;
-    if ((category === "Blocks" || category === "Block") && !isNaN(parseInt(this.SearchVal)) && parseInt(this.$store.getters.EXPLORER.height) > parseInt(this.SearchVal)) {
-      this.$store.dispatch('SET_BLOCK_HEIGHT', this.SearchVal);
-      this.$router.push("/blocks/" + this.SearchVal);
+    if (
+      (category === "Blocks" || category === "Block") &&
+      !isNaN(parseInt(this.SearchVal)) &&
+      parseInt(this.$store.getters.EXPLORER.height) > parseInt(this.SearchVal)
+    ) {
+      this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal);
+      this.$router.push("/block/" + this.SearchVal);
       this.error = "";
     } else {
-      this.error = "Can't find any " + category + " that matches " + this.SearchVal;
+      this.error =
+        "Can't find any " + category + " that matches " + this.SearchVal;
     }
   }
 
-  get searchVal() : string {
+  get searchVal(): string {
     this.checkSearchInput();
     return this.searchVal;
   }
 
   created() {
-    this.$store.dispatch('SET_EXPLORER', this.SearchVal);
+    this.$store.dispatch("SET_EXPLORER", this.SearchVal);
   }
 }
 </script>

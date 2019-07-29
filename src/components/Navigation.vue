@@ -1,17 +1,31 @@
 <template>
-  <div>
-    <b-navbar toggleable="lg" type="light">
-      <b-navbar-brand>{{ name }}</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <search :name="name" />
-          </b-nav-form>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-  </div>
+  <nav class="navbar is-primary is-transparent">
+    <div class="container">
+      <div class="navbar-brand">
+        <a href="/" class="navbar-item is-active" title="">
+          <img src="" alt="TF chain explorer" />
+        </a>
+        <span class="navbar-burger burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <a href="/" class="navbar-item is-active">
+            Home
+          </a>
+          <a href="/block" class="navbar-item">
+            Blocks
+          </a>
+          <a href="/transaction" class="navbar-item">
+            Transactions
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script lang="ts">
