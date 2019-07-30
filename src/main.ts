@@ -2,14 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { store } from "./store";
-import VeeValidate from 'vee-validate';
+import VeeValidate from "vee-validate";
 
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
 
 Vue.use(Buefy);
 Vue.use(VeeValidate, {
-    events: ''
+  events: ""
 });
 
 Vue.config.productionTip = false;

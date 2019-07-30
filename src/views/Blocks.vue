@@ -17,12 +17,12 @@
         </div>
       </div>
     </section>
-    <p>Current Block Height: {{ this.$store.getters.EXPLORER.height }}</p>
+    <p>Current Block Height: {{ latestHeight }}</p>
     <div :closable="false">
-      <result-table :page="currentPage" v-if="this.loaded" />
+      <result-table :blocks="blocks" :page="currentPage" v-if="!this.loading" />
       <b-pagination
-        v-if="this.loaded"
-        :total="this.$store.getters.EXPLORER.height"
+        v-if="!this.loading"
+        :total="50"
         :current.sync="currentPage"
         :simple="true"
         :per-page="20"
@@ -33,7 +33,7 @@
         aria-current-label="Current page"
       >
       </b-pagination>
-      <b-loading :is-full-page="true" :active.sync="!this.loaded"></b-loading>
+      <b-loading :is-full-page="false" :active.sync="this.loading"></b-loading>
     </div>
   </div>
 </template>
@@ -43,6 +43,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Navigation from "../components/Navigation.vue";
 import Search from "../components/Search.vue";
 import ResultTable from "@/components/ResultTable.vue";
+import Axios from "axios";
+import { API_URL } from "@/common/config";
 
 @Component({
   components: {
@@ -52,14 +54,45 @@ import ResultTable from "@/components/ResultTable.vue";
   }
 })
 export default class Blocks extends Vue {
-  private loaded: boolean = false;
+  private loading: boolean = true;
   private currentPage: Number = 1;
-  beforeMount() {
-    this.$store.dispatch("SET_EXPLORER").then(() => {
-      this.$store.dispatch("GET_BLOCKS").then(() => {
-        this.loaded = true;
-      });
+  private blocks: any[] = [];
+  private latestHeight: Number = 0;
+
+  async loadBlocks() {
+    const self = this;
+    await Axios({
+      method: "GET",
+      url: API_URL + "/explorer/blocks/" + (Math.random() * (800 - 1) + 1)
+    }).then(
+      result => {
+        self.blocks.push(result.data.block);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+    await Axios({
+      method: "GET",
+      url: API_URL + "/explorer/"
+    }).then(
+      result => {
+        self.latestHeight = result.data.height;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+    this.loading = false;
+  }
+
+  mounted() {
+    this.$nextTick(function() {
+      this.loadBlocks();
     });
+    setInterval(() => {
+      this.loadBlocks();
+    }, 5000);
   }
 }
 </script>

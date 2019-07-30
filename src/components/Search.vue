@@ -54,13 +54,12 @@ export default class Search extends Vue {
           (this.category === "blocks" ||
             this.category === "block" ||
             this.category === "all") &&
-          !isNaN(parseInt(this.SearchVal)) &&
-          parseInt(this.$store.getters.EXPLORER.height) >
-            parseInt(this.SearchVal)
+          !isNaN(parseInt(this.SearchVal))
         ) {
-          this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal);
-          this.$router.push("/block/" + this.SearchVal);
-          this.error = "";
+          this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal).then(() => {
+            this.$router.push("/block/" + this.SearchVal);
+            this.error = "";
+          });
         } else {
           this.error =
             "Can't find any " +
@@ -71,10 +70,6 @@ export default class Search extends Vue {
         return;
       }
     });
-  }
-
-  created() {
-    this.$store.dispatch("SET_EXPLORER", this.SearchVal);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section>
     <b-table
-      :data="isEmpty ? [] : data"
+      :data="isEmpty ? [] : blocks"
       :bordered="isBordered"
       :striped="isStriped"
       :narrowed="isNarrowed"
@@ -47,15 +47,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class ResultTable extends Vue {
-  data() {
-    const data = this.getBlocks();
+  @Prop({ default: [] })
+  blocks!: any[];
 
+  data() {
     return {
-      data,
       isEmpty: false,
       isBordered: false,
       isStriped: true,
@@ -65,26 +65,6 @@ export default class ResultTable extends Vue {
       isLoading: false,
       hasMobileCards: true
     };
-  }
-
-  mounted() {
-    setInterval(
-      function() {
-        console.log("started reload");
-        this.$store.dispatch("REFRESH_BLOCKS").then(() => {
-          this.$store.dispatch("SET_EXPLORER").then(() => {
-            this.$store.dispatch("GET_BLOCKS").then(() => {
-              console.log("ended reload");
-            });
-          });
-        });
-      }.bind(this),
-      10000
-    );
-  }
-
-  getBlocks() {
-    return Object.values(this.$store.getters.BLOCKS);
   }
 }
 </script>
