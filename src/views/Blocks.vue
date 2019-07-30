@@ -18,6 +18,23 @@
       </div>
     </section>
     <p>Current Block Height: {{ this.$store.getters.EXPLORER.height }}</p>
+    <div :closable="false">
+      <result-table :page="currentPage" v-if="this.loaded" />
+      <b-pagination
+        v-if="this.loaded"
+        :total="this.$store.getters.EXPLORER.height"
+        :current.sync="currentPage"
+        :simple="true"
+        :per-page="20"
+        icon-pack="fa"
+        aria-next-label="Next page"
+        aria-previous-label="Previous page"
+        aria-page-label="Page"
+        aria-current-label="Current page"
+      >
+      </b-pagination>
+      <b-loading :is-full-page="true" :active.sync="!this.loaded"></b-loading>
+    </div>
   </div>
 </template>
 
@@ -25,23 +42,24 @@
 import { Component, Vue } from "vue-property-decorator";
 import Navigation from "../components/Navigation.vue";
 import Search from "../components/Search.vue";
+import ResultTable from "@/components/ResultTable.vue";
 
 @Component({
   components: {
     Navigation,
-    Search
+    Search,
+    ResultTable
   }
 })
 export default class Blocks extends Vue {
-  created() {
-    this.$store.dispatch("SET_EXPLORER");
-  }
-
-  beforeCreate() {
-    const { height } = this.$route.params;
-    if (height) {
-      this.$store.dispatch("SET_BLOCK_HEIGHT", height);
-    }
+  private loaded: boolean = false;
+  private currentPage: Number = 1;
+  beforeMount() {
+    this.$store.dispatch("SET_EXPLORER").then(() => {
+      this.$store.dispatch("GET_BLOCKS").then(() => {
+        this.loaded = true;
+      });
+    });
   }
 }
 </script>
