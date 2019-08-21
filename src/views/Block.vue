@@ -1,27 +1,223 @@
-<template>
+<template lang="html">
   <div>
     <blocks />
-    <p>{{ this.$store.getters.BLOCK }}</p>
+    <!-- <p>{{ this.$store.getters.BLOCK }}</p> -->
+    <div class="container" v-if="this.$store.getters.BLOCK.block">
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th colspan="3">Block statistics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Block Height</td>
+            <td>{{ this.$store.getters.BLOCK.block.height }}</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td class="clickable" v-on:click="routeToBlockPage($store.getters.BLOCK.block.blockid)">{{ this.$store.getters.BLOCK.block.blockid }}</td>
+          </tr>
+          <tr>
+            <td>Confirmations</td>
+            <td>{{ this.$store.getters.EXPLORER.height }}</td>
+          </tr>
+          <tr>
+            <td>Previous Block</td>
+            <td class="clickable" v-on:click="routeToBlockPage($store.getters.BLOCK.block.rawblock.parentid)">{{ this.$store.getters.BLOCK.block.rawblock.parentid }}</td>
+          </tr>
+          <tr>
+            <td>Time</td>
+            <td>{{ this.$store.getters.BLOCK.block.rawblock.timestamp }}</td>
+          </tr>
+          <tr>
+            <td>Active Blockstake</td>
+            <td>{{ this.$store.getters.BLOCK.block.estimatedactivebs }} BS</td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="this.$store.getters.BLOCK.block.minerpayoutids">
+        <h2 v-if="this.$store.getters.BLOCK.block.minerpayoutids.length > 0">Reward and Fee Payouts</h2>
+      </div>
+      <div class="tx-table" v-for="(mp, index) in this.$store.getters.BLOCK.block.rawblock.minerpayouts">
+        <table class="ui celled table">
+          <thead>
+            <tr>
+              <th colspan="3">Transaction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage($store.getters.BLOCK.block.minerpayoutids[index])">
+                {{ $store.getters.BLOCK.block.minerpayoutids[index] }}
+              </td>
+            </tr>
+            <tr>
+              <td>Payout address</td>
+              <td class="clickable" v-on:click="routeToHashPage(mp.unlockhash)">
+                {{ mp.unlockhash }}
+              </td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ parseInt(mp.value) / 1000000000 }} TFT</td>
+            </tr>
+            <tr>
+              <td>Source Description</td>
+              <td>Block Creator Reward (New Coins)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-if="this.$store.getters.BLOCK.block.transactions">
+        <h2 v-if="this.$store.getters.BLOCK.block.transactions.length > 0">Transactions</h2>
+      </div>
+      <div v-for="tx in this.$store.getters.BLOCK.block.transactions">
+        <div class="tx-table" v-if="tx.rawtransaction.data.coininputs != null">
+          <table v-if="tx.rawtransaction.data.coininputs.length > 0" class="ui celled table">
+            <thead>
+              <tr>
+                <th colspan="3">Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ID</td>
+                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>{{ tx.rawtransaction.version }}</td>
+              </tr>
+              <tr>
+                <td>Coin Input Count</td>
+                <td>{{ tx.rawtransaction.data.coininputs.length }}</td>
+              </tr>
+              <tr>
+                <td>Coin Output Count</td>
+                <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
+              </tr>
+              <tr>
+                <td>Arbitrary Data Byte Count</td>
+                <td>{{ tx.rawtransaction.data.arbitrarydata.length }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs != null">
+          <table v-if="tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
+            <thead>
+              <tr>
+                <th colspan="3">Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ID</td>
+                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>{{ tx.rawtransaction.version }}</td>
+              </tr>
+              <tr>
+                <td>Coin Ouput Count</td>
+                <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
+              </tr>
+              <tr>
+                <td>Blockstake Ouput Count</td>
+                <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tx-table" v-if="tx.rawtransaction.data.blockstakeinputs && tx.rawtransaction.data.blockstakeoutputs">
+          <table v-if="tx.rawtransaction.data.blockstakeinputs.length > 0 || tx.rawtransaction.data.blockstakeoutputs.length > 0" class="ui celled table">
+            <thead>
+              <tr>
+                <th colspan="3">Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ID</td>
+                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>{{ tx.rawtransaction.version }}</td>
+              </tr>
+              <tr>
+                <td>BlockStake Input Count</td>
+                <td>{{ tx.rawtransaction.data.blockstakeinputs.length }}</td>
+              </tr>
+              <tr>
+                <td>BlockStake Output Count</td>
+                <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Blocks from "@/views/Blocks.vue";
+import { mapState } from 'vuex';
 
 @Component({
+  name: 'Block',
   components: {
     Blocks
+  },
+  watch: {
+    "$route.params.block"(val) {
+      // call the method which loads your initial state
+      this.$store.dispatch("SET_BLOCK_HEIGHT", val);
+    },
+    '$store.state.block': function() {
+      console.log(this.$store.getters.BLOCK.block)
+      this.$router.push("/block/" + this.$store.state.block.block.height);
+    }
+  },
+  methods: {
+    routeToHashPage: function(val) {
+      this.$store.dispatch("SET_HASH", val);
+      this.$router.push("/hashes/" + val);
+    },
+    routeToBlockPage: function(val) {
+      this.$store.dispatch("SET_HASH", val)
+    }
   }
 })
 export default class Block extends Vue {
   created() {
-    if (
-      !this.$route.params.block ||
-      isNaN(parseInt(this.$route.params.block))
-    ) {
+    if (!this.$route.params.block || isNaN(parseInt(this.$route.params.block))) {
       this.$router.push("/blocks/");
+    }
+    if (!this.$store.getters.BLOCK.block) {
+      this.$store.dispatch("SET_BLOCK_HEIGHT", this.$route.params.block);
     }
   }
 }
 </script>
+<style scoped>
+.container {
+  width: 80%;
+  margin: 'auto';
+  margin-top: 50px;
+}
+.tx-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+</style>

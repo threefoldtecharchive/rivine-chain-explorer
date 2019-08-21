@@ -7,11 +7,11 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <h1 class="title">
-            Search a specific block height
+            Search a specific hash
           </h1>
           <div class="columns is-centered is-mobile is is-vcentered">
             <div class="column is-narrow has-text-centered">
-              <Search category="block" description="Block Heights" />
+              <Search category="hash" description="Hash" />
             </div>
           </div>
         </div>
@@ -37,9 +37,9 @@ export default class Blocks extends Vue {
   }
 
   beforeCreate() {
-    const { height } = this.$route.params;
-    if (height) {
-      this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+    const { hash } = this.$route.params;
+    if (hash) {
+      this.$store.dispatch("SET_HASH", hash);
     }
   }
 }

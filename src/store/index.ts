@@ -7,9 +7,10 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-      explorer: Array,
-      block: Array,
-      transactions: Array 
+    explorer: Array,
+    block: Array,
+    transactions: Array,
+    hash: Object
   },
   mutations: {
     SET_EXPLORER: (state, explorer) => {
@@ -17,6 +18,9 @@ export const store = new Vuex.Store({
     },
     SET_BLOCK_HEIGHT: (state, block) => {
       state.block = block;
+    },
+    SET_HASH: (state, hash) => {
+      state.hash = hash;
     }
   },
   actions: {
@@ -33,6 +37,20 @@ export const store = new Vuex.Store({
       }, error => {
         console.error(error);
       })
+    },
+    SET_HASH: async (context, hash) => {
+      await axios({ method: "GET", url: API_URL + "/explorer/hashes/" + hash}).then(result => {
+        switch (result.data.hashtype) {
+          case 'blockid':
+            context.commit("SET_BLOCK_HEIGHT", result.data);
+            break
+          case 'coinoutputid':
+            context.commit("SET_HASH", result.data);
+            break
+        }
+      }, error => {
+        console.error(error);
+      })
     }
   },
   getters: {
@@ -41,6 +59,9 @@ export const store = new Vuex.Store({
     },
     BLOCK: state => {
       return state.block;
+    },
+    HASH: state => {
+      return state.hash;
     }
   }
 });

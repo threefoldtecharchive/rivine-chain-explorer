@@ -9,7 +9,7 @@ import "buefy/dist/buefy.css";
 
 Vue.use(Buefy);
 Vue.use(VeeValidate, {
-    events: ''
+  events: ''
 });
 
 Vue.config.productionTip = false;
