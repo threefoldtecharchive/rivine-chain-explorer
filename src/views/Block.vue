@@ -72,92 +72,92 @@
       </div>
       <div v-if="this.$store.getters.BLOCK.block.transactions">
         <h2 v-if="this.$store.getters.BLOCK.block.transactions.length > 0">Transactions</h2>
-      </div>
-      <div v-for="tx in this.$store.getters.BLOCK.block.transactions">
-        <div class="tx-table" v-if="tx.rawtransaction.data.coininputs != null">
-          <table v-if="tx.rawtransaction.data.coininputs.length > 0" class="ui celled table">
-            <thead>
-              <tr>
-                <th colspan="3">Transaction</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ID</td>
-                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
-              </tr>
-              <tr>
-                <td>Type</td>
-                <td>{{ tx.rawtransaction.version }}</td>
-              </tr>
-              <tr>
-                <td>Coin Input Count</td>
-                <td>{{ tx.rawtransaction.data.coininputs.length }}</td>
-              </tr>
-              <tr>
-                <td>Coin Output Count</td>
-                <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
-              </tr>
-              <tr>
-                <td>Arbitrary Data Byte Count</td>
-                <td>{{ tx.rawtransaction.data.arbitrarydata.length }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs != null">
-          <table v-if="tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
-            <thead>
-              <tr>
-                <th colspan="3">Transaction</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ID</td>
-                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
-              </tr>
-              <tr>
-                <td>Type</td>
-                <td>{{ tx.rawtransaction.version }}</td>
-              </tr>
-              <tr>
-                <td>Coin Ouput Count</td>
-                <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
-              </tr>
-              <tr>
-                <td>Blockstake Ouput Count</td>
-                <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="tx-table" v-if="tx.rawtransaction.data.blockstakeinputs && tx.rawtransaction.data.blockstakeoutputs">
-          <table v-if="tx.rawtransaction.data.blockstakeinputs.length > 0 || tx.rawtransaction.data.blockstakeoutputs.length > 0" class="ui celled table">
-            <thead>
-              <tr>
-                <th colspan="3">Transaction</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ID</td>
-                <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
-              </tr>
-              <tr>
-                <td>Type</td>
-                <td>{{ tx.rawtransaction.version }}</td>
-              </tr>
-              <tr>
-                <td>BlockStake Input Count</td>
-                <td>{{ tx.rawtransaction.data.blockstakeinputs.length }}</td>
-              </tr>
-              <tr>
-                <td>BlockStake Output Count</td>
-                <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div v-for="tx in this.$store.getters.BLOCK.block.transactions">
+          <div class="tx-table" v-if="tx.rawtransaction.data.coininputs != null">
+            <table v-if="tx.rawtransaction.data.coininputs.length > 0" class="ui celled table">
+              <thead>
+                <tr>
+                  <th colspan="3">Transaction</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td>{{ tx.rawtransaction.version }}</td>
+                </tr>
+                <tr>
+                  <td>Coin Input Count</td>
+                  <td>{{ tx.rawtransaction.data.coininputs.length }}</td>
+                </tr>
+                <tr>
+                  <td>Coin Output Count</td>
+                  <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
+                </tr>
+                <tr>
+                  <td>Arbitrary Data Byte Count</td>
+                  <td>{{ tx.rawtransaction.data.arbitrarydata.length }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs">
+            <table v-if="tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
+              <thead>
+                <tr>
+                  <th colspan="3">Transaction</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td>{{ tx.rawtransaction.version }}</td>
+                </tr>
+                <tr >
+                  <td>Coin Ouput Count</td>
+                  <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
+                </tr>
+                <tr v-if="tx.rawtransaction.data.blockstakeoutputs">
+                  <td>Blockstake Ouput Count</td>
+                  <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tx-table" v-if="tx.rawtransaction.data.blockstakeinputs && tx.rawtransaction.data.blockstakeoutputs">
+            <table v-if="tx.rawtransaction.data.blockstakeinputs.length > 0 || tx.rawtransaction.data.blockstakeoutputs.length > 0" class="ui celled table">
+              <thead>
+                <tr>
+                  <th colspan="3">Transaction</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td>{{ tx.rawtransaction.version }}</td>
+                </tr>
+                <tr>
+                  <td>BlockStake Input Count</td>
+                  <td>{{ tx.rawtransaction.data.blockstakeinputs.length }}</td>
+                </tr>
+                <tr>
+                  <td>BlockStake Output Count</td>
+                  <td>{{ tx.rawtransaction.data.blockstakeoutputs.length }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

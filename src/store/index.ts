@@ -7,9 +7,9 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    explorer: Array,
-    block: Array,
-    transactions: Array,
+    explorer: Object,
+    block: Object,
+    transactions: Object,
     hash: Object
   },
   mutations: {
@@ -44,7 +44,7 @@ export const store = new Vuex.Store({
           case 'blockid':
             context.commit("SET_BLOCK_HEIGHT", result.data);
             break
-          case 'coinoutputid':
+          default:
             context.commit("SET_HASH", result.data);
             break
         }

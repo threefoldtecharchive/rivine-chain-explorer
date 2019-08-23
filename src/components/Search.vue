@@ -48,29 +48,13 @@ export default class Search extends Vue {
   }
 
   checkSearchInput() {
-    this.$validator.validateAll().then(result => {
-      if (result) {
-        if (
-          (this.category === "blocks" ||
-            this.category === "block" ||
-            this.category === "all") &&
-          !isNaN(parseInt(this.SearchVal)) &&
-          parseInt(this.$store.getters.EXPLORER.height) >
-            parseInt(this.SearchVal)
-        ) {
-          this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal);
-          this.$router.push("/block/" + this.SearchVal);
-          this.error = "";
-        } else {
-          this.error =
-            "Can't find any " +
-            this.category +
-            " that matches " +
-            this.SearchVal;
-        }
-        return;
-      }
-    });
+    if (this.SearchVal.length > 60 || this.category === "hash") {
+      this.$store.dispatch("SET_HASH", this.SearchVal)
+      this.$router.push("/hashes/" + this.SearchVal)
+    } else if (parseInt(this.SearchVal) || this.category === "block") {
+      this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal)
+      this.$router.push("/block/" + this.SearchVal)
+    }
   }
 
   created() {
