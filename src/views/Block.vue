@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td>Time</td>
-            <td>{{ this.$store.getters.BLOCK.block.rawblock.timestamp }}</td>
+            <td>{{ formatBlockDate() }}</td>
           </tr>
           <tr>
             <td>Active Blockstake</td>
@@ -85,9 +85,9 @@
                   <td>ID</td>
                   <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.version === 0">
                   <td>Type</td>
-                  <td>{{ tx.rawtransaction.version }}</td>
+                  <td>Regular Transaction</td>
                 </tr>
                 <tr>
                   <td>Coin Input Count</td>
@@ -116,9 +116,9 @@
                   <td>ID</td>
                   <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.version === 0">
                   <td>Type</td>
-                  <td>{{ tx.rawtransaction.version }}</td>
+                  <td>Regular Transaction</td>
                 </tr>
                 <tr >
                   <td>Coin Ouput Count</td>
@@ -143,9 +143,9 @@
                   <td>ID</td>
                   <td class="clickable" v-on:click="routeToHashPage(tx.id)">{{ tx.id }}</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.version === 0">
                   <td>Type</td>
-                  <td>{{ tx.rawtransaction.version }}</td>
+                  <td>Regular Transaction</td>
                 </tr>
                 <tr>
                   <td>BlockStake Input Count</td>
@@ -195,6 +195,8 @@ import { mapState } from 'vuex';
   }
 })
 export default class Block extends Vue {
+  blockDate = new Date()
+
   created() {
     if (!this.$route.params.block || isNaN(parseInt(this.$route.params.block))) {
       this.$router.push("/blocks/");
@@ -202,6 +204,18 @@ export default class Block extends Vue {
     if (!this.$store.getters.BLOCK.block) {
       this.$store.dispatch("SET_BLOCK_HEIGHT", this.$route.params.block);
     }
+    this.blockDate =  new Date(this.$store.getters.BLOCK.block.rawblock.timestamp * 1000)
+  }
+
+  formatBlockDate () {
+    const day = this.blockDate.getDate()
+    const month = this.blockDate.toLocaleString('default', { month: 'long' });
+    const year = this.blockDate.getFullYear()
+    const hours = this.blockDate.getHours()
+    const tempMinutes = this.blockDate.getMinutes()
+    const minutes = (tempMinutes < 10) ? `0${tempMinutes}` : tempMinutes
+
+    return `${hours}:${minutes}, ${month} ${day}, ${year}`
   }
 }
 </script>

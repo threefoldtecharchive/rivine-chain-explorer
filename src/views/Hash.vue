@@ -46,7 +46,8 @@
           </tr>
           <tr>
             <td>Has been spent</td>
-            <td>No</td>
+            <td v-if="blockCreatorRewardIsSpent">Yes</td>
+            <td v-else>No</td>
           </tr>
         </tbody>
       </table>
@@ -71,7 +72,7 @@
             <td>ID</td>
             <td>{{ this.$store.getters.HASH.transaction.id }}</td>
           </tr>
-          <tr v-if="this.$store.getters.HASH.transaction.rawtransaction.data.coininputs">
+          <tr v-if="this.$store.getters.HASH.transaction.rawtransaction.data.coininputs && this.$store.getters.HASH.transaction.rawtransaction.data.coininputs.length > 0">
             <td>Coin Input Count</td>
             <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.coininputs.length }}</td>
           </tr>
@@ -302,7 +303,7 @@
             </tr>
             <tr>
               <td>Transaction ID</td>
-              <td class="clickable" v-on:click="routeToBlockPage(tx.id)">
+              <td class="clickable" v-on:click="routeToHashPage(tx.id)">
                 {{ tx.id }}
               </td>
             </tr>
@@ -318,7 +319,8 @@
             </tr>
             <tr>
               <td>Has been spent</td>
-              <td>Yes</td>
+              <td v-if="blockstakeOutputIsSpent">Yes</td>
+              <td v-else>No</td>
             </tr>
           </tbody>
         </table>
@@ -471,14 +473,19 @@ export default class Hash extends Vue {
   txid = 0
   ucos = []
   scos = []
+  blockCreatorRewardIsSpent = false
+  blockstakeOutputIsSpent = false
 
   created() {
     // If nothing in store (refreshed page), dispatch a request for the data
     if (!this.$store.getters.HASH.hashtype) {
       this.loading = true
       this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+        console.log(this.$store.getters.HASH)
         this.fetchExplorerBlock()
         this.calculateTransactionList()
+        console.log(this.scos)
+        console.log(this.ucos)
         this.loading = false
       })
     } else {
@@ -523,6 +530,8 @@ export default class Hash extends Vue {
     if (this.$store.getters.HASH.transaction && this.$store.getters.HASH.hashtype === "coinoutputid" || this.$store.getters.HASH.hashtype === "transactionid") {
       // Call explorer for transaction fee payouts
       const parentId = this.$store.getters.HASH.transaction.parent
+      // means there is no parent id
+      if (parentId === "0000000000000000000000000000000000000000000000000000000000000000") return
       this.loading = true
       axios({ method: "GET", url: API_URL + "/explorer/hashes/" + parentId}).then(result => {
         const explorerBlock = result.data.block
@@ -545,11 +554,15 @@ export default class Hash extends Vue {
     }
   }
 
-  calculateTransactionList() {
+  calculateTransactionList () {
+    const hashtype = this.$store.getters.HASH.hashtype
+    if (hashtype === "blockstakeoutputid") {
+      return this.calculateBlockstakeOutputSpent()
+    }
     const address = this.$route.params.hash
     const scos:any = []
     const transactions = this.$store.getters.HASH.transactions
-    if (!transactions) return
+    if (!transactions) return this.calculateCoinoutSpentForBlockCreatorReward()
 
     const ucos = transactions.map((tx:any) => {
       const ucoIndex = tx.coinoutputunlockhashes.findIndex((uh:any) => uh === address)
@@ -582,6 +595,57 @@ export default class Hash extends Vue {
     this.availableBalance = sum / this.precision
     this.txid = ucos[0].txid
     this.blockHeight = ucos[0].blockHeight
+  }
+
+  calculateCoinoutSpentForBlockCreatorReward () {
+    const address = this.$route.params.hash
+    const scos:any = []
+    const transactions = this.$store.getters.HASH.transactions
+    if (!transactions) {
+      this.blockCreatorRewardIsSpent = false
+      return
+    }
+
+    const ucos = transactions.map((tx:any) => {
+      const ucoIndex = tx.coinoutputunlockhashes.findIndex((uh:any) => uh === address)
+      const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex]
+      if (coinOutput) {
+        return {
+          ...coinOutput,
+          coinOutputId: tx.coinoutputids[ucoIndex],
+          blockHeight: tx.height,
+          txid: tx.id
+        }
+      }
+    })
+    transactions.forEach((tx:any) => {
+      const spentUcos = tx.rawtransaction.data.coininputs.map((ci:any) => {
+        const existsInUcosIndex:number = ucos.findIndex((uco:any) => uco.coinOutputId === ci.parentid)
+        if (existsInUcosIndex > -1) {
+          scos.push(ucos[existsInUcosIndex])
+          ucos.splice(existsInUcosIndex, 1)
+        }
+      })
+    })
+    this.blockCreatorRewardIsSpent = scos.length > 0
+  }
+
+  calculateBlockstakeOutputSpent () {
+    const address = this.$route.params.hash
+    const scos:any = []
+    const transactions = this.$store.getters.HASH.transactions
+    if (!transactions) {
+      this.blockstakeOutputIsSpent = false
+    }
+
+    const bos = transactions.map((tx:any) => {
+      const boindex = tx.blockstakeoutputids.findIndex((id:any) => id === address)
+      if (boindex) {
+        return tx
+      }
+    })
+
+    this.blockstakeOutputIsSpent = bos.length > 0
   }
 }
 </script>
