@@ -180,7 +180,6 @@ import { mapState } from 'vuex';
       this.$store.dispatch("SET_BLOCK_HEIGHT", val);
     },
     '$store.state.block': function() {
-      console.log(this.$store.getters.BLOCK.block)
       this.$router.push("/block/" + this.$store.state.block.block.height);
     }
   },
