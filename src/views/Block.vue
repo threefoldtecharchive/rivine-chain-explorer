@@ -195,7 +195,7 @@ import { mapState } from 'vuex';
   }
 })
 export default class Block extends Vue {
-  blockDate = new Date()
+  blockDate = ""
 
   created() {
     if (!this.$route.params.block || isNaN(parseInt(this.$route.params.block))) {
@@ -204,15 +204,15 @@ export default class Block extends Vue {
     if (!this.$store.getters.BLOCK.block) {
       this.$store.dispatch("SET_BLOCK_HEIGHT", this.$route.params.block);
     }
-    this.blockDate =  new Date(this.$store.getters.BLOCK.block.rawblock.timestamp * 1000)
   }
 
   formatBlockDate () {
-    const day = this.blockDate.getDate()
-    const month = this.blockDate.toLocaleString('default', { month: 'long' });
-    const year = this.blockDate.getFullYear()
-    const hours = this.blockDate.getHours()
-    const tempMinutes = this.blockDate.getMinutes()
+    const blockDate =  new Date(this.$store.getters.BLOCK.block.rawblock.timestamp * 1000)
+    const day = blockDate.getDate()
+    const month = blockDate.toLocaleString('default', { month: 'long' });
+    const year = blockDate.getFullYear()
+    const hours = blockDate.getHours()
+    const tempMinutes = blockDate.getMinutes()
     const minutes = (tempMinutes < 10) ? `0${tempMinutes}` : tempMinutes
 
     return `${hours}:${minutes}, ${month} ${day}, ${year}`
