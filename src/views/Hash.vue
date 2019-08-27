@@ -108,7 +108,13 @@
               {{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].parentid }}
             </td>
           </tr>
-          <tr>
+          <tr v-if="$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition">
+            <td>Address</td>
+            <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash)">
+              {{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash  }}
+            </td>
+          </tr>
+          <tr v-else>
             <td>Address</td>
             <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].unlockhash)">
               {{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].unlockhash  }}
@@ -119,12 +125,32 @@
             <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].value }}</td>
           </tr>
         </tbody>
-        <thead>
+        <thead v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].fulfillment">
+          <tr>
+            <th colspan="3">Fulfillment</th>
+          </tr>
+        </thead>
+        <tbody v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].fulfillment">
+          <tr>
+            <td>Type</td>
+            <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].fulfillment.type }}</td>
+          </tr>
+          <tr>
+            <td>Publickey</td>
+            <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].fulfillment.data.publickey }}</td>
+          </tr>
+          <tr>
+            <td>Signature</td>
+            <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].fulfillment.data.signature }}</td>
+          </tr>
+        </tbody>
+
+        <thead v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <th colspan="3">Unlocker</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <td>Unlock Type</td>
             <td>
@@ -132,12 +158,12 @@
             </td>
           </tr>
         </tbody>
-        <thead>
+        <thead v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <th colspan="3">Condition</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <td>Publickey</td>
             <td>
@@ -145,12 +171,12 @@
             </td>
           </tr>
         </tbody>
-        <thead>
+        <thead v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <th colspan="3">Fulfillment</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeinputs[0].unlocker">
           <tr>
             <td>Signature</td>
             <td>
@@ -168,7 +194,13 @@
               {{ this.$store.getters.HASH.transaction.blockstakeoutputids[0] }}
             </td>
           </tr>
-          <tr>
+          <tr v-if="$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition">
+            <td>Address</td>
+            <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash)">
+              {{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash  }}
+            </td>
+          </tr>
+          <tr v-else>
             <td>Address</td>
             <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].unlockhash)">
               {{ this.$store.getters.HASH.transaction.rawtransaction.data.blockstakeoutputs[0].unlockhash  }}
@@ -626,6 +658,7 @@ export default class Hash extends Vue {
     } else {
       this.fetchExplorerBlock()
       this.calculateTransactionList()
+      this.calculateTransactionListForBlockCreator()
       this.loading = false
     }
   }
@@ -792,6 +825,7 @@ export default class Hash extends Vue {
     const spentMinerPayouts:any = []
     const blocks = this.$store.getters.HASH.blocks
     const transactions = this.$store.getters.HASH.transactions
+    if (!blocks && !transactions) return
 
     const unspentMinerPayouts = blocks.map((block:any) => {
       const mineyPayoutIdIndex = block.rawblock.minerpayouts.findIndex((mp:any) => mp.unlockhash === address)
