@@ -339,10 +339,16 @@
                 {{ tx.id }}
               </td>
             </tr>
-            <tr>
+            <tr v-if="tx.rawtransaction.data.blockstakeoutputs[0].condition">
               <td>Address</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.rawtransaction.data.blockstakeoutputs[0].unlockhash)">
-                {{ tx.rawtransaction.data.blockstakeoutputs[0].unlockhash }}
+              <td class="clickable" v-on:click="routeToHashPage(tx.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash)">
+                {{ tx.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash }}
+              </td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(tx.rawtransaction.data.blockstakeoutputs[0].condition)">
+                {{ tx.rawtransaction.data.blockstakeoutputs[0].condition }}
               </td>
             </tr>
             <tr>
@@ -604,7 +610,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Hashes from './Hashes.vue';
 import axios from "axios";
 import { API_URL, PRECISION, UNIT } from "../common/config";
@@ -616,11 +622,8 @@ import { mapState } from 'vuex';
     Hashes
   },
   watch: {
-    "$route.params.hash"(val) {
-      this.$store.dispatch("SET_HASH", val);
-    },
     '$store.state.block': function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+      this.$router.push("/block/" + this.$store.state.block.block.height)
     }
   }
 })
@@ -663,8 +666,19 @@ export default class Hash extends Vue {
     }
   }
 
-  beforeRouteEnter() {
+  @Watch("$route.params.hash")
+  OnHashTypeChange(val: string, oldVal: string) {
+    this.$store.dispatch("SET_HASH", val).then(() => {
+      this.fetchExplorerBlock()
+      this.calculateTransactionList()
+      this.calculateTransactionListForBlockCreator()
+      this.loading = false
+    })
+  }
+
+  beforeRouteEnter(to:any, from:any, next:any) {
     this.fetchExplorerBlock()
+    next()
   }
 
   routeToHashPage (val:any) {
@@ -674,7 +688,6 @@ export default class Hash extends Vue {
   }
 
   routeToBlockPage (val:any) {
-    debugger
     this.$store.dispatch("SET_BLOCK_HEIGHT", val)
   }
 
@@ -825,7 +838,7 @@ export default class Hash extends Vue {
     const spentMinerPayouts:any = []
     const blocks = this.$store.getters.HASH.blocks
     const transactions = this.$store.getters.HASH.transactions
-    if (!blocks && !transactions) return
+    if (!blocks || !transactions) return
 
     const unspentMinerPayouts = blocks.map((block:any) => {
       const mineyPayoutIdIndex = block.rawblock.minerpayouts.findIndex((mp:any) => mp.unlockhash === address)
@@ -854,6 +867,7 @@ export default class Hash extends Vue {
       sum += parseInt(uco.value)
     })
 
+    debugger
     const testIndex = unspentMinerPayouts.findIndex((x:any) => x.blockHeight === 328)
     this.spentMinerPayouts = spentMinerPayouts
     this.unspentMinerPayouts = unspentMinerPayouts
@@ -895,7 +909,6 @@ export default class Hash extends Vue {
   }
 
   calculateBlockStakeOutputOutputAppearances () {
-    debugger
     const address = this.$route.params.hash
     const spentBlockStakesOutputsBlockCreator:any = []
     const transactions = this.$store.getters.HASH.transactions
