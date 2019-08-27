@@ -246,15 +246,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Type</td>
+            <tr v-if="input.unlocker">
+              <td>Unlock type</td>
+              <td>{{ input.unlocker.type }}</td>
+            </tr>
+            <tr v-else>
+              <td>Unlock type</td>
               <td>{{ input.fulfillment.type }}</td>
             </tr>
-            <tr>
+            <tr v-if="input.unlocker">
+              <td>Publickey</td>
+              <td>{{ input.unlocker.condition.publickey }}</td>
+            </tr>
+             <tr v-else>
               <td>Publickey</td>
               <td>{{ input.fulfillment.data.publickey  }}</td>
             </tr>
-            <tr>
+            <tr v-if="input.unlocker">
+              <td>Signature</td>
+              <td>{{ input.unlocker.fulfillment.signature }}</td>
+            </tr>
+            <tr v-else>
               <td>Signature</td>
               <td>{{ input.fulfillment.data.signature  }}</td>
             </tr>
@@ -276,9 +288,13 @@
               <td>ID</td>
               <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.coinoutputids[index])">{{ $store.getters.HASH.transaction.coinoutputids[index] }}</td>
             </tr>
-            <tr>
+            <tr v-if="output.condition">
               <td>Address</td>
               <td class="clickable" v-on:click="routeToHashPage(output.condition.data.unlockhash)">{{ output.condition.data.unlockhash  }}</td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(output.unlockhash)">{{ output.unlockhash  }}</td>
             </tr>
             <tr>
               <td>Value</td>
@@ -405,7 +421,11 @@
           </tr>
           <tr>
             <td>Confirmed Block Stake Balance</td>
-            <td>0 BS</td>
+            <td>{{ availableBlockstakeBalance }} BS</td>
+          </tr>
+          <tr v-if="this.$store.getters.HASH.blocks">
+            <td>Last Block Stake Spend</td>
+            <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
           </tr>
         </tbody>
       </table>
@@ -425,9 +445,13 @@
               <td>ID</td>
               <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
             </tr>
-            <tr>
+            <tr v-if="uco.condition">
               <td>Address</td>
               <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.unlockhash)">{{ uco.condition.data.unlockhash }}</td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.unlockhash)">{{ uco.unlockhash }}</td>
             </tr>
             <tr>
               <td>Value</td>
@@ -457,9 +481,13 @@
               <td>ID</td>
               <td class="clickable" v-on:click="routeToHashPage(sco.coinOutputId)">{{ sco.coinOutputId }} </td>
             </tr>
-            <tr>
+            <tr v-if="sco.condition">
               <td>Address</td>
               <td class="clickable" v-on:click="routeToHashPage(sco.condition.data.unlockhash)">{{ sco.condition.data.unlockhash }}</td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(sco.unlockhash)">{{ sco.unlockhash }}</td>
             </tr>
             <tr>
               <td>Value</td>
@@ -636,6 +664,7 @@ export default class Hash extends Vue {
   precision = Math.pow(10, PRECISION)
   unit = UNIT
   availableBalance = 0
+  availableBlockstakeBalance = 0
   blockHeight = 0
   txid = 0
   ucos = []
@@ -744,7 +773,7 @@ export default class Hash extends Vue {
     const address = this.$route.params.hash
     const scos:any = []
     const transactions = this.$store.getters.HASH.transactions
-    const blocks = this.$store.getters.HASH.transactions
+    const blocks = this.$store.getters.HASH.blocks
     if (!transactions) return this.calculateCoinoutSpentForBlockCreatorReward()
 
     // If blocks field is populated then the address is probably the address of a blockcreator
@@ -867,7 +896,6 @@ export default class Hash extends Vue {
       sum += parseInt(uco.value)
     })
 
-    debugger
     const testIndex = unspentMinerPayouts.findIndex((x:any) => x.blockHeight === 328)
     this.spentMinerPayouts = spentMinerPayouts
     this.unspentMinerPayouts = unspentMinerPayouts
@@ -936,6 +964,12 @@ export default class Hash extends Vue {
         }
       })
     })
+
+    let sum = 0
+    ucos.map((uco:any) => {
+      sum += parseInt(uco.value)
+    })
+    this.availableBlockstakeBalance = sum
     this.spentBlockStakesOutputsBlockCreator = spentBlockStakesOutputsBlockCreator
     this.unspentBlockStakesOutputsBlockCreator = ucos
   }
