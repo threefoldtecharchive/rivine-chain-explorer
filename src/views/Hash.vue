@@ -24,8 +24,11 @@
           </tr>
           <tr v-if="!$store.getters.HASH.blocks">
             <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).condition.data.unlockhash)">
+            <td v-if="getCoinOutput($store.getters.HASH.transactions).condition" class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).condition.data.unlockhash)">
               {{ getCoinOutput($store.getters.HASH.transactions).condition.data.unlockhash }}
+            </td>
+            <td v-else class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).unlockhash)">
+              {{ getCoinOutput($store.getters.HASH.transactions).unlockhash }}
             </td>
           </tr>
           <tr v-if="$store.getters.HASH.blocks">
@@ -42,12 +45,29 @@
           </tr>
           <tr v-if="$store.getters.HASH.transactions">
             <td>Transaction ID</td>
-            <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transactions[0].parent)">{{ this.$store.getters.HASH.transactions[0].parent }}</td>
+            <td class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).txid)">
+              {{ getCoinOutput($store.getters.HASH.transactions).txid }}
+            </td>
           </tr>
           <tr>
             <td>Has been spent</td>
             <td v-if="blockCreatorRewardIsSpent">Yes</td>
             <td v-else>No</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table v-if="getCoinInput($store.getters.HASH.transactions)" class="ui celled table">
+        <tbody>
+          <tr>
+            <td>ID</td>
+            <td>{{ getCoinInput($store.getters.HASH.transactions).parentid }}</td>
+          </tr>
+          <tr>
+            <td>Transaction ID</td>
+            <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.blocks[0].height)">
+              {{ getCoinInput($store.getters.HASH.transactions).txid }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -459,7 +479,7 @@
             </tr>
             <tr>
               <td>Has Been Spent</td>
-              <td>Yes</td>
+              <td>No</td>
             </tr>
             </tbody>
           </table>
@@ -495,7 +515,7 @@
             </tr>
             <tr>
               <td>Has Been Spent</td>
-              <td>No</td>
+              <td>Yes</td>
             </tr>
             </tbody>
           </table>
@@ -730,11 +750,30 @@ export default class Hash extends Vue {
     let coinOutputIndexArray = transactions.map((tx:any) => {
       return tx.coinoutputids.findIndex((id:any) => id === hashId)
     })
-    const transactionsIndex = coinOutputIndexArray.findIndex((idx:any) => idx !== -1)
-
+    let transactionsIndex = coinOutputIndexArray.findIndex((idx:any) => idx !== -1)
     const coinOutputIndex = coinOutputIndexArray.filter((v:any) => v !== -1)
     const coinoutput = transactions[transactionsIndex].rawtransaction.data.coinoutputs[coinOutputIndex]
-    return coinoutput
+    return {
+      ...coinoutput,
+      txid: transactions[transactionsIndex].id
+    }
+  }
+
+  getCoinInput (transactions:any) {
+    if (!this.$store.getters.HASH.hashtype) return 0
+    const hashId = this.$route.params.hash
+    let coinInputIndexArray = transactions.map((tx:any) => {
+      return tx.rawtransaction.data.coininputs.findIndex((ci:any) => ci.parentid === hashId)
+    })
+    let transactionsIndex = coinInputIndexArray.findIndex((idx:any) => idx !== -1)
+    const coinInputIndex = coinInputIndexArray.filter((v:any) => v !== -1)
+    if (coinInputIndex === -1) return null
+    const coininput = transactions[transactionsIndex].rawtransaction.data.coininputs[coinInputIndex]
+    this.blockCreatorRewardIsSpent = true
+    return {
+      ...coininput,
+      txid: transactions[transactionsIndex].id
+    }
   }
 
   fetchExplorerBlock () {
@@ -767,9 +806,11 @@ export default class Hash extends Vue {
 
   calculateTransactionList () {
     const hashtype = this.$store.getters.HASH.hashtype
+    if (hashtype === "coinoutputid") return
     if (hashtype === "blockstakeoutputid") {
       return this.calculateBlockstakeOutputSpent()
     }
+
     const address = this.$route.params.hash
     const scos:any = []
     const transactions = this.$store.getters.HASH.transactions
@@ -790,7 +831,7 @@ export default class Hash extends Vue {
           txid: tx.id
         }
       }
-    })
+    }).filter(Boolean)
     transactions.forEach((tx:any) => {
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci:any) => {
         const existsInUcosIndex:number = ucos.findIndex((uco:any) => uco.coinOutputId === ci.parentid)
@@ -804,6 +845,7 @@ export default class Hash extends Vue {
     ucos.map((uco:any) => {
       sum += parseInt(uco.value)
     })
+
     this.scos = scos
     this.ucos = ucos
     this.availableBalance = sum / this.precision
