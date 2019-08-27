@@ -6,6 +6,11 @@
         <div class="ui loader" />
       </div>
     </div> -->
+
+    <div v-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
+      <BlockstakeOutputHash />
+    </div>
+
     <div class="container" v-if="this.$store.getters.HASH && this.$store.getters.HASH.hashtype === 'coinoutputid'">
       <table class="ui celled table">
         <thead>
@@ -57,20 +62,22 @@
         </tbody>
       </table>
 
-      <table v-if="getCoinInput($store.getters.HASH.transactions)" class="ui celled table">
-        <tbody>
-          <tr>
-            <td>ID</td>
-            <td>{{ getCoinInput($store.getters.HASH.transactions).parentid }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.blocks[0].height)">
-              {{ getCoinInput($store.getters.HASH.transactions).txid }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div v-if="!$store.getters.HASH.blocks">
+        <table v-if="getCoinInput($store.getters.HASH.transactions)" class="ui celled table">
+          <tbody>
+            <tr>
+              <td>ID</td>
+              <td>{{ getCoinInput($store.getters.HASH.transactions).parentid }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.blocks[0].height)">
+                {{ getCoinInput($store.getters.HASH.transactions).txid }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="container" v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
       <table class="ui celled table">
@@ -354,71 +361,7 @@
         </table>
       </div>
     </div>
-    <div class="container" v-else-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
-      <div v-for="(tx, index) in this.$store.getters.HASH.transactions">
-        <h3 v-if="index === 0">Hash Type: {{ $store.getters.HASH.hashtype }}</h3>
-        <br/>
-        <table v-if="index === 1" class="ui celled table">
-          <thead>
-            <tr>
-              <th colspan="3">BlockStake Output</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>ID</td>
-              <td>{{ $route.params.hash }}</td>
-            </tr>
-            <tr>
-              <td>Transaction ID</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.id)">
-                {{ tx.id }}
-              </td>
-            </tr>
-            <tr v-if="tx.rawtransaction.data.blockstakeoutputs[0].condition">
-              <td>Address</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash)">
-                {{ tx.rawtransaction.data.blockstakeoutputs[0].condition.data.unlockhash }}
-              </td>
-            </tr>
-            <tr v-else>
-              <td>Address</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.rawtransaction.data.blockstakeoutputs[0].condition)">
-                {{ tx.rawtransaction.data.blockstakeoutputs[0].condition }}
-              </td>
-            </tr>
-            <tr>
-              <td>Value</td>
-              <td>{{ tx.rawtransaction.data.blockstakeoutputs[0].value }}</td>
-            </tr>
-            <tr>
-              <td>Has been spent</td>
-              <td v-if="blockstakeOutputIsSpent">Yes</td>
-              <td v-else>No</td>
-            </tr>
-          </tbody>
-        </table>
-        <table v-if="index === 0" class="ui celled table">
-          <thead>
-            <tr>
-              <th colspan="3">BlockStake Input</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>ID</td>
-              <td>{{ $route.params.hash }}</td>
-            </tr>
-            <tr>
-              <td>Transaction ID</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.id)">
-                {{ tx.id }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+
     <div class="container" v-else-if="this.$store.getters.HASH.hashtype === 'unlockhash'">
       <table class="ui celled table">
         <thead>
@@ -660,6 +603,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Hashes from './Hashes.vue';
+import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
 import axios from "axios";
 import { API_URL, PRECISION, UNIT } from "../common/config";
 import { mapState } from 'vuex';
@@ -667,7 +611,8 @@ import { mapState } from 'vuex';
 @Component({
   name: 'Hash',
   components: {
-    Hashes
+    Hashes,
+    BlockstakeOutputHash
   },
   watch: {
     '$store.state.block': function() {
