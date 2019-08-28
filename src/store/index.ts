@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
   state: {
     explorer: Object,
     block: Object,
-    transactions: Object,
+    transactions: Array,
     hash: Object
   },
   mutations: {
@@ -21,6 +21,9 @@ export const store = new Vuex.Store({
     },
     SET_HASH: (state, hash) => {
       state.hash = hash;
+    },
+    SET_TRANSACTIONS: (state, transactions) => {
+      state.transactions = transactions;
     }
   },
   actions: {
@@ -51,7 +54,14 @@ export const store = new Vuex.Store({
       }, error => {
         console.error(error);
       })
-    }
+    },
+    SET_TRANSACTIONS: async (context) => {
+      await axios({ method: "GET", url: API_URL + "/transactionpool/transactions"}).then(result => {
+        context.commit("SET_TRANSACTIONS", result.data);
+      }, error => {
+        console.error(error);
+      })
+    },
   },
   getters: {
     EXPLORER: state => {
@@ -62,6 +72,9 @@ export const store = new Vuex.Store({
     },
     HASH: state => {
       return state.hash;
+    },
+    TRANSACTIONS: state => {
+      return state.transactions;
     }
   }
 });

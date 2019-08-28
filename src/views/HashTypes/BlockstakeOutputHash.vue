@@ -20,10 +20,16 @@
           </td>
         </tr>
 
-        <tr v-if="isLegacy">
+        <tr v-if="v0">
           <td>Address</td>
           <td class="clickable" v-on:click="routeToHashPage(blockstakeOutput.unlockhash)">
             {{ blockstakeOutput.unlockhash }}
+          </td>
+        </tr>
+        <tr v-if="v2">
+          <td>Address</td>
+          <td class="clickable" v-on:click="routeToHashPage(blockstakeOutput.condition.data.unlockhash)">
+            {{ blockstakeOutput.condition.data.unlockhash }}
           </td>
         </tr>
         <tr v-else>
@@ -33,7 +39,7 @@
           </td>
         </tr>
 
-        <tr v-if="isLegacy">
+        <tr v-if="v0 || v2">
           <td>Value</td>
           <td>{{ blockstakeOutput.value }}</td>
         </tr>
@@ -107,7 +113,8 @@ export default class BlockstakeOutputHash extends Vue {
   blockstakeOutput: object = {
     condition: {}
   }
-  isLegacy: boolean = false
+  v0: boolean = false
+  v2: boolean = false
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {
@@ -144,7 +151,11 @@ export default class BlockstakeOutputHash extends Vue {
 
     // Check if there is no condition object on the output, this means it's from an older version and we use different template
     if (!blockstakeOutput.condition) {
-      this.isLegacy = true
+      this.v0 = true
+    }
+
+    if (blockstakeOutput.condition && blockstakeOutput.value) {
+      this.v2 = true
     }
 
     this.blockstakeOutput = {

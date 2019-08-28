@@ -5,6 +5,7 @@ import Block from "./views/Block.vue";
 import NotFound from "./views/NotFound.vue";
 import Blocks from "./views/Blocks.vue";
 import Hash from "./views/Hash.vue";
+import transactions from './views/Transactions.vue';
 
 Vue.use(Router);
 
@@ -21,6 +22,11 @@ export default new Router({
       path: "/blocks/",
       name: "blocks",
       component: Blocks
+    },
+    {
+      path: "/transactions/",
+      name: "transactions",
+      component: transactions
     },
     {
       path: "/block/:block?",
