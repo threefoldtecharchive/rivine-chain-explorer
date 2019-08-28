@@ -45,17 +45,8 @@ import TransactionIdHash from './HashTypes/TransactionIdHash.vue'
   }
 })
 
-export default class Hash extends Vue {
-  routeToHashPage (val:any) {
-    this.$store.dispatch("SET_HASH", val).then(() => {
-      this.$router.push("/hashes/" + val);
-    })
-  }
+export default class Hash extends Vue{}
 
-  routeToBlockPage (val:any) {
-    this.$store.dispatch("SET_BLOCK_HEIGHT", val)
-  }
-}
 </script>
 <style scoped>
 .container {

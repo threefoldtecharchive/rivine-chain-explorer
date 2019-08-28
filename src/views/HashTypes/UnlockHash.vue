@@ -259,7 +259,7 @@ import { PRECISION, UNIT } from "../../common/config"
       this.$router.push("/hashes/" + val);
     },
     routeToBlockPage: function(val) {
-      this.$store.dispatch("SET_HASH", val)
+      this.$store.dispatch("SET_BLOCK_HEIGHT", val)
     }
   }
 })
