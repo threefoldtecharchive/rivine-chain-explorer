@@ -50,7 +50,7 @@
       </tbody>
     </table>
 
-    <table class="ui celled table">
+    <table class="ui celled table" v-if="blockstakeInput.txid">
       <thead>
         <tr>
           <th colspan="3">BlockStake Input</th>
@@ -110,8 +110,6 @@ export default class BlockstakeOutputHash extends Vue {
   isLegacy: boolean = false
 
   created() {
-    // something
-    debugger
     if (!this.$store.getters.HASH.hashtype) {
       this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
         this.getBlockStakeOutput()
@@ -149,7 +147,6 @@ export default class BlockstakeOutputHash extends Vue {
       this.isLegacy = true
     }
 
-    debugger
     this.blockstakeOutput = {
       ...blockstakeOutput,
       txid: transactions[transactionsIndex].id

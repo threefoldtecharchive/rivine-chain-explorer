@@ -1,84 +1,15 @@
 <template lang="html">
   <div>
     <hashes />
-    <!-- <div class="container" v-if="loading">
-      <div class="spinner ui active dimmer">
-        <div class="ui loader" />
-      </div>
-    </div> -->
 
     <div v-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
       <BlockstakeOutputHash />
     </div>
 
-    <div class="container" v-if="this.$store.getters.HASH && this.$store.getters.HASH.hashtype === 'coinoutputid'">
-      <table class="ui celled table">
-        <thead>
-          <tr>
-            <th colspan="3">Hash type: {{ this.$store.getters.HASH.hashtype }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ID</td>
-            <td>{{ this.$route.params.hash }}</td>
-          </tr>
-          <tr v-if="$store.getters.HASH.blocks">
-            <td>Block ID</td>
-            <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.blocks[0].height)">{{ this.$store.getters.HASH.blocks[0].blockid }}</td>
-          </tr>
-          <tr v-if="!$store.getters.HASH.blocks">
-            <td>Address</td>
-            <td v-if="getCoinOutput($store.getters.HASH.transactions).condition" class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).condition.data.unlockhash)">
-              {{ getCoinOutput($store.getters.HASH.transactions).condition.data.unlockhash }}
-            </td>
-            <td v-else class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).unlockhash)">
-              {{ getCoinOutput($store.getters.HASH.transactions).unlockhash }}
-            </td>
-          </tr>
-          <tr v-if="$store.getters.HASH.blocks">
-            <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.blocks[0].rawblock.minerpayouts[0].unlockhash)">{{ this.$store.getters.HASH.blocks[0].rawblock.minerpayouts[0].unlockhash }}</td>
-          </tr>
-          <tr v-if="$store.getters.HASH.blocks">
-            <td>Value</td>
-            <td>{{ this.$store.getters.HASH.blocks[0].rawblock.minerpayouts[0].value / precision }} {{ unit }}</td>
-          </tr>
-          <tr v-if="!$store.getters.HASH.blocks">
-            <td>Value</td>
-            <td>{{ getCoinOutput($store.getters.HASH.transactions).value / precision }} {{ unit }}</td>
-          </tr>
-          <tr v-if="$store.getters.HASH.transactions">
-            <td>Transaction ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(getCoinOutput($store.getters.HASH.transactions).txid)">
-              {{ getCoinOutput($store.getters.HASH.transactions).txid }}
-            </td>
-          </tr>
-          <tr>
-            <td>Has been spent</td>
-            <td v-if="blockCreatorRewardIsSpent">Yes</td>
-            <td v-else>No</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div v-if="!$store.getters.HASH.blocks">
-        <table v-if="getCoinInput($store.getters.HASH.transactions)" class="ui celled table">
-          <tbody>
-            <tr>
-              <td>ID</td>
-              <td>{{ getCoinInput($store.getters.HASH.transactions).parentid }}</td>
-            </tr>
-            <tr>
-              <td>Transaction ID</td>
-              <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.blocks[0].height)">
-                {{ getCoinInput($store.getters.HASH.transactions).txid }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div v-if="this.$store.getters.HASH.hashtype === 'coinoutputid'">
+      <CoinOutputHash />
     </div>
+
     <div class="container" v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
       <table class="ui celled table">
         <thead>
@@ -601,18 +532,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import Hashes from './Hashes.vue';
+import { Component, Vue, Watch } from "vue-property-decorator"
+import Hashes from './Hashes.vue'
 import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
-import axios from "axios";
-import { API_URL, PRECISION, UNIT } from "../common/config";
-import { mapState } from 'vuex';
+import CoinOutputHash from './HashTypes/CoinOutputHash.vue'
+import axios from "axios"
+import { API_URL, PRECISION, UNIT } from "../common/config"
+import { mapState } from 'vuex'
 
 @Component({
   name: 'Hash',
   components: {
     Hashes,
-    BlockstakeOutputHash
+    BlockstakeOutputHash,
+    CoinOutputHash
   },
   watch: {
     '$store.state.block': function() {
@@ -687,38 +620,6 @@ export default class Hash extends Vue {
 
   decodeString (str:any) {
     return atob(str)
-  }
-
-  getCoinOutput (transactions:any) {
-    if (!this.$store.getters.HASH.hashtype) return 0
-    const hashId = this.$route.params.hash
-    let coinOutputIndexArray = transactions.map((tx:any) => {
-      return tx.coinoutputids.findIndex((id:any) => id === hashId)
-    })
-    let transactionsIndex = coinOutputIndexArray.findIndex((idx:any) => idx !== -1)
-    const coinOutputIndex = coinOutputIndexArray.filter((v:any) => v !== -1)
-    const coinoutput = transactions[transactionsIndex].rawtransaction.data.coinoutputs[coinOutputIndex]
-    return {
-      ...coinoutput,
-      txid: transactions[transactionsIndex].id
-    }
-  }
-
-  getCoinInput (transactions:any) {
-    if (!this.$store.getters.HASH.hashtype) return 0
-    const hashId = this.$route.params.hash
-    let coinInputIndexArray = transactions.map((tx:any) => {
-      return tx.rawtransaction.data.coininputs.findIndex((ci:any) => ci.parentid === hashId)
-    })
-    let transactionsIndex = coinInputIndexArray.findIndex((idx:any) => idx !== -1)
-    const coinInputIndex = coinInputIndexArray.filter((v:any) => v !== -1)
-    if (coinInputIndex === -1) return null
-    const coininput = transactions[transactionsIndex].rawtransaction.data.coininputs[coinInputIndex]
-    this.blockCreatorRewardIsSpent = true
-    return {
-      ...coininput,
-      txid: transactions[transactionsIndex].id
-    }
   }
 
   fetchExplorerBlock () {
