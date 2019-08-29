@@ -39,6 +39,10 @@ export default new Router({
       component: Hash
     },
     {
+      path: "/notfound",
+      component: NotFound
+    },
+    {
       path: "*",
       component: NotFound
     }

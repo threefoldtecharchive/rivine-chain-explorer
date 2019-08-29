@@ -359,7 +359,11 @@ export default class UnlockHash extends Vue {
 
   checkIfAtomicSwap () {
     const txs = this.$store.getters.HASH.transactions
-    const idx = txs.findIndex((tx:any) => tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1)
+    const idx = txs.findIndex((tx:any) => {
+      if (!tx.rawtransaction.data.coinoutputs) return
+      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1
+    })
+    debugger
     if (idx !== -1) {
       this.isAtomicSwap = true
     }

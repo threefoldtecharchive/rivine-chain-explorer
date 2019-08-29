@@ -1,5 +1,12 @@
 <template>
-  <navigation />
+  <div>
+    <navigation />
+    <div class="container">
+      <div class="notfound">
+        <p>Hash or Block is not found</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,3 +23,13 @@ import Navigation from "@/components/Navigation.vue";
 })
 export default class NotFound extends Vue {}
 </script>
+<style scoped>
+.container {
+  width: 80%;
+  margin: 'auto';
+}
+.notfound {
+  margin-top: 200px;
+  text-align: center;
+}
+</style>

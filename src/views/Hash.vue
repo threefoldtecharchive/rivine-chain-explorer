@@ -45,7 +45,13 @@ import TransactionIdHash from './HashTypes/TransactionIdHash.vue'
   }
 })
 
-export default class Hash extends Vue{}
+export default class Hash extends Vue{
+  created() {
+    if (this.$store.getters.HASH === "") {
+      this.$router.push("/notfound")
+    }
+  }
+}
 
 </script>
 <style scoped>
