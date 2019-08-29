@@ -26,7 +26,7 @@
             {{ blockstakeOutput.unlockhash }}
           </td>
         </tr>
-        <tr v-if="v2">
+        <tr v-else-if="v2">
           <td>Address</td>
           <td class="clickable" v-on:click="routeToHashPage(blockstakeOutput.condition.data.unlockhash)">
             {{ blockstakeOutput.condition.data.unlockhash }}
@@ -164,10 +164,12 @@ export default class BlockstakeOutputHash extends Vue {
       this.v2 = true
     }
 
+    debugger
     this.blockstakeOutput = {
       ...blockstakeOutput,
       txid: transactions[transactionsIndex].id
     }
+    debugger
   }
 
   getBlockStakeInput () {
@@ -190,6 +192,7 @@ export default class BlockstakeOutputHash extends Vue {
       ...coininput,
       txid: transactions[transactionsIndex].id
     }
+    debugger
   }
 }
 </script>
