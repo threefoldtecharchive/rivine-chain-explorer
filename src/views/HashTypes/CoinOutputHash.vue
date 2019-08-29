@@ -180,28 +180,24 @@ export default class CoinOutputHash extends Vue {
   toLocalDecimalNotation = toLocalDecimalNotation
   formatReadableDate = formatReadableDate
   isAtomicSwap: boolean = false
+  isLoading: boolean = false
 
   created() {
-    if (!this.$store.getters.HASH.hashtype) {
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+    this.isLoading = true
+    // If users navigates, recalculate lists
+    this.$router.afterEach((newLocation: any) => {
+      const hash = newLocation.params.hash
+      this.$store.dispatch("SET_HASH", hash).then(() => {
         this.getCoinOutput()
         this.getCoinInput()
         this.checkIfAtomicSwap()
+        this.isLoading = false
       })
-    } else {
-      this.getCoinOutput()
-      this.getCoinInput()
-      this.checkIfAtomicSwap()
-    }
-  }
-
-  @Watch("$route.params.hash")
-  OnHashTypeChange(val: string, oldVal: string) {
-    this.$store.dispatch("SET_HASH", val).then(() => {
-      this.getCoinOutput()
-      this.getCoinInput()
-      this.checkIfAtomicSwap()
     })
+    this.getCoinOutput()
+    this.getCoinInput()
+    this.checkIfAtomicSwap()
+    this.isLoading = false
   }
 
   checkIfAtomicSwap () {
@@ -210,7 +206,10 @@ export default class CoinOutputHash extends Vue {
 
     const idx = txs.findIndex((tx:any) => {
       if (!tx.rawtransaction.data.coinoutputs) return
-      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1
+      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => {
+        if (!co.condition) return
+        return co.condition.data.hashedsecret
+      }) !== -1
     })
     if (idx !== -1) {
       this.isAtomicSwap = true

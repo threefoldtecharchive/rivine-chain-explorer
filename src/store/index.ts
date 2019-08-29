@@ -42,6 +42,7 @@ export const store = new Vuex.Store({
       })
     },
     SET_HASH: async (context, hash) => {
+      if (!hash) return
       await axios({ method: "GET", url: API_URL + "/explorer/hashes/" + hash}).then(result => {
         switch (result.data.hashtype) {
           case 'blockid':

@@ -360,7 +360,6 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
       this.$router.push("/hashes/" + val);
     },
     routeToBlockPage: function(val) {
-      console.log(val)
       this.$store.dispatch("SET_BLOCK_HEIGHT", val)
     }
   }
@@ -373,22 +372,20 @@ export default class TransactionIdHash extends Vue {
   formatReadableDate = formatReadableDate
   precision = Math.pow(10, PRECISION)
   unit = UNIT
+  isLoading: boolean = false
 
   created() {
-    if (!this.$store.getters.HASH.hashtype) {
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+    this.isLoading = true
+    // If users navigates, recalculate lists
+    this.$router.afterEach((newLocation: any) => {
+      const hash = newLocation.params.hash
+      console.log(hash)
+      this.$store.dispatch("SET_HASH", hash).then(() => {
         this.fetchExplorerBlock()
       })
-    } else {
-      this.fetchExplorerBlock()
-    }
-  }
-
-  @Watch("$route.params.hash")
-  OnHashTypeChange(val: string, oldVal: string) {
-    this.$store.dispatch("SET_HASH", val).then(() => {
-      this.fetchExplorerBlock()
     })
+    this.fetchExplorerBlock()
+    this.isLoading = false
   }
 
   decodeString (str:any) {

@@ -115,17 +115,21 @@ export default class BlockstakeOutputHash extends Vue {
   }
   v0: boolean = false
   v2: boolean = false
+  isLoading: boolean = false
 
   created() {
-    if (!this.$store.getters.HASH.hashtype) {
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+    this.isLoading = true
+    // If users navigates, recalculate lists
+    this.$router.afterEach((newLocation: any) => {
+      const hash = newLocation.params.hash
+      this.$store.dispatch("SET_HASH", hash).then(() => {
         this.getBlockStakeOutput()
         this.getBlockStakeInput()
       })
-    } else {
-      this.getBlockStakeOutput()
-      this.getBlockStakeInput()
-    }
+    })
+    this.getBlockStakeOutput()
+    this.getBlockStakeInput()
+    this.isLoading = false
   }
 
   @Watch("$route.params.hash")

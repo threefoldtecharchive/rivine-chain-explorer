@@ -1,294 +1,299 @@
 <template lang="html">
   <div class="container">
-    <h1 v-if="isAtomicSwap">Atomic Swap Contract</h1>
-    <table class="ui celled table">
-      <thead>
-        <tr>
-          <th colspan="3">Wallet Address</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Address</td>
-          <td>{{ this.$route.params.hash }}</td>
-        </tr>
-        <tr>
-          <td>Confirmed Coin Balance</td>
-          <td>{{ toLocalDecimalNotation(availableBalance) }} {{ unit }}</td>
-        </tr>
-        <tr v-if="!isAtomicSwap">
-          <td>Last Coin Spend</td>
-          <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
-        </tr>
-        <tr>
-          <td>Confirmed Block Stake Balance</td>
-          <td>{{ availableBlockstakeBalance }} BS</td>
-        </tr>
-        <tr v-if="this.$store.getters.HASH.blocks">
-          <td>Last Block Stake Spend</td>
-          <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <div v-for="(uco, idx) in ucos">
-      <div class="tx-table" v-if="!isAtomicSwap">
-        <table class="ui celled table">
+    <div v-if="isLoading">
+      <p>Loading your data...</p>
+    </div>
+    <div v-else>
+      <h1 v-if="isAtomicSwap">Atomic Swap Contract</h1>
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th colspan="3">Wallet Address</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(uco.blockHeight)">{{ uco.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.txid)">{{ uco.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
-          </tr>
-          <tr v-if="uco.condition">
             <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.unlockhash)">{{ uco.condition.data.unlockhash }}</td>
-          </tr>
-          <tr v-else>
-            <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.unlockhash)">{{ uco.unlockhash }}</td>
+            <td>{{ this.$route.params.hash }}</td>
           </tr>
           <tr>
-            <td>Value</td>
-            <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
+            <td>Confirmed Coin Balance</td>
+            <td>{{ toLocalDecimalNotation(availableBalance) }} {{ unit }}</td>
+          </tr>
+          <tr v-if="!isAtomicSwap">
+            <td>Last Coin Spend</td>
+            <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
           </tr>
           <tr>
-            <td>Has Been Spent</td>
-            <td>No</td>
+            <td>Confirmed Block Stake Balance</td>
+            <td>{{ availableBlockstakeBalance }} BS</td>
           </tr>
-          </tbody>
-        </table>
-      </div>
+          <tr v-if="this.$store.getters.HASH.blocks">
+            <td>Last Block Stake Spend</td>
+            <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-for="(uco, idx) in ucos">
+        <div class="tx-table" v-if="!isAtomicSwap">
+          <table class="ui celled table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(uco.blockHeight)">{{ uco.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.txid)">{{ uco.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
+            </tr>
+            <tr v-if="uco.condition">
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.unlockhash)">{{ uco.condition.data.unlockhash }}</td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.unlockhash)">{{ uco.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>No</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <!-- atomic swap -->
-      <div class="tx-table" v-if="isAtomicSwap">
-        <table class="ui celled table">
-        <tbody>
-          <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(uco.blockHeight)">{{ uco.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.txid)">{{ uco.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
-          </tr>
-          <tr>
-            <td>Contract Address</td>
-            <td >
-              {{ $store.getters.HASH.transactions[uco.txidx].coinoutputunlockhashes[idx] }}
-            </td>
-          </tr>
-          <tr>
-            <td>Sender</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.sender)">{{ uco.condition.data.sender }}</td>
-          </tr>
-          <tr>
-            <td>Receiver</td>
-            <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.receiver)">{{ uco.condition.data.receiver }}</td>
-          </tr>
-          <tr>
-            <td>Hashed Secret</td>
-            <td>{{ uco.condition.data.hashedsecret }}</td>
-          </tr>
-          <tr>
-            <td>Timelock</td>
-            <td>{{ uco.condition.data.timelock }}</td>
-          </tr>
-          <tr>
-            <td>Unlocked for refunding since</td>
-            <td>{{ formatReadableDate(uco.condition.data.timelock) }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>No</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+        <!-- atomic swap -->
+        <div class="tx-table" v-if="isAtomicSwap">
+          <table class="ui celled table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(uco.blockHeight)">{{ uco.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.txid)">{{ uco.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
+            </tr>
+            <tr>
+              <td>Contract Address</td>
+              <td >
+                {{ $store.getters.HASH.transactions[uco.txidx].coinoutputunlockhashes[idx] }}
+              </td>
+            </tr>
+            <tr>
+              <td>Sender</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.sender)">{{ uco.condition.data.sender }}</td>
+            </tr>
+            <tr>
+              <td>Receiver</td>
+              <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.receiver)">{{ uco.condition.data.receiver }}</td>
+            </tr>
+            <tr>
+              <td>Hashed Secret</td>
+              <td>{{ uco.condition.data.hashedsecret }}</td>
+            </tr>
+            <tr>
+              <td>Timelock</td>
+              <td>{{ uco.condition.data.timelock }}</td>
+            </tr>
+            <tr>
+              <td>Unlocked for refunding since</td>
+              <td>{{ formatReadableDate(uco.condition.data.timelock) }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>No</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-    </div>
-    <div v-for="sco in scos">
-      <div class="tx-table">
-        <table class="ui celled table tx-table">
-        <tbody>
-          <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(sco.blockHeight)">{{ sco.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable"  v-on:click="routeToHashPage(sco.txid)">{{ sco.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(sco.coinOutputId)">{{ sco.coinOutputId }} </td>
-          </tr>
-          <tr v-if="sco.condition">
-            <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage(sco.condition.data.unlockhash)">{{ sco.condition.data.unlockhash }}</td>
-          </tr>
-          <tr v-else>
-            <td>Address</td>
-            <td class="clickable" v-on:click="routeToHashPage(sco.unlockhash)">{{ sco.unlockhash }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>Yes</td>
-          </tr>
-          </tbody>
-        </table>
       </div>
-    </div>
-    <h3 v-if="unspentMinerPayouts.length > 0">Fee/Reward Payout Appearances</h3>
-    <div v-for="unspentMp in unspentMinerPayouts">
-      <div class="tx-table">
-        <table class="ui celled table tx-table">
-        <tbody>
-          <tr>
-            <td>Block ID</td>
-            <td class="clickable"  v-on:click="routeToBlockPage(unspentMp.blockHeight)">{{ unspentMp.blockid }}</td>
-          </tr>
-          <tr>
-            <td>Payout (Coin Output) ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(unspentMp.minerPayoutId)">{{ unspentMp.minerPayoutId }} </td>
-          </tr>
-          <tr>
-            <td>Source Description</td>
-            <td>Block Creator Reward</td>
-          </tr>
-          <tr>
-            <td>Payout Address</td>
-            <td>{{ unspentMp.unlockhash }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ toLocalDecimalNotation(unspentMp.value / precision) }} {{ unit }}</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>No</td>
-          </tr>
-          </tbody>
-        </table>
+      <div v-for="sco in scos">
+        <div class="tx-table">
+          <table class="ui celled table tx-table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(sco.blockHeight)">{{ sco.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable"  v-on:click="routeToHashPage(sco.txid)">{{ sco.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(sco.coinOutputId)">{{ sco.coinOutputId }} </td>
+            </tr>
+            <tr v-if="sco.condition">
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(sco.condition.data.unlockhash)">{{ sco.condition.data.unlockhash }}</td>
+            </tr>
+            <tr v-else>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToHashPage(sco.unlockhash)">{{ sco.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>Yes</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <h3 v-if="spentCoinOutputsBlockCreator.length > 0">Coin Output Appearances</h3>
-    <div v-for="sco in spentCoinOutputsBlockCreator">
-      <div class="tx-table">
-        <table class="ui celled table tx-table">
-        <tbody>
-          <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(sco.blockHeight)">{{ sco.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable"  v-on:click="routeToHashPage(sco.txid)">{{ sco.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(sco.coinOutputId)">{{ sco.coinOutputId }} </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td >{{ sco.unlockhash }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>Yes</td>
-          </tr>
-          </tbody>
-        </table>
+      <h3 v-if="unspentMinerPayouts.length > 0">Fee/Reward Payout Appearances</h3>
+      <div v-for="unspentMp in unspentMinerPayouts">
+        <div class="tx-table">
+          <table class="ui celled table tx-table">
+          <tbody>
+            <tr>
+              <td>Block ID</td>
+              <td class="clickable"  v-on:click="routeToBlockPage(unspentMp.blockHeight)">{{ unspentMp.blockid }}</td>
+            </tr>
+            <tr>
+              <td>Payout (Coin Output) ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(unspentMp.minerPayoutId)">{{ unspentMp.minerPayoutId }} </td>
+            </tr>
+            <tr>
+              <td>Source Description</td>
+              <td>Block Creator Reward</td>
+            </tr>
+            <tr>
+              <td>Payout Address</td>
+              <td>{{ unspentMp.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ toLocalDecimalNotation(unspentMp.value / precision) }} {{ unit }}</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>No</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <h3 v-if="spentBlockStakesOutputsBlockCreator.length > 0">Blockstake Output Appearances</h3>
-    <div v-for="sbo in spentBlockStakesOutputsBlockCreator">
-      <div class="tx-table">
-        <table class="ui celled table tx-table">
-        <tbody>
-          <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(sbo.blockHeight)">{{ sbo.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable"  v-on:click="routeToHashPage(sbo.txid)">{{ sbo.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(sbo.blockstakeOutputId)">{{ sbo.blockstakeOutputId }} </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td >{{ sbo.unlockhash }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ sbo.value }} BS</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>Yes</td>
-          </tr>
-          </tbody>
-        </table>
+      <h3 v-if="spentCoinOutputsBlockCreator.length > 0">Coin Output Appearances</h3>
+      <div v-for="sco in spentCoinOutputsBlockCreator">
+        <div class="tx-table">
+          <table class="ui celled table tx-table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(sco.blockHeight)">{{ sco.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable"  v-on:click="routeToHashPage(sco.txid)">{{ sco.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(sco.coinOutputId)">{{ sco.coinOutputId }} </td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td >{{ sco.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>Yes</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <h3 v-if="unspentBlockStakesOutputsBlockCreator.length > 0">Blockstake Output Appearances</h3>
-    <div v-for="usbo in unspentBlockStakesOutputsBlockCreator">
-      <div class="tx-table">
-        <table class="ui celled table tx-table">
-        <tbody>
-          <tr>
-            <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage(usbo.blockHeight)">{{ usbo.blockHeight }}</td>
-          </tr>
-          <tr>
-            <td>Transaction ID</td>
-            <td class="clickable"  v-on:click="routeToHashPage(usbo.txid)">{{ usbo.txid }}</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td class="clickable" v-on:click="routeToHashPage(usbo.blockstakeOutputId)">{{ usbo.blockstakeOutputId }} </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td >{{ usbo.unlockhash }}</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td>{{ usbo.value }} BS</td>
-          </tr>
-          <tr>
-            <td>Has Been Spent</td>
-            <td>Yes</td>
-          </tr>
-          </tbody>
-        </table>
+      <h3 v-if="spentBlockStakesOutputsBlockCreator.length > 0">Blockstake Output Appearances</h3>
+      <div v-for="sbo in spentBlockStakesOutputsBlockCreator">
+        <div class="tx-table">
+          <table class="ui celled table tx-table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(sbo.blockHeight)">{{ sbo.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable"  v-on:click="routeToHashPage(sbo.txid)">{{ sbo.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(sbo.blockstakeOutputId)">{{ sbo.blockstakeOutputId }} </td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td >{{ sbo.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ sbo.value }} BS</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>Yes</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+      <h3 v-if="unspentBlockStakesOutputsBlockCreator.length > 0">Blockstake Output Appearances</h3>
+      <div v-for="usbo in unspentBlockStakesOutputsBlockCreator">
+        <div class="tx-table">
+          <table class="ui celled table tx-table">
+          <tbody>
+            <tr>
+              <td>Block Height</td>
+              <td class="clickable" v-on:click="routeToBlockPage(usbo.blockHeight)">{{ usbo.blockHeight }}</td>
+            </tr>
+            <tr>
+              <td>Transaction ID</td>
+              <td class="clickable"  v-on:click="routeToHashPage(usbo.txid)">{{ usbo.txid }}</td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage(usbo.blockstakeOutputId)">{{ usbo.blockstakeOutputId }} </td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td >{{ usbo.unlockhash }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>{{ usbo.value }} BS</td>
+            </tr>
+            <tr>
+              <td>Has Been Spent</td>
+              <td>Yes</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -340,8 +345,10 @@ export default class UnlockHash extends Vue {
   toLocalDecimalNotation = toLocalDecimalNotation
   formatReadableDate = formatReadableDate
   isAtomicSwap:boolean = false
+  isLoading:boolean = false
 
   created() {
+    this.isLoading = true
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
@@ -349,19 +356,26 @@ export default class UnlockHash extends Vue {
         this.calculateTransactionList()
         this.calculateTransactionListForBlockCreator()
         this.checkIfAtomicSwap()
+        this.isLoading = false
       })
     })
 
     this.calculateTransactionList()
     this.calculateTransactionListForBlockCreator()
     this.checkIfAtomicSwap()
+    this.isLoading = false
   }
 
   checkIfAtomicSwap () {
     const txs = this.$store.getters.HASH.transactions
+    if (!txs) return
+
     const idx = txs.findIndex((tx:any) => {
       if (!tx.rawtransaction.data.coinoutputs) return
-      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1
+      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => {
+        if (!co.condition) return
+        return co.condition.data.hashedsecret
+      }) !== -1
     })
     if (idx !== -1) {
       this.isAtomicSwap = true
@@ -511,8 +525,8 @@ export default class UnlockHash extends Vue {
     this.spentMinerPayouts = spentMinerPayouts
     this.unspentMinerPayouts = unspentMinerPayouts
     this.availableBalance = sum / this.precision
-    this.txid = unspentMinerPayouts[0].blockid
-    this.blockHeight = unspentMinerPayouts[0].blockHeight
+    this.txid = unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockid : ""
+    this.blockHeight = unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockHeight : 0
     this.calculateCoinOutputOutputAppearances()
     this.calculateBlockStakeOutputOutputAppearances()
   }
