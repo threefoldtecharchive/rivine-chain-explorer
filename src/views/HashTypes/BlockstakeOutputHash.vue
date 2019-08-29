@@ -137,8 +137,10 @@ export default class BlockstakeOutputHash extends Vue {
   }
 
   getBlockStakeOutput () {
-    const transactions = this.$store.getters.HASH.transactions
     if (!this.$store.getters.HASH.hashtype) return
+    const transactions = this.$store.getters.HASH.transactions
+    if (!transactions) return
+
     const hashId = this.$route.params.hash
     let blockstakeOutputIndexArray = transactions.map((tx:any) => {
       return tx.blockstakeoutputids.findIndex((id:any) => id === hashId)
@@ -165,8 +167,10 @@ export default class BlockstakeOutputHash extends Vue {
   }
 
   getBlockStakeInput () {
-    const transactions = this.$store.getters.HASH.transactions
     if (!this.$store.getters.HASH.hashtype) return
+    const transactions = this.$store.getters.HASH.transactions
+    if (!transactions) return
+    
     const hashId = this.$route.params.hash
     let blockstakeInputIndexArray = transactions.map((tx:any) => {
       return tx.rawtransaction.data.blockstakeinputs.findIndex((ci:any) => ci.parentid === hashId)

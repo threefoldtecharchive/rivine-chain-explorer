@@ -206,7 +206,12 @@ export default class CoinOutputHash extends Vue {
 
   checkIfAtomicSwap () {
     const txs = this.$store.getters.HASH.transactions
-    const idx = txs.findIndex((tx:any) => tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1)
+    if (!txs) return
+
+    const idx = txs.findIndex((tx:any) => {
+      if (!tx.rawtransaction.data.coinoutputs) return
+      return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1
+    })
     if (idx !== -1) {
       this.isAtomicSwap = true
     }

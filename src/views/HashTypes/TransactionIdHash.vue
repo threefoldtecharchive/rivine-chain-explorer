@@ -360,7 +360,8 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
       this.$router.push("/hashes/" + val);
     },
     routeToBlockPage: function(val) {
-      this.$store.dispatch("SET_HASH", val)
+      console.log(val)
+      this.$store.dispatch("SET_BLOCK_HEIGHT", val)
     }
   }
 })
@@ -412,7 +413,6 @@ export default class TransactionIdHash extends Vue {
       this.feepayoutAddress = feePayout.unlockhash,
       this.feepayoutValue = feePayout.value,
       this.feepayoutId = feePayoutID
-      debugger
     }, error => {
       console.error(error);
     })

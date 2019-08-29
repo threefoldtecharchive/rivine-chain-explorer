@@ -363,7 +363,6 @@ export default class UnlockHash extends Vue {
       if (!tx.rawtransaction.data.coinoutputs) return
       return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1
     })
-    debugger
     if (idx !== -1) {
       this.isAtomicSwap = true
     }
