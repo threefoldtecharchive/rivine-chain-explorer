@@ -164,19 +164,17 @@ export default class BlockstakeOutputHash extends Vue {
       this.v2 = true
     }
 
-    debugger
     this.blockstakeOutput = {
       ...blockstakeOutput,
       txid: transactions[transactionsIndex].id
     }
-    debugger
   }
 
   getBlockStakeInput () {
     if (!this.$store.getters.HASH.hashtype) return
     const transactions = this.$store.getters.HASH.transactions
     if (!transactions) return
-    
+
     const hashId = this.$route.params.hash
     let blockstakeInputIndexArray = transactions.map((tx:any) => {
       return tx.rawtransaction.data.blockstakeinputs.findIndex((ci:any) => ci.parentid === hashId)
@@ -192,7 +190,6 @@ export default class BlockstakeOutputHash extends Vue {
       ...coininput,
       txid: transactions[transactionsIndex].id
     }
-    debugger
   }
 }
 </script>
