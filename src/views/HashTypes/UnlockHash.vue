@@ -13,7 +13,7 @@
         </tr>
         <tr>
           <td>Confirmed Coin Balance</td>
-          <td>{{ availableBalance }} {{ unit }}</td>
+          <td>{{ toLocalDecimalNotation(availableBalance) }} {{ unit }}</td>
         </tr>
         <tr>
           <td>Last Coin Spend</td>
@@ -55,7 +55,7 @@
           </tr>
           <tr>
             <td>Value</td>
-            <td>{{ uco.value / precision }} {{ unit }}</td>
+            <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
           </tr>
           <tr>
             <td>Has Been Spent</td>
@@ -91,7 +91,7 @@
           </tr>
           <tr>
             <td>Value</td>
-            <td>{{ sco.value / precision }} {{ unit }}</td>
+            <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
           </tr>
           <tr>
             <td>Has Been Spent</td>
@@ -124,7 +124,7 @@
           </tr>
           <tr>
             <td>Value</td>
-            <td>{{ unspentMp.value / precision }} {{ unit }}</td>
+            <td>{{ toLocalDecimalNotation(unspentMp.value / precision) }} {{ unit }}</td>
           </tr>
           <tr>
             <td>Has Been Spent</td>
@@ -157,7 +157,7 @@
           </tr>
           <tr>
             <td>Value</td>
-            <td>{{ sco.value / precision }} {{ unit }}</td>
+            <td>{{ toLocalDecimalNotation(sco.value / precision) }} {{ unit }}</td>
           </tr>
           <tr>
             <td>Has Been Spent</td>
@@ -241,6 +241,8 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import { PRECISION, UNIT } from "../../common/config"
+import { flatten, toArray } from 'lodash'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   name: 'UnlockHash',
@@ -274,11 +276,12 @@ export default class UnlockHash extends Vue {
   scos = []
   blockCreatorRewardIsSpent = false
   blockstakeOutputIsSpent = false
-  spentMinerPayouts = []
-  unspentMinerPayouts = []
+  spentMinerPayouts:any = []
+  unspentMinerPayouts:any = []
   spentCoinOutputsBlockCreator = []
   spentBlockStakesOutputsBlockCreator = []
   unspentBlockStakesOutputsBlockCreator = []
+  toLocalDecimalNotation = toLocalDecimalNotation
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {
@@ -402,25 +405,29 @@ export default class UnlockHash extends Vue {
 
   calculateTransactionListForBlockCreator () {
     const address = this.$route.params.hash
-    const spentMinerPayouts:any = []
+    let spentMinerPayouts:any = []
     const blocks = this.$store.getters.HASH.blocks
     const transactions = this.$store.getters.HASH.transactions
     if (!blocks || !transactions) return
 
-    const unspentMinerPayouts = blocks.map((block:any) => {
-      const mineyPayoutIdIndex = block.rawblock.minerpayouts.findIndex((mp:any) => mp.unlockhash === address)
-      const minerPayout = block.rawblock.minerpayouts[mineyPayoutIdIndex]
-      if (minerPayout) {
-        return {
-          ...minerPayout,
-          minerPayoutId: block.minerpayoutids[mineyPayoutIdIndex],
-          blockid: block.blockid,
-          blockHeight: block.height
+    const unspentMinerPayouts = flatten(blocks.map((block:any) => {
+      return block.rawblock.minerpayouts.map((mp:any, index:number) => {
+        if (mp.unlockhash === address) {
+          const minerPayout = block.rawblock.minerpayouts[index]
+          if (minerPayout) {
+            return {
+              ...minerPayout,
+              minerPayoutId: block.minerpayoutids[index],
+              blockid: block.blockid,
+              blockHeight: block.height
+            }
+          }
         }
-      }
-    }).filter(Boolean)
+      })
+    })).filter(Boolean) as any
 
     transactions.forEach((tx:any) => {
+      if (!tx.rawtransaction.data.coininputs) return
       const spentMinerFees = tx.rawtransaction.data.coininputs.map((ci:any) => {
         const existsInUcosIndex:number = unspentMinerPayouts.findIndex((uco:any) => uco.minerPayoutId === ci.parentid)
         if (existsInUcosIndex > -1) {
@@ -463,6 +470,7 @@ export default class UnlockHash extends Vue {
       }
     }).filter(Boolean)
     transactions.forEach((tx:any) => {
+      if (!tx.rawtransaction.data.coininputs) return
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci:any) => {
         const existsInUcosIndex:number = ucos.findIndex((uco:any) => uco.coinOutputId === ci.parentid)
         if (existsInUcosIndex > -1) {

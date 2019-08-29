@@ -18,12 +18,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import Search from "@/components/Search.vue";
 import Navigation from "@/components/Navigation.vue";
-import GeneralStats from "@/components/GeneralStats.vue";
 
 @Component({
   components: {
     Search,
-    GeneralStats,
     Navigation
   }
 })

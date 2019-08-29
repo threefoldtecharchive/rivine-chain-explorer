@@ -39,11 +39,11 @@
 
         <tr v-if="isLegacy">
           <td>Value</td>
-          <td>{{ coinOutput.value / precision }} {{ unit }}</td>
+          <td>{{ toLocalDecimalNotation(coinOutput.value / precision) }} {{ unit }}</td>
         </tr>
         <tr v-else>
           <td>Value</td>
-          <td>{{ coinOutput.condition.value / precision }} {{ unit }}</td>
+          <td>{{ toLocalDecimalNotation(coinOutput.condition.value / precision) }} {{ unit }}</td>
         </tr>
 
         <tr>
@@ -84,6 +84,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import { PRECISION, UNIT } from "../../common/config"
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   name: 'CoinOutputHash',
@@ -118,6 +119,7 @@ export default class CoinOutputHash extends Vue {
   isBlockCreatorReward: boolean = false
   precision: number = Math.pow(10, PRECISION)
   unit: string = UNIT
+  toLocalDecimalNotation = toLocalDecimalNotation
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {

@@ -182,7 +182,7 @@
             </tr>
             <tr>
               <td>Value</td>
-              <td>{{ $store.getters.HASH.transaction.coininputoutputs[0].value / precision }} {{ unit }}</td>
+              <td>{{ toLocalDecimalNotation($store.getters.HASH.transaction.coininputoutputs[0].value / precision) }} {{ unit }}</td>
             </tr>
           </tbody>
         </table>
@@ -245,7 +245,7 @@
             </tr>
             <tr>
               <td>Value</td>
-              <td>{{ output.value / precision  }} {{ unit }}</td>
+              <td>{{ toLocalDecimalNotation(output.value / precision)  }} {{ unit }}</td>
             </tr>
           </tbody>
         </table>
@@ -275,7 +275,7 @@
             </tr>
             <tr>
               <td>Value</td>
-              <td>{{ feepayoutValue / precision }} {{ unit }}</td>
+              <td>{{ toLocalDecimalNotation(feepayoutValue / precision) }} {{ unit }}</td>
             </tr>
           </tbody>
         </table>
@@ -288,6 +288,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import axios from "axios"
 import { API_URL, PRECISION, UNIT } from "../../common/config"
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   name: 'TransactionIdHash',
@@ -314,6 +315,7 @@ export default class TransactionIdHash extends Vue {
   feepayoutAddress = ''
   feepayoutValue = 0
   feepayoutId = ''
+  toLocalDecimalNotation = toLocalDecimalNotation
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {
