@@ -194,11 +194,11 @@
           </thead>
           <tbody>
             <tr v-if="input.unlocker">
-              <td>Unlock type</td>
+              <td>Type</td>
               <td>{{ input.unlocker.type }}</td>
             </tr>
             <tr v-else>
-              <td>Unlock type</td>
+              <td>Type</td>
               <td>{{ input.fulfillment.type }}</td>
             </tr>
             <tr v-if="input.unlocker">
@@ -224,7 +224,7 @@
         <h3 class="tx-table" v-if="this.$store.getters.HASH.transaction.rawtransaction.data.coinoutputs.length > 0">Coin Outputs</h3>
       </div>
       <div class="tx-table" v-for="(output, index) in this.$store.getters.HASH.transaction.rawtransaction.data.coinoutputs">
-        <table class="ui celled table">
+        <table class="ui celled table" v-if="output.condition.type === 1">
           <thead>
             <tr>
               <th colspan="3">Coin output</th>
@@ -246,6 +246,59 @@
             <tr>
               <td>Value</td>
               <td>{{ toLocalDecimalNotation(output.value / precision)  }} {{ unit }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- atomic swap -->
+        <table class="ui celled table" v-else-if="output.condition.type === 2">
+          <thead>
+            <tr>
+              <th colspan="3">Coin output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ID</td>
+              <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.coinoutputids[index])">
+                {{ $store.getters.HASH.transaction.coinoutputids[index] }}
+              </td>
+            </tr>
+            <tr v-if="output.condition">
+              <td>Contract Address</td>
+              <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transaction.coinoutputunlockhashes[index])">
+                {{ $store.getters.HASH.transaction.coinoutputunlockhashes[index] }}
+              </td>
+            </tr>
+            <tr v-if="output.condition.data.sender">
+              <td>Sender</td>
+              <td class="clickable" v-on:click="routeToHashPage(output.condition.data.sender)">
+                {{ output.condition.data.sender }}
+              </td>
+            </tr>
+            <tr v-if="output.condition.data.receiver">
+              <td>Receiver</td>
+              <td class="clickable" v-on:click="routeToHashPage(output.condition.data.receiver)">
+                {{ output.condition.data.receiver }}
+              </td>
+            </tr>
+            <tr v-if="output.condition.data.hashedsecret">
+              <td>Hashed Secret</td>
+              <td>{{ output.condition.data.hashedsecret }}</td>
+            </tr>
+            <tr v-if="output.condition.data.timelock">
+              <td>Timelock</td>
+              <td>{{ output.condition.data.timelock }}</td>
+            </tr>
+            <tr v-if="output.condition.data.timelock">
+              <td>Unlocked for refunding since</td>
+              <td>{{ formatReadableDate(output.condition.data.timelock) }}</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>
+                {{ toLocalDecimalNotation(output.value / precision)  }} {{ unit }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -275,7 +328,7 @@
             </tr>
             <tr>
               <td>Value</td>
-              <td>{{ toLocalDecimalNotation(feepayoutValue / precision) }} {{ unit }}</td>
+              <td>{{ toLocalDecimalNotation(feepayoutValue / precision) }} {{ unit }} of a total payout of {{ toLocalDecimalNotation(feepayoutValue / precision) }} {{ unit }}</td>
             </tr>
           </tbody>
         </table>
@@ -288,7 +341,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import axios from "axios"
 import { API_URL, PRECISION, UNIT } from "../../common/config"
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers'
 
 @Component({
   name: 'TransactionIdHash',
@@ -316,6 +369,9 @@ export default class TransactionIdHash extends Vue {
   feepayoutValue = 0
   feepayoutId = ''
   toLocalDecimalNotation = toLocalDecimalNotation
+  formatReadableDate = formatReadableDate
+  precision = Math.pow(10, PRECISION)
+  unit = UNIT
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {
@@ -356,6 +412,7 @@ export default class TransactionIdHash extends Vue {
       this.feepayoutAddress = feePayout.unlockhash,
       this.feepayoutValue = feePayout.value,
       this.feepayoutId = feePayoutID
+      debugger
     }, error => {
       console.error(error);
     })

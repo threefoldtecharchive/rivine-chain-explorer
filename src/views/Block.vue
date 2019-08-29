@@ -63,9 +63,19 @@
               <td>Value</td>
               <td>{{ parseInt(mp.value) / 1000000000 }} TFT</td>
             </tr>
-            <tr>
+            <tr v-if="index === 0">
               <td>Source Description</td>
               <td>Block Creator Reward (New Coins)</td>
+            </tr>
+            <tr v-if="index === 1">
+              <td>Source Description</td>
+              <td>All Transaction Fees Combined</td>
+            </tr>
+            <tr v-if="index === 1">
+              <td>Source Transaction Identifiers	</td>
+              <td class="clickable" v-on:click="routeToHashPage($store.getters.BLOCK.block.transactions[index].id)">
+                {{ $store.getters.BLOCK.block.transactions[index].id }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -74,7 +84,7 @@
         <h2 v-if="this.$store.getters.BLOCK.block.transactions.length > 0">Transactions</h2>
         <div v-for="tx in this.$store.getters.BLOCK.block.transactions">
           <div class="tx-table" v-if="tx.rawtransaction.data.coininputs != null">
-            <table v-if="tx.rawtransaction.data.coininputs.length > 0" class="ui celled table">
+            <table v-if="tx.rawtransaction.data.coininputs.length > 0 && tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
               <thead>
                 <tr>
                   <th colspan="3">Transaction</th>
@@ -89,22 +99,22 @@
                   <td>Type</td>
                   <td>Regular Transaction</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.data.coininputs">
                   <td>Coin Input Count</td>
                   <td>{{ tx.rawtransaction.data.coininputs.length }}</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.data.coinoutputs">
                   <td>Coin Output Count</td>
                   <td>{{ tx.rawtransaction.data.coinoutputs.length }}</td>
                 </tr>
-                <tr>
+                <tr v-if="tx.rawtransaction.data.arbitrarydata">
                   <td>Arbitrary Data Byte Count</td>
                   <td>{{ tx.rawtransaction.data.arbitrarydata.length }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs">
+          <!-- <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs">
             <table v-if="tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
               <thead>
                 <tr>
@@ -130,7 +140,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
           <div class="tx-table" v-if="tx.rawtransaction.data.blockstakeinputs && tx.rawtransaction.data.blockstakeoutputs">
             <table v-if="tx.rawtransaction.data.blockstakeinputs.length > 0 || tx.rawtransaction.data.blockstakeoutputs.length > 0" class="ui celled table">
               <thead>
