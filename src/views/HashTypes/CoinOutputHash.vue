@@ -225,8 +225,10 @@ export default class CoinOutputHash extends Vue {
 
     const hashId = this.$route.params.hash
     let coinOutputIndexArray = transactions.map((tx:any) => {
+      if (!tx.coinoutputs) return
       return tx.coinoutputids.findIndex((id:any) => id === hashId)
-    })
+    }).filter(Boolean)
+
     let transactionsIndex = coinOutputIndexArray.findIndex((idx:any) => idx !== -1)
     // if index is -1, no output is found. Return nothing
     if (transactionsIndex == -1) return

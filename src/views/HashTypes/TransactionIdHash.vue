@@ -379,7 +379,6 @@ export default class TransactionIdHash extends Vue {
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
-      console.log(hash)
       this.$store.dispatch("SET_HASH", hash).then(() => {
         this.fetchExplorerBlock()
       })
