@@ -1,13 +1,12 @@
 <template lang="html">
   <div class="container">
-    <table class="ui celled table">
+    <table class="ui celled table" v-if="!isAtomicSwap">
       <thead>
         <tr>
           <th colspan="3">Coin Output</th>
         </tr>
       </thead>
       <tbody>
-
         <tr>
           <td>ID</td>
           <td>{{ this.$route.params.hash }}</td>
@@ -55,6 +54,65 @@
       </tbody>
     </table>
 
+    <table class="ui celled table" v-if="isAtomicSwap">
+      <thead>
+        <tr>
+          <th colspan="3">Coin Output</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>ID</td>
+            <td class="clickable" v-on:click="routeToHashPage(this.$route.params.hash)">
+              {{ this.$route.params.hash }}
+            </td>
+          </tr>
+          <tr>
+            <td>Contract Address</td>
+            <td class="clickable" v-on:click="routeToHashPage($store.getters.HASH.transactions[coinOutput.transactionsIdx].coinoutputunlockhashes[coinOutput.coinOutputIdx])">
+              {{ $store.getters.HASH.transactions[coinOutput.transactionsIdx].coinoutputunlockhashes[coinOutput.coinOutputIdx] }}
+            </td>
+          </tr>
+          <tr>
+            <td>Sender</td>
+            <td class="clickable" v-on:click="routeToHashPage(coinOutput.condition.data.sender)">
+              {{ coinOutput.condition.data.sender }}
+            </td>
+          </tr>
+          <tr>
+            <td>Receiver</td>
+            <td class="clickable" v-on:click="routeToHashPage(coinOutput.condition.data.receiver)">
+              {{ coinOutput.condition.data.receiver }}
+            </td>
+          </tr>
+          <tr>
+            <td>Hashed Secret</td>
+            <td>{{ coinOutput.condition.data.hashedsecret }}</td>
+          </tr>
+          <tr>
+            <td>Timelock</td>
+            <td>{{ coinOutput.condition.data.timelock }}</td>
+          </tr>
+          <tr>
+            <td>Unlocked for refunding since</td>
+            <td>{{ formatReadableDate(coinOutput.condition.data.timelock) }}</td>
+          </tr>
+          <tr>
+            <td>Value</td>
+            <td>{{ toLocalDecimalNotation(coinOutput.value / precision) }} {{ unit }}</td>
+          </tr>
+          <tr>
+            <td>Transaction ID</td>
+            <td class="clickable" v-on:click="routeToHashPage(coinOutput.txid)">{{ coinOutput.txid }}</td>
+          </tr>
+          <tr>
+            <td>Has Been Spent</td>
+            <td>No</td>
+          </tr>
+
+      </tbody>
+    </table>
+
     <table class="ui celled table" v-if="coinInput.txid">
       <thead>
         <tr>
@@ -84,7 +142,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import { PRECISION, UNIT } from "../../common/config"
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers'
 
 @Component({
   name: 'CoinOutputHash',
@@ -120,16 +178,20 @@ export default class CoinOutputHash extends Vue {
   precision: number = Math.pow(10, PRECISION)
   unit: string = UNIT
   toLocalDecimalNotation = toLocalDecimalNotation
+  formatReadableDate = formatReadableDate
+  isAtomicSwap: boolean = false
 
   created() {
     if (!this.$store.getters.HASH.hashtype) {
       this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
         this.getCoinOutput()
         this.getCoinInput()
+        this.checkIfAtomicSwap()
       })
     } else {
       this.getCoinOutput()
       this.getCoinInput()
+      this.checkIfAtomicSwap()
     }
   }
 
@@ -138,7 +200,16 @@ export default class CoinOutputHash extends Vue {
     this.$store.dispatch("SET_HASH", val).then(() => {
       this.getCoinOutput()
       this.getCoinInput()
+      this.checkIfAtomicSwap()
     })
+  }
+
+  checkIfAtomicSwap () {
+    const txs = this.$store.getters.HASH.transactions
+    const idx = txs.findIndex((tx:any) => tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1)
+    if (idx !== -1) {
+      this.isAtomicSwap = true
+    }
   }
 
   getCoinOutput () {
@@ -165,7 +236,9 @@ export default class CoinOutputHash extends Vue {
 
     this.coinOutput = {
       ...coinoutput,
-      txid: transactions[transactionsIndex].id
+      txid: transactions[transactionsIndex].id,
+      transactionsIdx: transactionsIndex,
+      coinOutputIdx: coinOutputIndex
     }
   }
 

@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="container">
+    <h1 v-if="isAtomicSwap">Atomic Swap Contract</h1>
     <table class="ui celled table">
       <thead>
         <tr>
@@ -15,7 +16,7 @@
           <td>Confirmed Coin Balance</td>
           <td>{{ toLocalDecimalNotation(availableBalance) }} {{ unit }}</td>
         </tr>
-        <tr>
+        <tr v-if="!isAtomicSwap">
           <td>Last Coin Spend</td>
           <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
         </tr>
@@ -29,8 +30,8 @@
         </tr>
       </tbody>
     </table>
-    <div v-for="uco in ucos">
-      <div class="tx-table">
+    <div v-for="(uco, idx) in ucos">
+      <div class="tx-table" v-if="!isAtomicSwap">
         <table class="ui celled table">
         <tbody>
           <tr>
@@ -64,6 +65,61 @@
           </tbody>
         </table>
       </div>
+
+      <!-- atomic swap -->
+      <div class="tx-table" v-if="isAtomicSwap">
+        <table class="ui celled table">
+        <tbody>
+          <tr>
+            <td>Block Height</td>
+            <td class="clickable" v-on:click="routeToBlockPage(uco.blockHeight)">{{ uco.blockHeight }}</td>
+          </tr>
+          <tr>
+            <td>Transaction ID</td>
+            <td class="clickable" v-on:click="routeToHashPage(uco.txid)">{{ uco.txid }}</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td class="clickable" v-on:click="routeToHashPage(uco.coinOutputId)">{{ uco.coinOutputId }}</td>
+          </tr>
+          <tr>
+            <td>Contract Address</td>
+            <td >
+              {{ $store.getters.HASH.transactions[uco.txidx].coinoutputunlockhashes[idx] }}
+            </td>
+          </tr>
+          <tr>
+            <td>Sender</td>
+            <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.sender)">{{ uco.condition.data.sender }}</td>
+          </tr>
+          <tr>
+            <td>Receiver</td>
+            <td class="clickable" v-on:click="routeToHashPage(uco.condition.data.receiver)">{{ uco.condition.data.receiver }}</td>
+          </tr>
+          <tr>
+            <td>Hashed Secret</td>
+            <td>{{ uco.condition.data.hashedsecret }}</td>
+          </tr>
+          <tr>
+            <td>Timelock</td>
+            <td>{{ uco.condition.data.timelock }}</td>
+          </tr>
+          <tr>
+            <td>Unlocked for refunding since</td>
+            <td>{{ formatReadableDate(uco.condition.data.timelock) }}</td>
+          </tr>
+          <tr>
+            <td>Value</td>
+            <td>{{ toLocalDecimalNotation(uco.value / precision) }} {{ unit }}</td>
+          </tr>
+          <tr>
+            <td>Has Been Spent</td>
+            <td>No</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
     <div v-for="sco in scos">
       <div class="tx-table">
@@ -242,7 +298,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from 'vuex';
 import { PRECISION, UNIT } from "../../common/config"
 import { flatten, toArray } from 'lodash'
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers'
 
 @Component({
   name: 'UnlockHash',
@@ -282,25 +338,31 @@ export default class UnlockHash extends Vue {
   spentBlockStakesOutputsBlockCreator = []
   unspentBlockStakesOutputsBlockCreator = []
   toLocalDecimalNotation = toLocalDecimalNotation
+  formatReadableDate = formatReadableDate
+  isAtomicSwap:boolean = false
 
   created() {
-    if (!this.$store.getters.HASH.hashtype) {
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+    // If users navigates, recalculate lists
+    this.$router.afterEach((newLocation: any) => {
+      const hash = newLocation.params.hash
+      this.$store.dispatch("SET_HASH", hash).then(() => {
         this.calculateTransactionList()
         this.calculateTransactionListForBlockCreator()
+        this.checkIfAtomicSwap()
       })
-    } else {
-      this.calculateTransactionList()
-      this.calculateTransactionListForBlockCreator()
-    }
+    })
+
+    this.calculateTransactionList()
+    this.calculateTransactionListForBlockCreator()
+    this.checkIfAtomicSwap()
   }
 
-  @Watch("$route.params.hash")
-  OnHashTypeChange(val: string, oldVal: string) {
-    this.$store.dispatch("SET_HASH", val).then(() => {
-      this.calculateTransactionList()
-      this.calculateTransactionListForBlockCreator()
-    })
+  checkIfAtomicSwap () {
+    const txs = this.$store.getters.HASH.transactions
+    const idx = txs.findIndex((tx:any) => tx.rawtransaction.data.coinoutputs.findIndex((co:any) => co.condition.data.hashedsecret) !== -1)
+    if (idx !== -1) {
+      this.isAtomicSwap = true
+    }
   }
 
   calculateTransactionList () {
@@ -319,7 +381,7 @@ export default class UnlockHash extends Vue {
     // If blocks field is populated then the address is probably the address of a blockcreator
     if (blocks) return this.calculateTransactionListForBlockCreator()
 
-    const ucos = transactions.map((tx:any) => {
+    const ucos = transactions.map((tx:any, index:number) => {
       const ucoIndex = tx.coinoutputunlockhashes.findIndex((uh:any) => uh === address)
       const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex]
       if (coinOutput) {
@@ -327,7 +389,8 @@ export default class UnlockHash extends Vue {
           ...coinOutput,
           coinOutputId: tx.coinoutputids[ucoIndex],
           blockHeight: tx.height,
-          txid: tx.id
+          txid: tx.id,
+          txidx: index
         }
       }
     }).filter(Boolean)
