@@ -2,19 +2,16 @@
   <div>
     <Navigation />
     <div v-if="!loading" class="chart">
-      <!-- <BlockHeightChart :blockHeightData=blockHeightData /> -->
-      <TestChart :blockHeightData=blockHeightData :options=options />
+      <ChainHeightChart :blockHeightData=blockHeightData :options=options />
     </div>
   </div>
 </template>
 
 <script>
-import * as d3 from "d3"
 import axios from "axios"
 import { API_URL } from "../common/config"
 import Navigation from "../components/Navigation.vue"
-import BlockHeightChart from "./Charts/BlockHeightChart.vue"
-import TestChart from "./Charts/TestCharts.vue"
+import ChainHeightChart from "./Charts/ChainHeightChart.vue"
 import { formatReadableDate } from '../common/helpers';
 
 const history = 720
@@ -31,8 +28,7 @@ export default {
   },
   components: {
     Navigation,
-    BlockHeightChart,
-    TestChart
+    ChainHeightChart
   },
   mounted() {
     this.fetchData()
