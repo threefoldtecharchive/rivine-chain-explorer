@@ -229,11 +229,6 @@ export default class Block extends Vue {
 }
 </script>
 <style scoped>
-.container {
-  width: 80%;
-  margin: 'auto';
-  margin-top: 50px;
-}
 .tx-table {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -242,5 +237,11 @@ export default class Block extends Vue {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.container {
+  width: 80%;
+  margin: auto;
+  margin-top: 100px;
+  text-align: center;
 }
 </style>

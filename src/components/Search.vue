@@ -1,11 +1,9 @@
 <template>
   <section>
     <form v-on:submit.prevent="handleSearch">
-      <b-field
-        :type="{ 'is-danger': errors.has('search') }"
-        :message="errors.first('search')"
-      >
-        <b-input
+      <div class="ui icon input">
+        <i class="search icon"></i>
+        <input
           class="searchBar"
           v-model="SearchVal"
           type="search"
@@ -17,11 +15,10 @@
           icon="search"
           v-validate="'required'"
         >
-        </b-input>
-        <b-button @click="handleSearch">Search</b-button>
-      </b-field>
+      </div>
       <p v-if="error">{{ error }}</p>
     </form>
+    <!-- <button @click="handleSearch" class="ui primary basic button big searchButton">Search</button> -->
   </section>
 </template>
 
@@ -65,6 +62,10 @@ export default class Search extends Vue {
 
 <style scoped>
 .searchBar {
-  width: 100%;
+  width: 30vw;
+  margin-top: 10%;
+}
+.searchButton {
+  margin-top: 5%;
 }
 </style>

@@ -1,22 +1,12 @@
 <template lang="html">
   <div>
-    <section class="hero is-primary">
-        <div class="hero-head">
-          <navigation />
-        </div>
-        <div class="hero-body">
-          <div class="container has-text-centered">
-            <h1 class="title">
-              Recent Transactions
-            </h1>
-          </div>
-        </div>
-    </section>
+    <navigation />
     <div class="container" v-if="noRecentTransaction">
-      <h1>No recent Transactions</h1>
+      <h1>No unconfirmed Transactions</h1>
       <hr/>
     </div>
     <div class="container">
+        <h1>Recent Blocks</h1>
         <div class="tx-table" v-for="block in flatten(recentBlockTransactions)">
           <table class="ui celled table tx-table">
             <thead>
@@ -127,8 +117,8 @@ export default class Transactions extends Vue {
 <style scoped>
 .container {
   width: 80%;
-  margin: 'auto';
-  margin-top: 50px;
+  margin: auto;
+  margin-top: 100px;
   text-align: center;
 }
 .spinner {

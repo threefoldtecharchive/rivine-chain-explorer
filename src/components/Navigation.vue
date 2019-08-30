@@ -1,31 +1,20 @@
 <template>
-  <nav class="navbar is-primary is-transparent">
-    <div class="container">
-      <div class="navbar-brand">
-        <a href="/" class="navbar-item is-active" title="">
-          <img src="" alt="TF chain explorer" />
-        </a>
-        <span class="navbar-burger burger">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </div>
-      <div class="navbar-menu">
-        <div class="navbar-end">
-          <a href="/" class="navbar-item is-active">
-            Home
-          </a>
-          <a href="/blocks" class="navbar-item">
-            Blocks
-          </a>
-          <a href="/transactions" class="navbar-item">
-            Transactions
-          </a>
+  <!-- Following Menu -->
+  <div>
+    <div class="ui large top fixed menu inverted">
+      <a class="item" href="/">Home</a>
+
+      <div class="right menu">
+        <div class="item">
+          <a class="ui secondary button" href="/transactions">Transactions</a>
+        </div>
+        <div class="item">
+          <a class="ui secondary button" href="/blocks">Blocks</a>
         </div>
       </div>
     </div>
-  </nav>
+
+  </div>
 </template>
 
 <script lang="ts">

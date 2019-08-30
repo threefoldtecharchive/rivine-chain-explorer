@@ -375,7 +375,6 @@ export default class TransactionIdHash extends Vue {
   isLoading: boolean = false
 
   created() {
-    this.isLoading = true
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
@@ -384,7 +383,6 @@ export default class TransactionIdHash extends Vue {
       })
     })
     this.fetchExplorerBlock()
-    this.isLoading = false
   }
 
   decodeString (str:any) {

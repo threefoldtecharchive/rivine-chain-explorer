@@ -1,9 +1,6 @@
 <template lang="html">
   <div class="container">
-    <div v-if="isLoading">
-      <p>Loading your data...</p>
-    </div>
-    <div v-else>
+    <div>
       <h1 v-if="isAtomicSwap">Atomic Swap Contract</h1>
       <table class="ui celled table">
         <thead>
@@ -345,10 +342,9 @@ export default class UnlockHash extends Vue {
   toLocalDecimalNotation = toLocalDecimalNotation
   formatReadableDate = formatReadableDate
   isAtomicSwap:boolean = false
-  isLoading:boolean = false
 
   created() {
-    this.isLoading = true
+    console.log(this.$store.getters.LOADING)
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
@@ -356,14 +352,12 @@ export default class UnlockHash extends Vue {
         this.calculateTransactionList()
         this.calculateTransactionListForBlockCreator()
         this.checkIfAtomicSwap()
-        this.isLoading = false
       })
     })
 
     this.calculateTransactionList()
     this.calculateTransactionListForBlockCreator()
     this.checkIfAtomicSwap()
-    this.isLoading = false
   }
 
   checkIfAtomicSwap () {

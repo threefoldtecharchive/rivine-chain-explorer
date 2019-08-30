@@ -1,17 +1,19 @@
 <template>
-  <section>
+  <div>
     <navigation />
-    <div class="hero is-fullheight-with-navbar is-primary">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <h1 class="title">
-            Tf chain explorer
+    <div class="pusher">
+      <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui text container">
+          <h1 class="ui inverted header">
+            Tfchain Explorer
           </h1>
-          <search />
+          <h2>Search any hash or block.</h2>
+          <search/>
         </div>
       </div>
     </div>
-  </section>
+
+  </div>
 </template>
 
 <script lang="ts">

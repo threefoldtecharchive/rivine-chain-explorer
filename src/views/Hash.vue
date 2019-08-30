@@ -1,8 +1,19 @@
 <template lang="html">
   <div>
-    <hashes />
+    <navigation />
 
-    <div v-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
+    <div class="searchBar">
+      <Search category="hash" description="Hash" />
+    </div>
+
+    <div class="ui segment container spinner" v-if="this.$store.getters.LOADING">
+      <div class="ui active inverted dimmer">
+        <div class="ui text loader">Loading</div>
+      </div>
+      <p></p>
+    </div>
+
+    <div v-else-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
       <BlockstakeOutputHash />
     </div>
 
@@ -23,20 +34,22 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator"
-import Hashes from './Hashes.vue'
 import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
 import CoinOutputHash from './HashTypes/CoinOutputHash.vue'
 import UnlockHash from './HashTypes/UnlockHash.vue'
 import TransactionIdHash from './HashTypes/TransactionIdHash.vue'
+import Navigation from '../components/Navigation.vue'
+import Search from '../components/Search.vue'
 
 @Component({
   name: 'Hash',
   components: {
-    Hashes,
     BlockstakeOutputHash,
     CoinOutputHash,
     UnlockHash,
-    TransactionIdHash
+    TransactionIdHash,
+    Navigation,
+    Search
   },
   watch: {
     '$store.state.block': function() {
@@ -57,8 +70,15 @@ export default class Hash extends Vue{
 <style scoped>
 .container {
   width: 80%;
-  margin: 'auto';
-  margin-top: 50px;
+  margin: auto;
+  margin-top: 100px;
+  text-align: center;
+}
+.searchBar {
+  width: 50%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .spinner {
   margin: 'auto';

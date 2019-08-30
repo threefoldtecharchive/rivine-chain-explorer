@@ -1,22 +1,7 @@
 <template>
   <div>
-    <section class="hero is-primary">
-      <div class="hero-head">
-        <navigation />
-      </div>
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <h1 class="title">
-            Search a specific block height
-          </h1>
-          <div class="columns is-centered is-mobile is is-vcentered">
-            <div class="column is-narrow has-text-centered">
-              <Search category="block" description="Block Heights" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <navigation />
+    <Search category="block" description="Block Heights" class="searchBar" />
   </div>
 </template>
 
@@ -44,3 +29,11 @@ export default class Blocks extends Vue {
   }
 }
 </script>
+<style scoped>
+.searchBar {
+  width: 50%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
