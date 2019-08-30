@@ -2,14 +2,18 @@
   <!-- Following Menu -->
   <div>
     <div class="ui large top fixed menu inverted">
-      <a class="item" href="/">Home</a>
-
+      <div class="left menu">
+        <a class="item" href="/">Home</a>
+      </div>
       <div class="right menu">
         <div class="item">
           <a class="ui secondary button" href="/transactions">Transactions</a>
         </div>
         <div class="item">
           <a class="ui secondary button" href="/blocks">Blocks</a>
+        </div>
+        <div class="item">
+          <a class="ui secondary button" href="/charts">Charts</a>
         </div>
       </div>
     </div>
