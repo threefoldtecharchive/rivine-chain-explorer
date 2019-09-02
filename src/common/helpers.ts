@@ -15,3 +15,8 @@ export function formatReadableDate (time:number) {
 
   return `${hours}:${minutes}, ${month} ${day}, ${year}`
 }
+
+export function formatReadableDateForCharts (time:number) {
+  const blockDate =  new Date(time * 1000)
+  return blockDate
+}
