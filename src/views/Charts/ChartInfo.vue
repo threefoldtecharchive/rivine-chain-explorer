@@ -9,7 +9,7 @@
         <span>{{ data.currentBlock }}</span><span class="info-label">Current Block</span>
       </div>
       <div class="detail-info-item">
-        <span>{{ data.estimatedActiveBs }}</span><span class="info-label">Estimated Active BS:</span>
+        <span>{{ data.estimatedActiveBs }}</span><span class="info-label">Estimated Active BS</span>
       </div>
     </div>
   </div>
