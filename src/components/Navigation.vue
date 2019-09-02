@@ -9,9 +9,6 @@
         <a class="ui secondary button" href="/transactions">Transactions</a>
       </div>
       <div class="item">
-        <a class="ui secondary button" href="/blocks">Blocks</a>
-      </div>
-      <div class="item">
         <a class="ui secondary button" href="/charts">Charts</a>
       </div>
     </div>
