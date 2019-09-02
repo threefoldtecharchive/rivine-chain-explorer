@@ -178,7 +178,7 @@ export default {
             borderWidth: 1,
             pointBorderColor: "white",
             lineWidth: 0.1,
-            pointRadius: 2
+            pointRadius: 3
           }
         ]
       }
@@ -186,9 +186,17 @@ export default {
       this.chainHeightOptions.scales.xAxes = [{
         type: "time",
         time : {
-          format: tooltipFormat
+          parser: tooltipFormat
         }
       }]
+      const _this = this
+      this.chainHeightOptions.onClick = function (e, chartElement) {
+        if (chartElement.length === 0) return
+        const index = chartElement[0]._index
+        const height = result.blockheights[index]
+        _this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+        _this.$router.push("/block/" + height);
+      }
     },
     mapDataForBlockTimeGraph (result) {
       const labels = result.blockheights
@@ -217,6 +225,14 @@ export default {
           suggestedMin: -200
         }
       }]
+      const _this = this
+      this.blockTimeOptions.onClick = function (e, chartElement) {
+        if (chartElement.length === 0) return
+        const index = chartElement[0]._index
+        const height = result.blockheights[index]
+        _this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+        _this.$router.push("/block/" + height);
+      }
     },
     mapDataForActiveBlockstakesGraph (result) {
       const labels = result.blocktimestamps.map(x => formatReadableDateForCharts(x))
@@ -240,9 +256,17 @@ export default {
       this.activeBsOptions.scales.xAxes = [{
         type: "time",
         time : {
-          format: tooltipFormat
+          parser: tooltipFormat
         }
       }]
+      const _this = this
+      this.activeBsOptions.onClick = function (e, chartElement) {
+        if (chartElement.length === 0) return
+        const index = chartElement[0]._index
+        const height = result.blockheights[index]
+        _this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+        _this.$router.push("/block/" + height);
+      }
     },
     mapDataForBlockTransactionsCountGraph (result) {
       const labels = result.blockheights
@@ -274,6 +298,14 @@ export default {
           stepSize: 0.5
         }
       }]
+      const _this = this
+      this.blockTransactionCountOptions.onClick = function (e, chartElement) {
+        if (chartElement.length === 0) return
+        const index = chartElement[0]._index
+        const height = result.blockheights[index]
+        _this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+        _this.$router.push("/block/" + height);
+      }
     },
     mapDataForDifficultyGraph (result) {
       const labels = result.blockheights
@@ -302,11 +334,18 @@ export default {
           stepSize: 100000
         }
       }]
+      const _this = this
+      this.blockDifficultyOptions.onClick = function (e, chartElement) {
+        if (chartElement.length === 0) return
+        const index = chartElement[0]._index
+        const height = result.blockheights[index]
+        _this.$store.dispatch("SET_BLOCK_HEIGHT", height);
+        _this.$router.push("/block/" + height);
+      }
     },
     mapDataForBlockCreatorPieGraph (result) {
       const creators = Object.values(result.creators)
       const addresses = Object.keys(result.creators)
-      debugger
       this.blockCreatorPieGraphData = {
         labels: addresses,
         datasets: [
