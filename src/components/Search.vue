@@ -1,10 +1,9 @@
 <template>
   <section>
     <form v-on:submit.prevent="handleSearch">
-      <div class="ui icon input">
+      <div class="ui icon input searchBar">
         <i class="search icon"></i>
         <input
-          class="searchBar"
           v-model="SearchVal"
           type="search"
           name="search"
@@ -62,8 +61,7 @@ export default class Search extends Vue {
 
 <style scoped>
 .searchBar {
-  width: 30vw;
-  margin-top: 10%;
+  width: 100%;
 }
 .searchButton {
   margin-top: 5%;

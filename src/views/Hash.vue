@@ -6,7 +6,7 @@
       <Search category="hash" description="Hash" />
     </div>
 
-    <div class="ui segment container spinner" v-if="loading">
+    <div class="ui segment container spinner" v-if="this.$store.getters.LOADING">
       <div class="ui active inverted dimmer">
         <div class="ui text loader">Loading</div>
       </div>
@@ -62,6 +62,7 @@ export default class Hash extends Vue{
   loading:boolean = false
 
   created() {
+    debugger
     if (!this.$route.params.hash) {
       this.$router.push("/");
     }
@@ -70,10 +71,6 @@ export default class Hash extends Vue{
       this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
         this.loading = false
       })
-    }
-
-    if (this.$store.getters.LOADING === true) {
-      this.loading = true
     }
 
     if (this.$store.getters.HASH === "") {
@@ -87,14 +84,12 @@ export default class Hash extends Vue{
 .container {
   width: 80%;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 50px;
   text-align: center;
 }
 .searchBar {
-  width: 50%;
+  width: 80vw;
   margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
 }
 .spinner {
   margin: 'auto';

@@ -8,7 +8,9 @@
             Tfchain Explorer
           </h1>
           <h2>Search any hash or block.</h2>
-          <search/>
+          <div class="searchBar">
+            <search />
+          </div>
         </div>
       </div>
     </div>
@@ -31,3 +33,9 @@ export default class Home extends Vue {
   SearchVal: string = "";
 }
 </script>
+<style scoped>
+.searchBar {
+  width: 30vw;
+  margin-top: 10%;
+}
+</style>

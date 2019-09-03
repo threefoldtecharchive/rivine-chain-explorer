@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
     block: Object,
     transactions: Array,
     hash: Object,
-    loading: Object
+    loading: Boolean(false)
   },
   mutations: {
     SET_EXPLORER: (state, explorer) => {

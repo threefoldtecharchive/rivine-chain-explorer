@@ -241,7 +241,7 @@ export default class Block extends Vue {
 .container {
   width: 80%;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 50px;
   text-align: center;
 }
 </style>

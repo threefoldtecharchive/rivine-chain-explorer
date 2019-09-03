@@ -31,9 +31,7 @@ export default class Blocks extends Vue {
 </script>
 <style scoped>
 .searchBar {
-  width: 50%;
+  width: 80vw;
   margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
 }
 </style>

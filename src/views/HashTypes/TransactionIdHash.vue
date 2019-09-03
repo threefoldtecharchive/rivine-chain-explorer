@@ -15,7 +15,7 @@
           </tr>
           <tr>
             <td>Confirmations</td>
-            <td>{{ this.$store.getters.EXPLORER.height - this.$store.getters.HASH.transaction.height }}</td>
+            <td>{{ this.$store.getters.EXPLORER.height - this.$store.getters.HASH.transaction.height + 1 }}</td>
           </tr>
           <tr>
             <td>ID</td>
@@ -311,7 +311,7 @@
               </tr>
               <tr v-else>
                 <td>Address</td>
-                <td class="clickable" v-on:click="routeToHashPage(coinOut.condition.unlockhash)">
+                <td class="clickable" v-on:click="routeToHashPage(coinOut.condition.data.unlockhash)">
                   {{ coinOut.condition.data.unlockhash  }}
                 </td>
               </tr>
@@ -549,11 +549,13 @@ export default class TransactionIdHash extends Vue {
       this.feepayoutId = feePayoutID
 
       // Sum all minerfees in the rawtransaction
-      let sumFee = 0
-      this.$store.getters.HASH.transaction.rawtransaction.data.minerfees.map((fee:number) => {
-        sumFee += fee
-      })
-      this.txFee = sumFee
+      if (this.$store.getters.HASH.transaction.rawtransaction.data.minerfees) {
+        let sumFee = 0
+        this.$store.getters.HASH.transaction.rawtransaction.data.minerfees.map((fee:number) => {
+          sumFee += fee
+        })
+        this.txFee = sumFee
+      }
     }, error => {
       console.error(error);
     })
