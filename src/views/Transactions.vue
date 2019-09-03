@@ -1,10 +1,10 @@
 <template lang="html">
   <div>
     <navigation />
-    <div class="container" v-if="noRecentTransaction">
+    <!-- <div class="container" v-if="noRecentTransaction">
       <h1>No unconfirmed Transactions</h1>
       <hr/>
-    </div>
+    </div> -->
     <div class="container">
         <h1>Recent Blocks</h1>
         <div class="tx-table" v-for="block in flatten(recentBlockTransactions)">
