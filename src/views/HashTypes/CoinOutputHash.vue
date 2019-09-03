@@ -240,7 +240,6 @@ export default class CoinOutputHash extends Vue {
       this.isLegacy = true
     }
 
-    debugger
     this.coinOutput = {
       ...coinoutput,
       txid: transactions[transactionsIndex].id,
