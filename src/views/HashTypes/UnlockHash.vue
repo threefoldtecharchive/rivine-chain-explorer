@@ -19,7 +19,12 @@
           </tr>
           <tr v-if="!isAtomicSwap">
             <td>Last Coin Spend</td>
-            <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
+            <td>
+              @ Block:
+              <span class="clickable" v-on:click="routeToBlockPage(lastCoinSpent.height)">{{ lastCoinSpent.height }}</span>
+              Txid:
+              <span class="clickable" v-on:click="routeToHashPage(lastCoinSpent.txid)">{{ lastCoinSpent.txid }}</span>
+            </td>
           </tr>
           <tr>
             <td>Confirmed Block Stake Balance</td>
@@ -27,7 +32,12 @@
           </tr>
           <tr v-if="this.$store.getters.HASH.blocks">
             <td>Last Block Stake Spend</td>
-            <td>@ Block: {{ blockHeight }} Txid: {{ txid }} </td>
+            <td>
+              @ Block:
+              <span class="clickable" v-on:click="routeToBlockPage(lastBsSpent.height)">{{ lastBsSpent.height }}</span>
+              Txid:
+              <span class="clickable" v-on:click="routeToHashPage(lastBsSpent.txid)">{{ lastBsSpent.txid }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -315,6 +325,7 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
   },
   methods: {
     routeToHashPage: function(val) {
+      debugger
       this.$store.dispatch("SET_HASH", val);
       this.$router.push("/hashes/" + val);
     },
@@ -342,9 +353,10 @@ export default class UnlockHash extends Vue {
   toLocalDecimalNotation = toLocalDecimalNotation
   formatReadableDate = formatReadableDate
   isAtomicSwap:boolean = false
+  lastCoinSpent:any = {}
+  lastBsSpent:any = {}
 
   created() {
-    console.log(this.$store.getters.LOADING)
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
@@ -543,16 +555,35 @@ export default class UnlockHash extends Vue {
         }
       }
     }).filter(Boolean)
+    let lastCoinSpent:any
     transactions.forEach((tx:any) => {
       if (!tx.rawtransaction.data.coininputs) return
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci:any) => {
         const existsInUcosIndex:number = ucos.findIndex((uco:any) => uco.coinOutputId === ci.parentid)
         if (existsInUcosIndex > -1) {
+
+          // Save last coin spent
+          if (lastCoinSpent && lastCoinSpent.height) {
+            if (tx.height > lastCoinSpent.height) {
+              lastCoinSpent = {
+                height: tx.height,
+                txid: tx.id
+              }
+            }
+            // if it doesn't exist, initialize it
+          } else {
+            lastCoinSpent = {
+              height: tx.height,
+              txid: tx.id
+            }
+          }
+
           spentCoinOutputsBlockCreator.push(ucos[existsInUcosIndex])
           ucos.splice(existsInUcosIndex, 1)
         }
       })
     })
+    this.lastCoinSpent = lastCoinSpent
     this.spentCoinOutputsBlockCreator = spentCoinOutputsBlockCreator
   }
 
@@ -574,11 +605,28 @@ export default class UnlockHash extends Vue {
         }
       }
     }).filter(Boolean)
+    let lastBsSpent:any
     transactions.forEach((tx:any) => {
       if (!tx.rawtransaction.data.blockstakeinputs) return
       const spentUcos = tx.rawtransaction.data.blockstakeinputs.map((ci:any) => {
         const existsInBusIndex:number = ucos.findIndex((uco:any) => uco.blockstakeOutputId === ci.parentid)
         if (existsInBusIndex > -1) {
+          // Save last bs spent
+          if (lastBsSpent && lastBsSpent.height) {
+            if (tx.height > lastBsSpent.height) {
+              lastBsSpent = {
+                height: tx.height,
+                txid: tx.id
+              }
+            }
+            // if it doesn't exist, initialize it
+          } else {
+            lastBsSpent = {
+              height: tx.height,
+              txid: tx.id
+            }
+          }
+
           spentBlockStakesOutputsBlockCreator.push(ucos[existsInBusIndex])
           ucos.splice(existsInBusIndex, 1)
         }
@@ -592,6 +640,7 @@ export default class UnlockHash extends Vue {
     this.availableBlockstakeBalance = sum
     this.spentBlockStakesOutputsBlockCreator = spentBlockStakesOutputsBlockCreator
     this.unspentBlockStakesOutputsBlockCreator = ucos
+    this.lastBsSpent = lastBsSpent
   }
 }
 </script>

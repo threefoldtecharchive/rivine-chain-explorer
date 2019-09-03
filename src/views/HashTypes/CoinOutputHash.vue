@@ -31,8 +31,8 @@
         </tr>
         <tr v-else>
           <td>Address</td>
-          <td class="clickable" v-on:click="routeToHashPage(coinOutput.condition.unlockhash)">
-            {{ coinOutput.condition.unlockhash }}
+          <td class="clickable" v-on:click="routeToHashPage(coinOutput.condition.data.unlockhash)">
+            {{ coinOutput.condition.data.unlockhash }}
           </td>
         </tr>
 
@@ -42,7 +42,7 @@
         </tr>
         <tr v-else>
           <td>Value</td>
-          <td>{{ toLocalDecimalNotation(coinOutput.condition.value / precision) }} {{ unit }}</td>
+          <td>{{ toLocalDecimalNotation(coinOutput.value / precision) }} {{ unit }}</td>
         </tr>
 
         <tr>
@@ -225,9 +225,9 @@ export default class CoinOutputHash extends Vue {
 
     const hashId = this.$route.params.hash
     let coinOutputIndexArray = transactions.map((tx:any) => {
-      if (!tx.coinoutputs) return
+      if (!tx.coinoutputids) return
       return tx.coinoutputids.findIndex((id:any) => id === hashId)
-    }).filter(Boolean)
+    })
 
     let transactionsIndex = coinOutputIndexArray.findIndex((idx:any) => idx !== -1)
     // if index is -1, no output is found. Return nothing
@@ -240,6 +240,7 @@ export default class CoinOutputHash extends Vue {
       this.isLegacy = true
     }
 
+    debugger
     this.coinOutput = {
       ...coinoutput,
       txid: transactions[transactionsIndex].id,
@@ -293,10 +294,6 @@ export default class CoinOutputHash extends Vue {
 
     // If input is found, it means this output is spent.
     this.coinOutputSpent = true
-
-    if (!coininput.condition) {
-      this.isLegacy = true
-    }
 
     this.coinInput = {
       ...coininput,

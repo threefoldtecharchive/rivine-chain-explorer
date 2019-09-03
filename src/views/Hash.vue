@@ -6,7 +6,7 @@
       <Search category="hash" description="Hash" />
     </div>
 
-    <div class="ui segment container spinner" v-if="this.$store.getters.LOADING">
+    <div class="ui segment container spinner" v-if="loading">
       <div class="ui active inverted dimmer">
         <div class="ui text loader">Loading</div>
       </div>
@@ -59,7 +59,23 @@ import Search from '../components/Search.vue'
 })
 
 export default class Hash extends Vue{
+  loading:boolean = false
+
   created() {
+    if (!this.$route.params.hash) {
+      this.$router.push("/");
+    }
+    if (!this.$store.getters.HASH.hashtype) {
+      this.loading = true
+      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
+        this.loading = false
+      })
+    }
+
+    if (this.$store.getters.LOADING === true) {
+      this.loading = true
+    }
+
     if (this.$store.getters.HASH === "") {
       this.$router.push("/notfound")
     }
