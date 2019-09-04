@@ -9,7 +9,7 @@
           name="search"
           :error="this.error"
           :placeholder="getPlaceHolder()"
-          v-on:keyup.enter="submit"
+          v-on:keyup.enter="handleSearch"
           icon-pack="fas"
           icon="search"
           v-validate="'required'"
@@ -17,7 +17,6 @@
       </div>
       <p v-if="error">{{ error }}</p>
     </form>
-    <!-- <button @click="handleSearch" class="ui primary basic button big searchButton">Search</button> -->
   </section>
 </template>
 

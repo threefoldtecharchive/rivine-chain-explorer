@@ -3,6 +3,7 @@
     <blocks />
     <!-- <p>{{ this.$store.getters.BLOCK }}</p> -->
     <div class="container" v-if="this.$store.getters.BLOCK.block">
+      <h1>Block</h1>
       <table class="ui celled table">
         <thead>
           <tr>
@@ -243,5 +244,9 @@ export default class Block extends Vue {
   margin: auto;
   margin-top: 50px;
   text-align: center;
+}
+.container h1 {
+  text-align: left;
+  font-size: 30px;
 }
 </style>

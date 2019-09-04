@@ -1,5 +1,6 @@
 <template lang="html">
       <div class="container">
+      <h1>Hash</h1>
       <table class="ui celled table">
         <thead>
           <tr>
@@ -576,5 +577,9 @@ export default class TransactionIdHash extends Vue {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.container h1 {
+  text-align: left;
+  font-size: 30px;
 }
 </style>

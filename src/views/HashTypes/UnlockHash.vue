@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="container">
+    <h1>Hash</h1>
     <div>
       <h1 v-if="isAtomicSwap">Atomic Swap Contract</h1>
       <table class="ui celled table">
@@ -658,5 +659,9 @@ export default class UnlockHash extends Vue {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.container h1 {
+  text-align: left;
+  font-size: 30px;
 }
 </style>

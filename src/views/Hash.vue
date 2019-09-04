@@ -62,7 +62,6 @@ export default class Hash extends Vue{
   loading:boolean = false
 
   created() {
-    debugger
     if (!this.$route.params.hash) {
       this.$router.push("/");
     }
@@ -90,6 +89,8 @@ export default class Hash extends Vue{
 .searchBar {
   width: 80vw;
   margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .spinner {
   margin: 'auto';
@@ -104,5 +105,9 @@ export default class Hash extends Vue{
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.container h1 {
+  text-align: left;
+  font-size: 30px;
 }
 </style>

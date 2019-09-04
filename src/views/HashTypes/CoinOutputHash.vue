@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="container">
+    <h1>Hash</h1>
     <table class="ui celled table" v-if="!isAtomicSwap">
       <thead>
         <tr>
@@ -234,6 +235,8 @@ export default class CoinOutputHash extends Vue {
     if (transactionsIndex == -1) return
 
     const coinOutputIndex = coinOutputIndexArray.filter((v:any) => v !== -1)
+
+    if (!transactions[transactionsIndex].rawtransaction.data.coinoutputs) return
     const coinoutput = transactions[transactionsIndex].rawtransaction.data.coinoutputs[coinOutputIndex]
 
     if (!coinoutput.condition) {
@@ -251,6 +254,7 @@ export default class CoinOutputHash extends Vue {
   getCoinOutputBlockCreatorReward () {
     const blocks = this.$store.getters.HASH.blocks
     const hashId = this.$route.params.hash
+    if (!blocks) return
 
     const minerPayoutsIndexArray = blocks.map((block:any) => {
       return block.minerpayoutids.findIndex((id:any) => id === hashId)
@@ -315,5 +319,9 @@ export default class CoinOutputHash extends Vue {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.container h1 {
+  text-align: left;
+  font-size: 30px;
 }
 </style>
