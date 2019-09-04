@@ -1,5 +1,6 @@
 import { API_URL } from "@/common/config";
 import axios from "axios";
+import router from "../../router";
 
 const explorer = {
   state: {
@@ -29,6 +30,9 @@ const explorer = {
           context.commit("SET_EXPLORER", result.data);
         },
         error => {
+          if (error.response.status === 400) {
+            router.push("/notfound")
+          }
           console.error(error);
         }
       );
@@ -39,9 +43,12 @@ const explorer = {
         url: API_URL + "/explorer/blocks/" + height
       }).then(
         result => {
-          context.commit("SET_BLOCK_HEIGHT", result.data);
+          context.commit("SET_BLOCK_HEIGHT", result.data)
         },
         error => {
+          if (error.response.status === 400) {
+            router.push("/notfound")
+          }
           console.error(error);
         }
       );
@@ -66,6 +73,9 @@ const explorer = {
           }
         },
         error => {
+          if (error.response.status === 400) {
+            router.push("/notfound")
+          }
           console.error(error);
         }
       );
