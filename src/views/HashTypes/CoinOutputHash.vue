@@ -208,7 +208,7 @@ export default class CoinOutputHash extends Vue {
     if (!txs) return
 
     const idx = txs.findIndex((tx:any) => {
-      if (!tx.rawtransaction.data.coinoutputs) return
+      if (!tx.rawtransaction.data.coinoutputs) return -1
       return tx.rawtransaction.data.coinoutputs.findIndex((co:any) => {
         if (!co.condition) return
         return co.condition.data.hashedsecret
@@ -228,7 +228,7 @@ export default class CoinOutputHash extends Vue {
 
     const hashId = this.$route.params.hash
     let coinOutputIndexArray = transactions.map((tx:any) => {
-      if (!tx.coinoutputids) return
+      if (!tx.coinoutputids) return -1
       return tx.coinoutputids.findIndex((id:any) => id === hashId)
     })
 
@@ -259,6 +259,7 @@ export default class CoinOutputHash extends Vue {
     if (!blocks) return
 
     const minerPayoutsIndexArray = blocks.map((block:any) => {
+      if (!block.minerpayoutids) return -1
       return block.minerpayoutids.findIndex((id:any) => id === hashId)
     })
 
@@ -288,6 +289,7 @@ export default class CoinOutputHash extends Vue {
 
     const hashId = this.$route.params.hash
     let coinInputIndexArray = transactions.map((tx:any) => {
+      if (!tx.rawtransaction.data.coininputs) return -1
       return tx.rawtransaction.data.coininputs.findIndex((ci:any) => ci.parentid === hashId)
     })
     let transactionsIndex = coinInputIndexArray.findIndex((idx:any) => idx !== -1)
