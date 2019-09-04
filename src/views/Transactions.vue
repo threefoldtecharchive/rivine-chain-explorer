@@ -67,6 +67,7 @@ export default class Transactions extends Vue {
   noRecentTransaction: boolean = true
 
   created () {
+    window.scrollTo(0,0);
     this.$store.dispatch("SET_TRANSACTIONS").then(() => {
       this.$store.dispatch("SET_EXPLORER").then(() => {
         const explorerHeight = this.$store.getters.EXPLORER.height

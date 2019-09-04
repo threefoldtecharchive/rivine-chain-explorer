@@ -184,6 +184,8 @@ export default class CoinOutputHash extends Vue {
   isLoading: boolean = false
 
   created() {
+    window.scrollTo(0,0);
+
     this.isLoading = true
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {

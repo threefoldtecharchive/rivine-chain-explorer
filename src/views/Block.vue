@@ -210,6 +210,7 @@ export default class Block extends Vue {
   toLocalDecimalNotation = toLocalDecimalNotation
 
   created() {
+    window.scrollTo(0,0);
     if (!this.$route.params.block || isNaN(parseInt(this.$route.params.block))) {
       this.$router.push("/blocks/");
     }

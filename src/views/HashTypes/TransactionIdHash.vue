@@ -470,6 +470,8 @@ export default class TransactionIdHash extends Vue {
   isLegacy:boolean = false
 
   created() {
+    window.scrollTo(0,0);
+
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash
