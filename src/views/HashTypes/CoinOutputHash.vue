@@ -163,6 +163,7 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
     },
     routeToBlockPage: function(val) {
       this.$store.dispatch("SET_HASH", val)
+      this.$router.push("/block/" + val);
     }
   }
 })

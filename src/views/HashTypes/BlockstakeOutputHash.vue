@@ -103,6 +103,7 @@ import { mapState } from 'vuex';
     },
     routeToBlockPage: function(val) {
       this.$store.dispatch("SET_HASH", val)
+      this.$router.push("/block/" + val);
     }
   }
 })

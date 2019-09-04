@@ -331,6 +331,7 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
     },
     routeToBlockPage: function(val) {
       this.$store.dispatch("SET_BLOCK_HEIGHT", val)
+      this.$router.push("/block/" + val);
     }
   }
 })
