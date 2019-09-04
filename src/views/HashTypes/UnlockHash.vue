@@ -18,7 +18,7 @@
             <td>Confirmed Coin Balance</td>
             <td>{{ toLocalDecimalNotation(availableBalance) }} {{ unit }}</td>
           </tr>
-          <tr v-if="!isAtomicSwap">
+          <tr v-if="!isAtomicSwap && lastCoinSpent">
             <td>Last Coin Spend</td>
             <td>
               @ Block:
@@ -31,7 +31,7 @@
             <td>Confirmed Block Stake Balance</td>
             <td>{{ availableBlockstakeBalance }} BS</td>
           </tr>
-          <tr v-if="this.$store.getters.HASH.blocks">
+          <tr v-if="this.$store.getters.HASH.blocks && lastBsSpent">
             <td>Last Block Stake Spend</td>
             <td>
               @ Block:
@@ -326,7 +326,6 @@ import { toLocalDecimalNotation, formatReadableDate } from '../../common/helpers
   },
   methods: {
     routeToHashPage: function(val) {
-      debugger
       this.$store.dispatch("SET_HASH", val);
       this.$router.push("/hashes/" + val);
     },

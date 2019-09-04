@@ -168,7 +168,7 @@
             </tr>
             <tr v-else>
               <td>Address</td>
-              <td class="clickable" v-on:click="routeToHashPage(bsOut.condition.unlockhash)">
+              <td class="clickable" v-on:click="routeToHashPage(bsOut.condition.data.unlockhash)">
                 {{ bsOut.condition.data.unlockhash  }}
               </td>
             </tr>

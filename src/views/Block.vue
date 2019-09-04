@@ -13,7 +13,7 @@
         <tbody>
           <tr>
             <td>Block Height</td>
-            <td>{{ this.$store.getters.BLOCK.block.height }}</td>
+            <td>{{ toLocalDecimalNotation(this.$store.getters.BLOCK.block.height) }}</td>
           </tr>
           <tr>
             <td>ID</td>
@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td>Confirmations</td>
-            <td>{{ this.$store.getters.EXPLORER.height }}</td>
+            <td>{{ toLocalDecimalNotation(this.$store.getters.EXPLORER.height) }}</td>
           </tr>
           <tr>
             <td>Previous Block</td>
@@ -33,7 +33,7 @@
           </tr>
           <tr>
             <td>Active Blockstake</td>
-            <td>{{ this.$store.getters.BLOCK.block.estimatedactivebs }} BS</td>
+            <td>{{ toLocalDecimalNotation(this.$store.getters.BLOCK.block.estimatedactivebs) }} BS</td>
           </tr>
         </tbody>
       </table>
@@ -179,6 +179,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Blocks from "@/views/Blocks.vue";
 import { mapState } from 'vuex';
+import { toLocalDecimalNotation } from '../common/helpers'
 
 @Component({
   name: 'Block',
@@ -206,6 +207,7 @@ import { mapState } from 'vuex';
 })
 export default class Block extends Vue {
   blockDate = ""
+  toLocalDecimalNotation = toLocalDecimalNotation
 
   created() {
     if (!this.$route.params.block || isNaN(parseInt(this.$route.params.block))) {
