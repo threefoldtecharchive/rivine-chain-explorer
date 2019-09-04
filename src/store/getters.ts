@@ -2,14 +2,15 @@ const getters = {
   /**
    * Explorer
    */
-  EXPLORER: state => state.explorer.explorer,
-  BLOCK: state => state.explorer.block,
-  HASH: state => state.explorer.hash,
+  EXPLORER: (state: any) => state.explorer.explorer,
+  BLOCK: (state: any) => state.explorer.block,
+  HASH: (state: any) => state.explorer.hash,
+  LOADING: (state: any) => state.explorer.loading,
 
   /**
    * Transactions
    */
-  TRANSACTIONS: state => state.transactions.transactions
+  TRANSACTIONS: (state: any) => state.transactions.transactions
 };
 
 export default getters;

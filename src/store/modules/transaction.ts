@@ -6,18 +6,18 @@ const explorer = {
     transactions: Array
   },
   mutations: {
-    SET_TRANSACTIONS: (state: any, transactions: Array) => {
+    SET_TRANSACTIONS: (state: any, transactions: Array<Object>) => {
       state.transactions = transactions;
     }
   },
   actions: {
-    SET_TRANSACTIONS: async ({ commit }) => {
+    SET_TRANSACTIONS: async (context: any) => {
       await axios({
         method: "GET",
         url: API_URL + "/transactionpool/transactions"
       }).then(
         result => {
-          commit("SET_TRANSACTIONS", result.data);
+          context.commit("SET_TRANSACTIONS", result.data);
         },
         error => {
           console.error(error);
