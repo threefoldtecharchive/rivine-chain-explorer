@@ -5,7 +5,7 @@
       <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui text container">
           <h1 class="ui inverted header">
-            Tfchain Explorer
+            {{ Name }} Explorer
           </h1>
           <h2>Search any hash or block.</h2>
           <div class="searchBar">
@@ -22,6 +22,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Search from "@/components/Search.vue";
 import Navigation from "@/components/Navigation.vue";
+import { NAME } from "../common/config";
 
 @Component({
   components: {
@@ -30,12 +31,17 @@ import Navigation from "@/components/Navigation.vue";
   }
 })
 export default class Home extends Vue {
+  Name = NAME
   SearchVal: string = "";
+  created () {
+    console.log(process.env)
+  }
 }
 </script>
 <style scoped>
 .searchBar {
-  width: 30vw;
-  margin-top: 10%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
