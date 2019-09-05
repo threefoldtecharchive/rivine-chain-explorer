@@ -33,9 +33,6 @@ import { NAME } from "../common/config";
 export default class Home extends Vue {
   Name = NAME
   SearchVal: string = "";
-  created () {
-    console.log(process.env)
-  }
 }
 </script>
 <style scoped>
