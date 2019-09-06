@@ -72,7 +72,7 @@
               <td>Source Description</td>
               <td>All Transaction Fees Combined</td>
             </tr>
-            <tr v-if="index === 1">
+            <tr v-if="index === 1 && $store.getters.BLOCK.block.transactions[index]">
               <td>Source Transaction Identifiers	</td>
               <td class="clickable" v-on:click="routeToHashPage($store.getters.BLOCK.block.transactions[index].id)">
                 {{ $store.getters.BLOCK.block.transactions[index].id }}
@@ -115,7 +115,7 @@
               </tbody>
             </table>
           </div>
-          <!-- <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs">
+          <div class="tx-table" v-if="tx.rawtransaction.data.coinoutputs">
             <table v-if="tx.rawtransaction.data.coinoutputs.length > 0" class="ui celled table">
               <thead>
                 <tr>
@@ -141,7 +141,7 @@
                 </tr>
               </tbody>
             </table>
-          </div> -->
+          </div>
           <div class="tx-table" v-if="tx.rawtransaction.data.blockstakeinputs && tx.rawtransaction.data.blockstakeoutputs">
             <table v-if="tx.rawtransaction.data.blockstakeinputs.length > 0 || tx.rawtransaction.data.blockstakeoutputs.length > 0" class="ui celled table">
               <thead>
@@ -234,6 +234,7 @@ export default class Block extends Vue {
 </script>
 <style scoped>
 .tx-table {
+  text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
 }

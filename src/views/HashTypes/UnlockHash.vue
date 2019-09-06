@@ -421,6 +421,7 @@ export default class UnlockHash extends Vue {
       }
     }).filter(Boolean)
     transactions.forEach((tx:any) => {
+      if (!tx.rawtransaction.data.coininputs) return
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci:any) => {
         const existsInUcosIndex:number = ucos.findIndex((uco:any) => uco.coinOutputId === ci.parentid)
         if (existsInUcosIndex > -1) {
@@ -654,6 +655,7 @@ export default class UnlockHash extends Vue {
   margin-top: 50px;
 }
 .tx-table {
+  text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
 }

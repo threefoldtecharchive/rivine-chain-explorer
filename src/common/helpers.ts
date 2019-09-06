@@ -1,6 +1,7 @@
 import { PRECISION } from './config'
 
 export function toLocalDecimalNotation (x:number) {
+  if (!x) return
   return x.toLocaleString(navigator.language, {maximumFractionDigits: PRECISION})
 }
 

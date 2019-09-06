@@ -4,17 +4,20 @@
       <table class="ui celled table">
         <thead>
           <tr>
-            <th colspan="3">Hash type: {{ this.$store.getters.HASH.hashtype }}</th>
+            <th colspan="3">{{ version }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Block Height</td>
-            <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.transaction.height)">
+            <td v-if="this.$store.getters.HASH.transaction.height == 0" >
+              unconfirmed
+            </td>
+            <td v-else class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.transaction.height)">
               {{ toLocalDecimalNotation(this.$store.getters.HASH.transaction.height) }}
             </td>
           </tr>
-          <tr>
+          <tr v-if="this.$store.getters.HASH.transaction.height !== 0">
             <td>Confirmations</td>
             <td>{{ this.$store.getters.EXPLORER.height - this.$store.getters.HASH.transaction.height + 1 }}</td>
           </tr>
@@ -319,11 +322,11 @@
 
               <tr v-if="isLegacy">
                 <td>Value</td>
-                <td>{{ coinOut.value / precision }} {{ unit }}</td>
+                <td>{{ toLocalDecimalNotation(coinOut.value / precision) }} {{ unit }}</td>
               </tr>
               <tr v-else>
                 <td>Value</td>
-                <td>{{ coinOut.value / precision }} {{ unit }}</td>
+                <td>{{ toLocalDecimalNotation(coinOut.value / precision) }} {{ unit }}</td>
               </tr>
 
             </tbody>
@@ -397,7 +400,44 @@
           </tbody>
         </table>
       </div>
-      <div class="tx-table" v-if="feepayoutId !== ''">
+
+      <div class="tx-table" v-if="version === 'Condition Update Transaction'">
+        <h3>Minter Definition Fulfillment</h3>
+        <table class="ui celled table">
+          <tbody>
+            <tr>
+              <td>Type</td>
+              <td>
+                {{ this.$store.getters.HASH.transaction.rawtransaction.data.mintfulfillment.type }}
+              </td>
+            </tr>
+            <tr>
+              <td>Publickey</td>
+              <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.mintfulfillment.data.publickey }}</td>
+            </tr>
+            <tr>
+              <td>Signature</td>
+              <td>{{ this.$store.getters.HASH.transaction.rawtransaction.data.mintfulfillment.data.signature }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tx-table" v-if="version === 'Condition Update Transaction'">
+        <h3>New Mint Condition</h3>
+        <table class="ui celled table">
+          <tbody>
+            <tr>
+              <td>Address</td>
+              <td class="clickable" v-on:click="routeToBlockPage($store.getters.HASH.transaction.rawtransaction.data.mintcondition.data.unlockhash)">
+                {{ this.$store.getters.HASH.transaction.rawtransaction.data.mintcondition.data.unlockhash }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tx-table" v-if="feepayoutId !== '' && version !== 'Condition Update Transaction'">
         <h3 >Transaction Fee Payouts</h3>
         <table class="ui celled table">
           <tbody>
@@ -469,6 +509,7 @@ export default class TransactionIdHash extends Vue {
   coinInputs:any = []
 
   isLegacy:boolean = false
+  version:string = "Transaction"
 
   created() {
     window.scrollTo(0,0);
@@ -480,11 +521,26 @@ export default class TransactionIdHash extends Vue {
         this.fetchExplorerBlock()
         this.getBlockStakeOutputInputs()
         this.getCoinOutputInputs()
+        this.getTransactionType()
       })
     })
     this.fetchExplorerBlock()
     this.getBlockStakeOutputInputs()
     this.getCoinOutputInputs()
+    this.getTransactionType()
+  }
+
+  // Todo Template this function
+  getTransactionType () {
+    if (!this.$store.getters.HASH.transaction.rawtransaction.version) return
+    switch (this.$store.getters.HASH.transaction.rawtransaction.version) {
+      case 128: this.version = "Condition Update Transaction"
+        break
+      case 129: this.version = "Coin Creation Transaction"
+        break
+      case 130: this.version = "Coin Destruction Transaction"
+        break
+    }
   }
 
   decodeString (str:any) {
@@ -573,6 +629,7 @@ export default class TransactionIdHash extends Vue {
   margin-top: 50px;
 }
 .tx-table {
+  text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
 }

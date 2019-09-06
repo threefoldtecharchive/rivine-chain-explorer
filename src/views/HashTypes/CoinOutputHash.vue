@@ -317,6 +317,7 @@ export default class CoinOutputHash extends Vue {
   margin-top: 50px;
 }
 .tx-table {
+  text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
 }
