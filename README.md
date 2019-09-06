@@ -18,6 +18,9 @@ Export following environment variables in a `.env` file in the root of this proj
 | VUE_APP_PRECISION  | 9  | Precision after decimal point for the currency |
 | VUE_APP_UNIT  | GFT  | Unit that will be displayed  |
 
+Note: It's not possible to develop against a local daemon. Safari and Chrome browser don't allow setting the `User-Agent` header in a browser. 
+That's why the `API_URL` should always be a `testnet` url.
+
 ### Serving Frontend
 
 ```npm run serve```
