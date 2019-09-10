@@ -5,11 +5,11 @@ A template Rivine Chain Explorer
 - - -
 ### Installing Dependencies
 
-```npm install```
+```yarn install```
 - - -
 ### Prerequisites
 
-Export following environment variables in a `.env` file in the root of this project.
+Export following environment variables in an `.env` file in the root of this project.
 
 | Variable  | Default Value | Meaning | Required |
 | ------------- | ------------- | ------------- | ------------- |
@@ -18,8 +18,15 @@ Export following environment variables in a `.env` file in the root of this proj
 | VUE_APP_PRECISION  | 9  | Precision after decimal point for the currency | No |
 | VUE_APP_UNIT  | GFT  | Unit that will be displayed  | No |
 
+### Example env file content
 
-> Configuration for local development
+```
+VUE_APP_NAME=Goldchain
+VUE_APP_PRECISION=9
+VUE_APP_UNIT=GFT
+```
+
+### Configuration for local development
 
 Run Caddy server in between frontend and backend.
 
@@ -31,4 +38,4 @@ Export `VUE_APP_API_URL` as `http://localhost:2015`.
 - - -
 ### Serving Frontend
 
-```npm run serve```
+```yarn run serve```
