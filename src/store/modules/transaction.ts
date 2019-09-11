@@ -15,14 +15,9 @@ const explorer = {
       await axios({
         method: "GET",
         url: API_URL + "/transactionpool/transactions"
-      }).then(
-        result => {
-          context.commit("SET_TRANSACTIONS", result.data);
-        },
-        error => {
-          console.error(error);
-        }
-      );
+      }).then(result => {
+        context.commit("SET_TRANSACTIONS", result.data);
+      });
     }
   }
 };

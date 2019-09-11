@@ -16,14 +16,10 @@
     </div>
     <Slide class="slider">
       <a id="home" href="/">
-        <span>
-          <i class="home icon"></i>Home
-        </span>
+        <span> <i class="home icon"></i>Home </span>
       </a>
       <a id="transaction" href="/transactions">
-        <span>
-          <i class="down arrow icon"></i>Transactions
-        </span>
+        <span> <i class="down arrow icon"></i>Transactions </span>
       </a>
       <a id="charts" href="/charts">
         <span><i class="chart line icon"></i>Charts</span>
@@ -35,7 +31,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Search from "@/components/Search.vue";
-const { Slide } = require("vue-burger-menu")
+const { Slide } = require("vue-burger-menu");
 
 @Component({
   components: {

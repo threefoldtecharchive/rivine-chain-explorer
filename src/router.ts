@@ -5,7 +5,7 @@ import Block from "./views/Block.vue";
 import NotFound from "./views/NotFound.vue";
 import Hash from "./views/Hash.vue";
 import Charts from "./views/Charts.vue";
-import transactions from './views/Transactions.vue';
+import transactions from "./views/Transactions.vue";
 
 Vue.use(Router);
 

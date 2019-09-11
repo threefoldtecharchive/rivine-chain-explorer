@@ -18,7 +18,7 @@ import Search from "../components/Search.vue";
 })
 export default class Blocks extends Vue {
   created() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.$store.dispatch("SET_EXPLORER");
   }
 

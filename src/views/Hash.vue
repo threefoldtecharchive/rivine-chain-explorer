@@ -6,7 +6,10 @@
       <Search category="hash" description="Hash" />
     </div>
 
-    <div class="ui segment container spinner" v-if="this.$store.getters.LOADING">
+    <div
+      class="ui segment container spinner"
+      v-if="this.$store.getters.LOADING"
+    >
       <div class="ui active inverted dimmer">
         <div class="ui text loader">Loading</div>
       </div>
@@ -28,21 +31,20 @@
     <div v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
       <TransactionIdHash />
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator"
-import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
-import CoinOutputHash from './HashTypes/CoinOutputHash.vue'
-import UnlockHash from './HashTypes/UnlockHash.vue'
-import TransactionIdHash from './HashTypes/TransactionIdHash.vue'
-import Navigation from '../components/Navigation.vue'
-import Search from '../components/Search.vue'
+import { Component, Vue, Watch } from "vue-property-decorator";
+import BlockstakeOutputHash from "./HashTypes/BlockstakeOutputHash.vue";
+import CoinOutputHash from "./HashTypes/CoinOutputHash.vue";
+import UnlockHash from "./HashTypes/UnlockHash.vue";
+import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
+import Navigation from "../components/Navigation.vue";
+import Search from "../components/Search.vue";
 
 @Component({
-  name: 'Hash',
+  name: "Hash",
   components: {
     BlockstakeOutputHash,
     CoinOutputHash,
@@ -52,32 +54,30 @@ import Search from '../components/Search.vue'
     Search
   },
   watch: {
-    '$store.state.block': function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height)
+    "$store.state.block": function() {
+      this.$router.push("/block/" + this.$store.state.block.block.height);
     }
   }
 })
-
-export default class Hash extends Vue{
-  loading:boolean = false
+export default class Hash extends Vue {
+  loading: boolean = false;
 
   created() {
     if (!this.$route.params.hash) {
       this.$router.push("/");
     }
     if (!this.$store.getters.HASH.hashtype) {
-      this.loading = true
+      this.loading = true;
       this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
-        this.loading = false
-      })
+        this.loading = false;
+      });
     }
 
     if (this.$store.getters.HASH === "") {
-      this.$router.push("/notfound")
+      this.$router.push("/notfound");
     }
   }
 }
-
 </script>
 <style scoped>
 .container {
@@ -93,7 +93,7 @@ export default class Hash extends Vue{
   margin-right: auto;
 }
 .spinner {
-  margin: 'auto';
+  margin: "auto";
   margin-top: 50px;
   height: 500px;
 }

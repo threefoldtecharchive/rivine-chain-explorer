@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import camelCase from "lodash/camelCase";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const requireModule = require.context(".", false, /\.ts$/);
 const modules: any = {};
@@ -15,4 +15,4 @@ requireModule.keys().forEach(fileName => {
   modules[moduleName] = requireModule(fileName).default;
 });
 
-export default modules
+export default modules;

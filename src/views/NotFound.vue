@@ -26,7 +26,7 @@ export default class NotFound extends Vue {}
 <style scoped>
 .container {
   width: 80%;
-  margin: 'auto';
+  margin: "auto";
 }
 .notfound {
   margin-top: 200px;

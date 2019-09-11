@@ -2,11 +2,9 @@
   <div>
     <div class="pusher">
       <div class="ui inverted vertical masthead center aligned segment">
-      <navigation />
+        <navigation />
         <div class="ui text container">
-          <h1 class="ui inverted header">
-            {{ Name }} Explorer
-          </h1>
+          <h1 class="ui inverted header">{{ Name }} Explorer</h1>
           <h2>Search any hash or block.</h2>
           <div class="searchBar">
             <search />
@@ -14,7 +12,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -31,7 +28,7 @@ import { NAME } from "../common/config";
   }
 })
 export default class Home extends Vue {
-  Name = NAME
+  Name = NAME;
   SearchVal: string = "";
 }
 </script>

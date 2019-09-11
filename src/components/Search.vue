@@ -13,7 +13,7 @@
           icon-pack="fas"
           icon="search"
           v-validate="'required'"
-        >
+        />
       </div>
       <p v-if="error">{{ error }}</p>
     </form>
@@ -44,11 +44,11 @@ export default class Search extends Vue {
 
   checkSearchInput() {
     if (this.SearchVal.length > 60 || this.category === "hash") {
-      this.$store.dispatch("SET_HASH", this.SearchVal)
-      this.$router.push("/hashes/" + this.SearchVal)
+      this.$store.dispatch("SET_HASH", this.SearchVal);
+      this.$router.push("/hashes/" + this.SearchVal);
     } else if (parseInt(this.SearchVal) || this.category === "block") {
-      this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal)
-      this.$router.push("/block/" + this.SearchVal)
+      this.$store.dispatch("SET_BLOCK_HEIGHT", this.SearchVal);
+      this.$router.push("/block/" + this.SearchVal);
     }
   }
 

@@ -20,7 +20,7 @@ const explorer = {
       state.hash = hash;
     },
     SET_LOADING: (state: any, loading: boolean) => {
-      state.loading = loading
+      state.loading = loading;
     }
   },
   actions: {
@@ -31,9 +31,8 @@ const explorer = {
         },
         error => {
           if (error.response.status === 400) {
-            router.push("/notfound")
+            router.push("/notfound");
           }
-          console.error(error);
         }
       );
     },
@@ -43,13 +42,12 @@ const explorer = {
         url: API_URL + "/explorer/blocks/" + height
       }).then(
         result => {
-          context.commit("SET_BLOCK_HEIGHT", result.data)
+          context.commit("SET_BLOCK_HEIGHT", result.data);
         },
         error => {
           if (error.response.status === 400) {
-            router.push("/notfound")
+            router.push("/notfound");
           }
-          console.error(error);
         }
       );
     },
@@ -74,9 +72,8 @@ const explorer = {
         },
         error => {
           if (error.response.status === 400) {
-            router.push("/notfound")
+            router.push("/notfound");
           }
-          console.error(error);
         }
       );
     }
