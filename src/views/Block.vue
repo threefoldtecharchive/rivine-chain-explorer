@@ -4,7 +4,7 @@
     <!-- <p>{{ this.$store.getters.BLOCK }}</p> -->
     <div class="container" v-if="this.$store.getters.BLOCK.block">
       <h1>Block</h1>
-      <table class="ui celled table">
+      <table class="ui celled tablet stackable table">
         <thead>
           <tr>
             <th colspan="3">Block statistics</th>

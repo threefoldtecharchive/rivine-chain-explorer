@@ -12,6 +12,7 @@
 }
 
 .masthead.segment {
+  /* z-index: -1; */
   min-height: 100vh;
   padding: 1em 0em;
 }

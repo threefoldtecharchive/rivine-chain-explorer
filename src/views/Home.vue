@@ -1,8 +1,8 @@
 <template>
   <div>
-    <navigation />
     <div class="pusher">
       <div class="ui inverted vertical masthead center aligned segment">
+      <navigation />
         <div class="ui text container">
           <h1 class="ui inverted header">
             {{ Name }} Explorer
@@ -37,6 +37,7 @@ export default class Home extends Vue {
 </script>
 <style scoped>
 .searchBar {
+  max-width: 70vw;
   margin-top: 100px;
   margin-left: auto;
   margin-right: auto;
