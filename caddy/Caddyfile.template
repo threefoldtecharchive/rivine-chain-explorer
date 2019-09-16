@@ -1,8 +1,4 @@
-{{ with $root := . }}{{ with $dns := "explorer.example.com" }}{{ with $tls := "support@example.com" }}{{ if $root.Frontend }}{{ if $root.Frontend.Explorer }}{{ if $root.Frontend.Explorer.Caddy }}{{ if $root.Frontend.Explorer.Caddy.DNS }}{{ $dns = $root.Frontend.Explorer.Caddy.DNS }}{{ end }}{{ if $root.Frontend.Explorer.Caddy.TLS }}{{ $tls = $root.Frontend.Explorer.Caddy.TLS }}{{ end }}{{ end }}{{ end }}http://{{ $dns }} {
-    redir https://{{ $dns }}
-}
-
-https://{{ $dns }} {
+{{ $dns }} {
     root ../public
 
     header / {
