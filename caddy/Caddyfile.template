@@ -1,4 +1,4 @@
-{{ $dns }} {
+{{ .Frontend.Explorer.Caddy.DNS }} {
     root ../public
 
     header / {
@@ -7,14 +7,14 @@
         Access-Control-Allow-Headers  *
     }
 
-    proxy /explorer localhost:{{$root.Blockchain.Ports.API}} {
+    proxy /explorer localhost:{{ .Blockchain.Ports.API }} {
         header_upstream User-Agent Rivine-Agent
     }
 
-    proxy /transactionpool/transactions localhost:{{$root.Blockchain.Ports.API}} {
+    proxy /transactionpool/transactions localhost:{{ .Blockchain.Ports.API }} {
         header_upstream User-Agent Rivine-Agent
     }
 
     log stdout
-    tls {{ $tls }}
-}{{ end }}{{ end }}{{ end }}{{ end }}
+    tls {{ .Frontend.Explorer.Caddy.TLS }}
+}
