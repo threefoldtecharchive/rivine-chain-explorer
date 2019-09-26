@@ -17,60 +17,36 @@
           <td>Transaction ID</td>
           <td
             class="clickable"
-            v-on:click="routeToHashPage(blockstakeInput.txid)"
+            v-on:click="routeToHashPage(blockStakeOutputInfo.output.txId)"
           >
-            {{ blockstakeInput.txid }}
+            {{ blockStakeOutputInfo.output.txId }}
           </td>
         </tr>
 
-        <tr v-if="v0">
+        <tr>
           <td>Address</td>
           <td
             class="clickable"
-            v-on:click="routeToHashPage(blockstakeOutput.unlockhash)"
+            v-on:click="routeToHashPage(unlockhash)"
           >
-            {{ blockstakeOutput.unlockhash }}
-          </td>
-        </tr>
-        <tr v-else-if="v2">
-          <td>Address</td>
-          <td
-            class="clickable"
-            v-on:click="
-              routeToHashPage(blockstakeOutput.condition.data.unlockhash)
-            "
-          >
-            {{ blockstakeOutput.condition.data.unlockhash }}
-          </td>
-        </tr>
-        <tr v-else>
-          <td>Address</td>
-          <td
-            class="clickable"
-            v-on:click="routeToHashPage(blockstakeOutput.condition.unlockhash)"
-          >
-            {{ blockstakeOutput.condition.unlockhash }}
+            {{ unlockhash }}
           </td>
         </tr>
 
-        <tr v-if="v0 || v2">
+        <tr>
           <td>Value</td>
-          <td>{{ blockstakeOutput.value }}</td>
-        </tr>
-        <tr v-else>
-          <td>Value</td>
-          <td>{{ blockstakeOutput.condition.value }}</td>
+          <td>{{ blockStakeOutputInfo.output.value }}</td>
         </tr>
 
         <tr>
           <td>Has been spent</td>
-          <td v-if="blockCreatorRewardIsSpent">Yes</td>
+          <td v-if="blockStakeOutputInfo.input">Yes</td>
           <td v-else>No</td>
         </tr>
       </tbody>
     </table>
 
-    <table class="ui celled table" v-if="blockstakeInput.txid">
+    <table class="ui celled table" v-if="blockStakeOutputInfo.input">
       <thead>
         <tr>
           <th colspan="3">BlockStake Input</th>
@@ -86,9 +62,9 @@
           <td>Transaction ID</td>
           <td
             class="clickable"
-            v-on:click="routeToHashPage(blockstakeInput.txid)"
+            v-on:click="routeToHashPage(blockStakeOutputInfo.input.txId)"
           >
-            {{ blockstakeInput.txid }}
+            {{ blockStakeOutputInfo.input.txId }}
           </td>
         </tr>
       </tbody>
@@ -99,6 +75,8 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
+import { BlockstakeOutputInfo } from 'rivine-ts-types/lib/types';
+import { getUnlockHash } from "../../common/helpers";
 
 @Component({
   name: "BlockstakeOutputHash",
@@ -123,108 +101,24 @@ import { mapState } from "vuex";
   }
 })
 export default class BlockstakeOutputHash extends Vue {
-  blockCreatorRewardIsSpent: boolean = false;
-  blockstakeInput: object = {
-    condition: {}
-  };
-  blockstakeOutput: object = {
-    condition: {}
-  };
-  v0: boolean = false;
-  v2: boolean = false;
+  blockStakeOutputInfo?: BlockstakeOutputInfo;
   isLoading: boolean = false;
+  unlockhash?: string;
 
   created() {
     window.scrollTo(0, 0);
-
+    this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo;
+    this.unlockhash = getUnlockHash(this.blockStakeOutputInfo);
     this.isLoading = true;
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
       const hash = newLocation.params.hash;
       this.$store.dispatch("SET_HASH", hash).then(() => {
-        this.getBlockStakeOutput();
-        this.getBlockStakeInput();
+        this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo;
+        this.unlockhash = getUnlockHash(this.blockStakeOutputInfo);
       });
     });
-    this.getBlockStakeOutput();
-    this.getBlockStakeInput();
     this.isLoading = false;
-  }
-
-  @Watch("$route.params.hash")
-  OnHashTypeChange(val: string, oldVal: string) {
-    this.$store.dispatch("SET_HASH", val).then(() => {
-      this.getBlockStakeOutput();
-      this.getBlockStakeInput();
-    });
-  }
-
-  getBlockStakeOutput() {
-    if (!this.$store.getters.HASH.hashtype) return;
-    const transactions = this.$store.getters.HASH.transactions;
-    if (!transactions) return;
-
-    const hashId = this.$route.params.hash;
-    let blockstakeOutputIndexArray = transactions.map((tx: any) => {
-      return tx.blockstakeoutputids.findIndex((id: any) => id === hashId);
-    });
-    let transactionsIndex = blockstakeOutputIndexArray.findIndex(
-      (idx: any) => idx !== -1
-    );
-    if (transactionsIndex == -1) return;
-
-    const blockstakeOutputIndex = blockstakeOutputIndexArray.filter(
-      (v: any) => v !== -1
-    );
-    const blockstakeOutput =
-      transactions[transactionsIndex].rawtransaction.data.blockstakeoutputs[
-        blockstakeOutputIndex
-      ];
-
-    // Check if there is no condition object on the output, this means it's from an older version and we use different template
-    if (!blockstakeOutput.condition) {
-      this.v0 = true;
-    }
-
-    if (blockstakeOutput.condition && blockstakeOutput.value) {
-      this.v2 = true;
-    }
-
-    this.blockstakeOutput = {
-      ...blockstakeOutput,
-      txid: transactions[transactionsIndex].id
-    };
-  }
-
-  getBlockStakeInput() {
-    if (!this.$store.getters.HASH.hashtype) return;
-    const transactions = this.$store.getters.HASH.transactions;
-    if (!transactions) return;
-
-    const hashId = this.$route.params.hash;
-    let blockstakeInputIndexArray = transactions.map((tx: any) => {
-      return tx.rawtransaction.data.blockstakeinputs.findIndex(
-        (ci: any) => ci.parentid === hashId
-      );
-    });
-    let transactionsIndex = blockstakeInputIndexArray.findIndex(
-      (idx: any) => idx !== -1
-    );
-    if (transactionsIndex == -1) return;
-
-    const blockstakeInputIndex = blockstakeInputIndexArray.filter(
-      (v: any) => v !== -1
-    );
-    const coininput =
-      transactions[transactionsIndex].rawtransaction.data.blockstakeinputs[
-        blockstakeInputIndex
-      ];
-    this.blockCreatorRewardIsSpent = true;
-
-    this.blockstakeInput = {
-      ...coininput,
-      txid: transactions[transactionsIndex].id
-    };
   }
 }
 </script>

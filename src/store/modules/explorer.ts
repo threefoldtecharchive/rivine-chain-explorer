@@ -1,12 +1,18 @@
 import { API_URL } from "@/common/config";
 import axios from "axios";
 import router from "../../router";
+import { Parser } from "rivine-ts-types";
+import { Response, Wallet, Transaction, Block, BlockstakeOutputInfo, CoinOutputInfo } from "rivine-ts-types/lib/types"
+import { PRECISION } from "../../common/config";
+
+const parser: Parser = new Parser(PRECISION)
+
 
 const explorer = {
   state: {
     explorer: Object,
     block: Object,
-    hash: Object,
+    hash:  Response,
     loading: Boolean(false)
   },
   mutations: {
@@ -16,7 +22,7 @@ const explorer = {
     SET_BLOCK_HEIGHT: (state: any, block: object) => {
       state.block = block;
     },
-    SET_HASH: (state: any, hash: object) => {
+    SET_HASH: (state: any, hash: Response) => {
       state.hash = hash;
     },
     SET_LOADING: (state: any, loading: boolean) => {
@@ -65,9 +71,10 @@ const explorer = {
               context.commit("SET_LOADING", false);
               break;
             default:
-              context.commit("SET_HASH", result.data);
+              const parsedResponse = parser.ParseHashResponseJSON(result.data, hash)
+              console.log(parsedResponse)
+              context.commit("SET_HASH", parsedResponse);
               context.commit("SET_LOADING", false);
-              break;
           }
         },
         error => {

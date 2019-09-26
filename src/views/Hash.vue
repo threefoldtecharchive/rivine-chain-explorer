@@ -16,11 +16,11 @@
       <p></p>
     </div>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
+    <div v-else-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
       <BlockstakeOutputHash />
     </div>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'coinoutputid'">
+    <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
       <CoinOutputHash />
     </div>
 
@@ -42,6 +42,7 @@ import UnlockHash from "./HashTypes/UnlockHash.vue";
 import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
 import Navigation from "../components/Navigation.vue";
 import Search from "../components/Search.vue";
+import { ResponseType } from "rivine-ts-types/lib/types"
 
 @Component({
   name: "Hash",
@@ -61,6 +62,7 @@ import Search from "../components/Search.vue";
 })
 export default class Hash extends Vue {
   loading: boolean = false;
+  responseType = ResponseType;
 
   created() {
     if (!this.$route.params.hash) {

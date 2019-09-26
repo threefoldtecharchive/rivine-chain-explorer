@@ -1,4 +1,7 @@
 import { PRECISION } from "./config";
+import { Condition, MultisignatureCondition } from 'rivine-ts-types/lib/conditionTypes';
+import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition } from "rivine-ts-types/lib/conditionTypes"
+import { BlockstakeOutputInfo, CoinOutputInfo } from 'rivine-ts-types/lib/types';
 
 export function toLocalDecimalNotation(x: number) {
   if (!x) return;
@@ -22,4 +25,38 @@ export function formatReadableDate(time: number) {
 export function formatReadableDateForCharts(time: number) {
   const blockDate = new Date(time * 1000);
   return blockDate;
+}
+
+export function getUnlockhashFromCondition (condition: Condition): string {
+  switch (condition.getConditionType()) {
+    case ConditionType.NilCondition:
+      return "";
+    case ConditionType.UnlockhashCondition:
+      const uhCondition = condition as UnlockhashCondition
+      return uhCondition.unlockhash;
+    case ConditionType.AtomicSwapCondition:
+      const atCondition = condition as AtomicSwapCondition
+      return atCondition.receiver;
+    case ConditionType.TimelockCondition:
+      const tmCondition = condition as TimelockCondition
+      return getUnlockhashFromCondition(tmCondition)
+    case ConditionType.MultisignatureCondition:
+      const msCondition = condition as MultisignatureCondition
+      return msCondition.unlockhashes.join(',');
+    default:
+      return "";
+  }
+}
+
+export function getUnlockHash (outputInfo: BlockstakeOutputInfo | CoinOutputInfo): string {
+  if (outputInfo.output.isBlockCreatorReward) {
+    if (outputInfo.output.unlockhash) {
+      return outputInfo.output.unlockhash
+    }
+  } else {
+    if (outputInfo.output.condition) {
+      return getUnlockhashFromCondition(outputInfo.output.condition);
+    }
+  }
+  return ""
 }

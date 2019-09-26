@@ -13,6 +13,7 @@
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
     "gulp": "^4.0.2",
+    "rivine-ts-types": "^1.0.1",
     "semantic-ui-vue": "^0.8.1",
     "vee-validate": "^2.2.13",
     "vue": "^2.6.10",

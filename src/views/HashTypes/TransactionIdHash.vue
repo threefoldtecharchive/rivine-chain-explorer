@@ -41,60 +41,35 @@
           <td>ID</td>
           <td>{{ this.$store.getters.HASH.transaction.id }}</td>
         </tr>
-        <tr
-          v-if="
-            this.$store.getters.HASH.transaction.rawtransaction.data
-              .coininputs &&
-              this.$store.getters.HASH.transaction.rawtransaction.data
-                .coininputs.length > 0
-          "
-        >
+        <tr v-if="coinInputs.length > 0">
           <td>Coin Input Count</td>
           <td>
             {{
-              this.$store.getters.HASH.transaction.rawtransaction.data
-                .coininputs.length
+              coinInputs.length
             }}
           </td>
         </tr>
-        <tr
-          v-if="
-            this.$store.getters.HASH.transaction.rawtransaction.data.coinoutputs
-          "
-        >
+        <tr v-if="coinOutputs.length > 0">
           <td>Coin Output Count</td>
           <td>
             {{
-              this.$store.getters.HASH.transaction.rawtransaction.data
-                .coinoutputs.length
+              coinOutputs.length
             }}
           </td>
         </tr>
-        <tr
-          v-if="
-            this.$store.getters.HASH.transaction.rawtransaction.data
-              .blockstakeinputs
-          "
-        >
+        <tr v-if="blockStakeInputs.length > 0">
           <td>Blockstake Input Count</td>
           <td>
             {{
-              this.$store.getters.HASH.transaction.rawtransaction.data
-                .blockstakeinputs.length
+              blockStakeInputs.length
             }}
           </td>
         </tr>
-        <tr
-          v-if="
-            this.$store.getters.HASH.transaction.rawtransaction.data
-              .blockstakeoutputs
-          "
-        >
+        <tr v-if="blockStakeOutputs.length > 0">
           <td>Blockstake Output Count</td>
           <td>
             {{
-              this.$store.getters.HASH.transaction.rawtransaction.data
-                .blockstakeoutputs.length
+              blockStakeOutputs.length
             }}
           </td>
         </tr>
@@ -138,96 +113,42 @@
             </td>
           </tr>
 
-          <tr v-if="isLegacy">
+          <tr>
             <td>Address</td>
             <td
               class="clickable"
               v-on:click="
-                routeToHashPage(blockStakeInputsOutputs[index].unlockhash)
+                routeToHashPage(bsInput.unlockhash)
               "
             >
-              {{ blockStakeInputsOutputs[index].unlockhash }}
-            </td>
-          </tr>
-          <tr v-else>
-            <td>Address</td>
-            <td
-              class="clickable"
-              v-on:click="
-                routeToHashPage(blockStakeInputsOutputs[index].unlockhash)
-              "
-            >
-              {{ blockStakeInputsOutputs[index].unlockhash }}
+              {{ bsInput.unlockhash }}
             </td>
           </tr>
 
-          <tr v-if="isLegacy">
+          <tr>
             <td>Value</td>
-            <td>{{ blockStakeInputsOutputs[index].value }}</td>
+            <td>{{ bsInput.value }}</td>
           </tr>
-          <tr v-else>
-            <td>Value</td>
-            <td>{{ blockStakeInputsOutputs[index].value }}</td>
-          </tr>
+
         </tbody>
 
-        <thead v-if="bsInput.fulfillment">
+        <thead>
           <tr>
             <th colspan="3">Fulfillment</th>
           </tr>
         </thead>
-        <tbody v-if="bsInput.fulfillment">
+        <tbody>
           <tr>
             <td>Type</td>
-            <td>{{ bsInput.fulfillment.type }}</td>
+            <td>{{ bsInput.type }}</td>
           </tr>
           <tr>
             <td>Publickey</td>
-            <td>{{ bsInput.fulfillment.data.publickey }}</td>
+            <td>{{ bsInput.publickey }}</td>
           </tr>
           <tr>
             <td>Signature</td>
-            <td>{{ bsInput.fulfillment.data.signature }}</td>
-          </tr>
-        </tbody>
-
-        <thead v-if="bsInput.unlocker">
-          <tr>
-            <th colspan="3">Unlocker</th>
-          </tr>
-        </thead>
-        <tbody v-if="bsInput.unlocker">
-          <tr>
-            <td>Unlock Type</td>
-            <td>
-              {{ bsInput.unlocker.type }}
-            </td>
-          </tr>
-        </tbody>
-        <thead v-if="bsInput.unlocker">
-          <tr>
-            <th colspan="3">Condition</th>
-          </tr>
-        </thead>
-        <tbody v-if="bsInput.unlocker">
-          <tr>
-            <td>Publickey</td>
-            <td>
-              {{ bsInput.unlocker.condition.publickey }}
-            </td>
-          </tr>
-        </tbody>
-        <thead v-if="bsInput.unlocker">
-          <tr>
-            <th colspan="3">Fulfillment</th>
-          </tr>
-        </thead>
-        <tbody v-if="bsInput.unlocker">
-          <tr>
-            <td>Signature</td>
-            <td>
-              {{ bsInput.unlocker.fulfillment.signature }}
-            </td>
+            <td>{{ bsInput.signature }}</td>
           </tr>
         </tbody>
       </table>
@@ -246,13 +167,13 @@
             <td>ID</td>
             <td
               class="clickable"
-              v-on:click="routeToHashPage(blockStakeOutputIds[index])"
+              v-on:click="routeToHashPage(bsOut.id)"
             >
-              {{ blockStakeOutputIds[index] }}
+              {{ bsOut.id }}
             </td>
           </tr>
 
-          <tr v-if="isLegacy">
+          <tr>
             <td>Address</td>
             <td
               class="clickable"
@@ -261,21 +182,8 @@
               {{ bsOut.unlockhash }}
             </td>
           </tr>
-          <tr v-else>
-            <td>Address</td>
-            <td
-              class="clickable"
-              v-on:click="routeToHashPage(bsOut.condition.data.unlockhash)"
-            >
-              {{ bsOut.condition.data.unlockhash }}
-            </td>
-          </tr>
 
-          <tr v-if="isLegacy">
-            <td>Value</td>
-            <td>{{ bsOut.value }}</td>
-          </tr>
-          <tr v-else>
+          <tr>
             <td>Value</td>
             <td>{{ bsOut.value }}</td>
           </tr>
@@ -306,42 +214,22 @@
             </td>
           </tr>
 
-          <tr v-if="isLegacy">
+          <tr>
             <td>Address</td>
             <td
               class="clickable"
-              v-on:click="routeToHashPage(coinInputsOutputs[index].unlockhash)"
+              v-on:click="routeToHashPage(coinInput.unlockhash)"
             >
-              {{ coinInputsOutputs[index].unlockhash }}
-            </td>
-          </tr>
-          <tr v-else>
-            <td>Address</td>
-            <td
-              class="clickable"
-              v-on:click="routeToHashPage(coinInputsOutputs[index].unlockhash)"
-            >
-              {{ coinInputsOutputs[index].condition.data.unlockhash }}
+              {{ coinInput.unlockhash }}
             </td>
           </tr>
 
-          <tr v-if="isLegacy">
+          <tr>
             <td>Value</td>
             <td>
               {{
                 toLocalDecimalNotation(
-                  coinInputsOutputs[index].value / precision
-                )
-              }}
-              {{ unit }}
-            </td>
-          </tr>
-          <tr v-else>
-            <td>Value</td>
-            <td>
-              {{
-                toLocalDecimalNotation(
-                  coinInputsOutputs[index].value / precision
+                  coinInput.value / precision
                 )
               }}
               {{ unit }}
@@ -349,63 +237,23 @@
           </tr>
         </tbody>
 
-        <thead v-if="coinInput.fulfillment">
+        <thead>
           <tr>
             <th colspan="3">Fulfillment</th>
           </tr>
         </thead>
-        <tbody v-if="coinInput.fulfillment">
+        <tbody>
           <tr>
             <td>Type</td>
-            <td>{{ coinInput.fulfillment.type }}</td>
+            <td>{{ coinInput.type }}</td>
           </tr>
           <tr>
             <td>Publickey</td>
-            <td>{{ coinInput.fulfillment.data.publickey }}</td>
+            <td>{{ coinInput.publickey }}</td>
           </tr>
           <tr>
             <td>Signature</td>
-            <td>{{ coinInput.fulfillment.data.signature }}</td>
-          </tr>
-        </tbody>
-
-        <thead v-if="coinInput.unlocker">
-          <tr>
-            <th colspan="3">Unlocker</th>
-          </tr>
-        </thead>
-        <tbody v-if="coinInput.unlocker">
-          <tr>
-            <td>Unlock Type</td>
-            <td>
-              {{ coinInput.unlocker.type }}
-            </td>
-          </tr>
-        </tbody>
-        <thead v-if="coinInput.unlocker">
-          <tr>
-            <th colspan="3">Condition</th>
-          </tr>
-        </thead>
-        <tbody v-if="coinInput.unlocker">
-          <tr>
-            <td>Publickey</td>
-            <td>
-              {{ coinInput.unlocker.condition.publickey }}
-            </td>
-          </tr>
-        </tbody>
-        <thead v-if="coinInput.unlocker">
-          <tr>
-            <th colspan="3">Fulfillment</th>
-          </tr>
-        </thead>
-        <tbody v-if="coinInput.unlocker">
-          <tr>
-            <td>Signature</td>
-            <td>
-              {{ coinInput.unlocker.fulfillment.signature }}
-            </td>
+            <td>{{ coinInput.signature }}</td>
           </tr>
         </tbody>
       </table>
@@ -425,13 +273,13 @@
               <td>ID</td>
               <td
                 class="clickable"
-                v-on:click="routeToHashPage(coinOutputIds[index])"
+                v-on:click="routeToHashPage(coinOut.id)"
               >
-                {{ coinOutputIds[index] }}
+                {{ coinOut.id }}
               </td>
             </tr>
 
-            <tr v-if="isLegacy">
+            <tr >
               <td>Address</td>
               <td
                 class="clickable"
@@ -440,30 +288,15 @@
                 {{ coinOut.unlockhash }}
               </td>
             </tr>
-            <tr v-else>
-              <td>Address</td>
-              <td
-                class="clickable"
-                v-on:click="routeToHashPage(coinOut.condition.data.unlockhash)"
-              >
-                {{ coinOut.condition.data.unlockhash }}
+
+            <tr >
+              <td>Value</td>
+              <td>
+                {{ toLocalDecimalNotation(coinOut.value / precision) }}
+                {{ unit }}
               </td>
             </tr>
 
-            <tr v-if="isLegacy">
-              <td>Value</td>
-              <td>
-                {{ toLocalDecimalNotation(coinOut.value / precision) }}
-                {{ unit }}
-              </td>
-            </tr>
-            <tr v-else>
-              <td>Value</td>
-              <td>
-                {{ toLocalDecimalNotation(coinOut.value / precision) }}
-                {{ unit }}
-              </td>
-            </tr>
           </tbody>
         </table>
 
@@ -676,6 +509,9 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
 import axios from "axios";
 import { API_URL, PRECISION, UNIT } from "../../common/config";
+import { Parser } from "rivine-ts-types";
+import * as types from "rivine-ts-types/lib/types"
+
 import {
   toLocalDecimalNotation,
   formatReadableDate
@@ -715,12 +551,8 @@ export default class TransactionIdHash extends Vue {
   isLoading: boolean = false;
 
   blockStakeOutputs: any = [];
-  blockStakeOutputIds: any = [];
-  blockStakeInputsOutputs: any = [];
   blockStakeInputs: any = [];
   coinOutputs: any = [];
-  coinOutputIds: any = [];
-  coinInputsOutputs: any = [];
   coinInputs: any = [];
 
   isLegacy: boolean = false;
@@ -734,14 +566,12 @@ export default class TransactionIdHash extends Vue {
       const hash = newLocation.params.hash;
       this.$store.dispatch("SET_HASH", hash).then(() => {
         this.fetchExplorerBlock();
-        this.getBlockStakeOutputInputs();
-        this.getCoinOutputInputs();
+        this.formatData();
         this.getTransactionType();
       });
     });
     this.fetchExplorerBlock();
-    this.getBlockStakeOutputInputs();
-    this.getCoinOutputInputs();
+    this.formatData();
     this.getTransactionType();
   }
 
@@ -765,47 +595,14 @@ export default class TransactionIdHash extends Vue {
     return atob(str);
   }
 
-  getBlockStakeOutputInputs() {
-    const transaction = this.$store.getters.HASH.transaction;
-    const bsOutputs = transaction.rawtransaction.data.blockstakeoutputs || [];
-    const bsInputs = transaction.rawtransaction.data.blockstakeinputs || [];
-    const bsInputsOutputs = transaction.blockstakeinputoutputs || [];
-    const bsOutputIds = transaction.blockstakeoutputids || [];
-
-    if (bsOutputs) {
-      bsOutputs.forEach((bsout: any) => {
-        if (!bsout.condition) {
-          this.isLegacy = true;
-        }
-      });
-    }
-
-    this.blockStakeOutputs = bsOutputs;
-    this.blockStakeInputs = bsInputs;
-    this.blockStakeInputsOutputs = bsInputsOutputs;
-    this.blockStakeOutputIds = bsOutputIds;
+  formatData () {
+    // const x = FormatAPIResponse(this.$store.getters.HASH);
+    // this.blockStakeOutputs = x.rawdata.blockstakeOutputs;
+    // this.blockStakeInputs = x.rawdata.blockstakeInputs;
+    // this.coinOutputs = x.rawdata.coinOutputs;
+    // this.coinInputs = x.rawdata.coinInputs;
   }
 
-  getCoinOutputInputs() {
-    const transaction = this.$store.getters.HASH.transaction;
-    const coinOutputs = transaction.rawtransaction.data.coinoutputs || [];
-    const coinInputs = transaction.rawtransaction.data.coininputs || [];
-    const coinInputsOutputs = transaction.coininputoutputs || [];
-    const coinOutputIds = transaction.coinoutputids || [];
-
-    if (coinOutputs) {
-      coinOutputs.forEach((bsout: any) => {
-        if (!bsout.condition) {
-          this.isLegacy = true;
-        }
-      });
-    }
-
-    this.coinOutputs = coinOutputs;
-    this.coinOutputIds = coinOutputIds;
-    this.coinInputs = coinInputs;
-    this.coinInputsOutputs = coinInputsOutputs;
-  }
 
   fetchExplorerBlock() {
     // Call explorer for transaction fee payouts
