@@ -1,8 +1,7 @@
 import { API_URL } from "@/common/config";
 import axios from "axios";
 import router from "../../router";
-import { Parser } from "rivine-ts-types";
-import { Response, Wallet, Transaction, Block, BlockstakeOutputInfo, CoinOutputInfo } from "rivine-ts-types/lib/types"
+import { Response, Parser } from "rivine-ts-types"
 import { PRECISION } from "../../common/config";
 
 const parser: Parser = new Parser(PRECISION)

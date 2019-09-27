@@ -1,7 +1,8 @@
 import { PRECISION } from "./config";
-import { Condition, MultisignatureCondition } from 'rivine-ts-types/lib/conditionTypes';
-import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition } from "rivine-ts-types/lib/conditionTypes"
-import { BlockstakeOutputInfo, CoinOutputInfo } from 'rivine-ts-types/lib/types';
+import {
+  BlockstakeOutputInfo, CoinOutputInfo, ConditionType,
+  UnlockhashCondition, AtomicSwapCondition, TimelockCondition, Condition, MultisignatureCondition
+} from 'rivine-ts-types';
 
 export function toLocalDecimalNotation(x: number) {
   if (!x) return;

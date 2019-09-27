@@ -158,8 +158,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
 import { PRECISION, UNIT } from "../../common/config";
-import { CoinOutputInfo } from "rivine-ts-types/lib/types"
-import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition } from "rivine-ts-types/lib/conditionTypes"
+import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition, CoinOutputInfo } from "rivine-ts-types"
 import { getUnlockHash } from "../../common/helpers";
 
 import {

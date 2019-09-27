@@ -75,7 +75,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapState } from "vuex";
-import { BlockstakeOutputInfo } from 'rivine-ts-types/lib/types';
+import { BlockstakeOutputInfo } from 'rivine-ts-types';
 import { getUnlockHash } from "../../common/helpers";
 
 @Component({
