@@ -28,8 +28,15 @@
       <UnlockHash />
     </div>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
-      <TransactionIdHash />
+    <!-- <div v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
+      <DefaultTransaction v-bind="this.$store.getters.HASH" />
+    </div> -->
+
+    <!-- <div v-else-if="this.$store.getters.HASH.getTransactionType() === transactionType.DefaultTransaction">
+      <DefaultTransaction :transaction="this.$store.getters.HASH" />
+    </div> -->
+    <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
+      <Transaction :transaction="this.$store.getters.HASH" />
     </div>
   </div>
 </template>
@@ -39,10 +46,11 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import BlockstakeOutputHash from "./HashTypes/BlockstakeOutputHash.vue";
 import CoinOutputHash from "./HashTypes/CoinOutputHash.vue";
 import UnlockHash from "./HashTypes/UnlockHash.vue";
-import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
+// import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
+import Transaction from "./Transactions/Transaction.vue";
 import Navigation from "../components/Navigation.vue";
 import Search from "../components/Search.vue";
-import { ResponseType } from "rivine-ts-types/lib/types"
+import { ResponseType, TransactionType } from "rivine-ts-types"
 
 @Component({
   name: "Hash",
@@ -50,7 +58,9 @@ import { ResponseType } from "rivine-ts-types/lib/types"
     BlockstakeOutputHash,
     CoinOutputHash,
     UnlockHash,
-    TransactionIdHash,
+    // TransactionIdHash,
+    // DefaultTransaction,
+    Transaction,
     Navigation,
     Search
   },
@@ -63,6 +73,7 @@ import { ResponseType } from "rivine-ts-types/lib/types"
 export default class Hash extends Vue {
   loading: boolean = false;
   responseType = ResponseType;
+  transactionType = TransactionType;
 
   created() {
     if (!this.$route.params.hash) {

@@ -387,8 +387,7 @@
       class="tx-table"
       v-if="
         this.$store.getters.HASH.transaction.rawtransaction.data.arbitrarydata
-      "
-    >
+      ">
       <h3>Arbitrary Data</h3>
       <table class="ui celled table">
         <tbody>
@@ -467,10 +466,7 @@
       </table>
     </div>
 
-    <div
-      class="tx-table"
-      v-if="feepayoutId !== '' && version !== 'Condition Update Transaction'"
-    >
+    <div class="tx-table" v-if="feepayoutId !== '' && version !== 'Condition Update Transaction'">
       <h3>Transaction Fee Payouts</h3>
       <table class="ui celled table">
         <tbody>
