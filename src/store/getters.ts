@@ -11,6 +11,6 @@ const getters = {
    * Transactions
    */
   TRANSACTIONS: (state: any) => state.transactions.transactions
-};
+}
 
-export default getters;
+export default getters

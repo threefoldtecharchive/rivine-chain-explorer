@@ -1,11 +1,12 @@
 {
-  "name": "tfchain-explore",
+  "name": "tfchain-explorer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "npx --max-old-space-size=8192 vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "tslint -p .",
+    "fix": "tslint -p . --fix"
   },
   "dependencies": {
     "@types/lodash": "^4.14.136",
@@ -36,23 +37,9 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "tslint-config-standard": "^8.0.1",
     "typescript": "^3.4.3",
     "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier",
-      "@vue/typescript"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    }
   },
   "postcss": {
     "plugins": {
