@@ -1,17 +1,14 @@
 <template>
-  <div>
-    <tr>
-      <td>Address</td>
-      <td
-        class="clickable"
-        v-on:click="routeToHashPage(condition.unlockhash)"
-      >{{ condition.unlockhash }}</td>
-    </tr>
-  </div>
+  <tr>
+    <td>Address</td>
+    <td
+      class="clickable"
+      v-on:click="routeToHashPage(condition.unlockhash)"
+    >{{ condition.unlockhash }}</td>
+  </tr>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { PRECISION, UNIT } from "../../common/config";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   props: ["condition"],
@@ -23,6 +20,7 @@ import { PRECISION, UNIT } from "../../common/config";
     }
   }
 })
+// Export as class because Vue will understand this.$store etc..
 export default class UnlockhashCondition extends Vue {}
 </script>
 <style scoped>

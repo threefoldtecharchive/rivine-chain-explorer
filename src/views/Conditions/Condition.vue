@@ -1,35 +1,30 @@
 <template>
-  <div>
-    <div v-if="condition === conditionType.UnlockhashCondition">
-      <UnlockhashCondition v-bind="condition" />
-    </div>
-    <div v-if="condition === conditionType.AtomicSwapCondition">
-      <MultisignatureCondition v-bind="condition" />
-    </div>
-    <div v-if="condition === conditionType.MultisignatureCondition">
-      <AtomicSwapCondition v-bind="condition" />
-    </div>
-  </div>
+  <Fragment>
+    <UnlockhashCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.UnlockhashCondition" />
+    <MultisignatureCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.AtomicSwapCondition"/>
+    <AtomicSwapCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.MultisignatureCondition" />
+  </Fragment>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { ConditionType } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
 import UnlockhashCondition from "./UnlockhashCondition.vue";
 import MultisignatureCondition from "./MultisignatureCondition.vue";
 import AtomicSwapCondition from "./AtomicSwapCondition.vue";
+import { Fragment } from 'vue-fragment'
 
 export default {
   data () {
     return {
-      conditionType: ConditionType
+      ConditionType
     }
   },
   props: ["condition"],
   components: {
     UnlockhashCondition,
     MultisignatureCondition,
-    AtomicSwapCondition
+    AtomicSwapCondition,
+    Fragment
   },
   name: "condition"
 }

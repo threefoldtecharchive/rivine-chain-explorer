@@ -25,9 +25,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { UnlockhashCondition, Currency } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   props: ["condition"],
@@ -39,6 +37,7 @@ import { PRECISION, UNIT } from "../../common/config";
     }
   }
 })
+// Export as class because Vue will understand this.$store etc..
 export default class MultisigCondition extends Vue {}
 </script>
 <style scoped>

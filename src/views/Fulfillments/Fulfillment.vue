@@ -1,39 +1,31 @@
 <template>
-  <div>
-    <div v-if="fulfillment.getFulfillmentTypeAsString() === fulfillmentType.SingleSignatureFulfillment">
-      <SingleSignatureFulfillment :fulfillment="fulfillment" />
-    </div>
-    <div v-if="fulfillment.getFulfillmentTypeAsString() === fulfillmentType.AtomicSwapFulfillment">
-      <AtomicSwapFulfillment :fulfillment="fulfillment" />
-    </div>
-    <div v-if="fulfillment.getFulfillmentTypeAsString() === fulfillmentType.MultisignatureFulfillment">
-      <MultiSigFulfillment :fulfillment="fulfillment" />
-    </div>
-  </div>
+  <Fragment>
+    <SingleSignatureFulfillment :fulfillment="fulfillment" v-if="fulfillment.getFulfillmentType() === FulfillmentType.SingleSignatureFulfillment"/>
+    <AtomicSwapFulfillment :fulfillment="fulfillment" v-if="fulfillment.getFulfillmentType() === FulfillmentType.AtomicSwapFulfillment"/>
+    <MultiSigFulfillment :fulfillment="fulfillment" v-if="fulfillment.getFulfillmentType() === FulfillmentType.MultisignatureFulfillment"/>
+  </Fragment>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { FulfillmentType } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
 import SingleSignatureFulfillment from "./SingleSignatureFulfillment.vue";
 import AtomicSwapFulfillment from "./AtomicSwapFulfillment.vue";
 import MultiSigFulfillment from "./MultiSigFulfillment.vue";
+import { Fragment } from 'vue-fragment'
 
 export default {
   data () {
     return {
-      fulfillmentType: FulfillmentType
+      FulfillmentType
     }
   },
   props: ["fulfillment"],
   components: {
     SingleSignatureFulfillment,
     AtomicSwapFulfillment,
-    MultiSigFulfillment
+    MultiSigFulfillment,
+    Fragment
   },
-  name: "Fulfillment",
-  created () {
-    console.log(this.fulfillment)
-  }
+  name: "Fulfillment"
 }
 </script>

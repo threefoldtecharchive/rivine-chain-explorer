@@ -15,18 +15,19 @@
           >{{ input.parentid }}</td>
         </tr>
 
-        <tr>
+        <Condition :condition="input.parentOutput.condition" />
+        <!-- <tr>
           <td>Address</td>
           <td
             class="clickable"
             v-on:click="routeToHashPage(input.unlockhash)">
               {{ input.unlockhash }}
           </td>
-        </tr>
+        </tr> -->
 
         <tr>
           <td>Value</td>
-          <td>{{ renderValue(input.value) }}</td>
+          <td>{{ renderValue(input.parentOutput.value) }}</td>
         </tr>
       </tbody>
     </table>
@@ -40,12 +41,14 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { UnlockhashCondition, Currency } from "rivine-ts-types";
 import { PRECISION, UNIT } from "../../common/config";
 import Fulfillment from "../Fulfillments/Fulfillment.vue";
+import Condition from "../Conditions/Condition.vue";
 
 @Component({
   props: ["input"],
   name: "Input",
   components: {
-    Fulfillment
+    Fulfillment,
+    Condition
   },
   methods: {
     routeToHashPage: function(val) {

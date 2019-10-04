@@ -117,7 +117,7 @@ import {
   formatReadableDate
 } from "../../common/helpers";
 
-export default {
+@Component({
   props: ["transaction"],
   name: "DefaultTransaction",
   components: {
@@ -133,11 +133,9 @@ export default {
       return `${value} ${UNIT}`;
     },
     toLocalDecimalNotation: toLocalDecimalNotation
-  },
-  created () {
-    console.log(this.transaction)
   }
-}
+})
+export default class DefaultTransaction extends Vue {}
 </script>
 <style scoped>
 .clickable {

@@ -42,9 +42,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { UnlockhashCondition, Currency } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
+import { Component, Vue } from "vue-property-decorator";
 import { formatReadableDate } from '../../common/helpers';
 
 @Component({
@@ -55,9 +53,10 @@ import { formatReadableDate } from '../../common/helpers';
       this.$store.dispatch("SET_HASH", val);
       this.$router.push("/hashes/" + val);
     },
-    formatReadableDate: formatReadableDate
+    formatReadableDate
   }
 })
+// Export as class because Vue will understand this.$store etc..
 export default class AtomicSwapOutputTable extends Vue {}
 </script>
 <style scoped>
