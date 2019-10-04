@@ -46,7 +46,6 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import BlockstakeOutputHash from "./HashTypes/BlockstakeOutputHash.vue";
 import CoinOutputHash from "./HashTypes/CoinOutputHash.vue";
 import UnlockHash from "./HashTypes/UnlockHash.vue";
-// import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
 import Transaction from "./Transactions/Transaction.vue";
 import Navigation from "../components/Navigation.vue";
 import Search from "../components/Search.vue";
@@ -58,8 +57,6 @@ import { ResponseType, TransactionType } from "rivine-ts-types"
     BlockstakeOutputHash,
     CoinOutputHash,
     UnlockHash,
-    // TransactionIdHash,
-    // DefaultTransaction,
     Transaction,
     Navigation,
     Search

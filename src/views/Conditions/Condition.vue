@@ -1,8 +1,8 @@
 <template>
   <Fragment>
     <UnlockhashCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.UnlockhashCondition" />
-    <MultisignatureCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.AtomicSwapCondition"/>
-    <AtomicSwapCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.MultisignatureCondition" />
+    <MultisignatureCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.MultisignatureCondition"/>
+    <AtomicSwapCondition :condition="condition" v-if="condition.getConditionType() === ConditionType.AtomicSwapCondition" />
   </Fragment>
 </template>
 <script lang="ts">

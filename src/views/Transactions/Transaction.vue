@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div v-if="transaction.getTransactionType() === transactionType.DefaultTransaction">
-      <DefaultTransaction :transaction="transaction" />
-    </div>
+      <DefaultTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"/>
+      <MinterDefinitionTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"/>
+      <CoinCreationTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"/>
   </div>
 </template>
 <script lang="ts">
@@ -10,6 +10,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { TransactionType } from "rivine-ts-types";
 import { PRECISION, UNIT } from "../../common/config";
 import DefaultTransaction from "./DefaultTransaction.vue";
+import MinterDefinitionTransaction from "./MinterDefinitionTransaction.vue";
+import CoinCreationTransaction from "./CoinCreationTransaction.vue";
 
 export default {
   data () {
@@ -19,7 +21,9 @@ export default {
   },
   props: ["transaction"],
   components: {
-    DefaultTransaction
+    DefaultTransaction,
+    MinterDefinitionTransaction,
+    CoinCreationTransaction
   },
   name: "Transaction"
 }

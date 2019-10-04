@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2 class="tx-table">Transaction</h2>
     <table class="ui celled table">
       <thead>
         <tr>
@@ -68,6 +69,7 @@
       <div
         v-for="(input, index) in transaction.blockStakeInputs"
         v-bind:key="index"
+        class="tx-table"
       >
         <Input :input="input" />
       </div>
@@ -79,6 +81,7 @@
       <div
         v-for="(output, index) in transaction.blockStakeOutputs"
         v-bind:key="index"
+        class="tx-table"
       >
         <Output :output="output" />
       </div>
@@ -89,6 +92,7 @@
       <div
         v-for="(input, index) in transaction.coinInputs"
         v-bind:key="index"
+        class="tx-table"
       >
         <Input :input="input" />
       </div>
@@ -100,6 +104,7 @@
       <div
         v-for="(output, index) in transaction.coinOutputs"
         v-bind:key="index"
+        class="tx-table"
       >
         <Output :output="output" />
       </div>
@@ -107,15 +112,11 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { UnlockhashCondition, Currency } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
+import { Component, Vue } from "vue-property-decorator";
+import { UNIT } from "../../common/config";
 import Input from "../Common/Input.vue"
 import Output from "../Common/Output.vue"
-import {
-  toLocalDecimalNotation,
-  formatReadableDate
-} from "../../common/helpers";
+import { toLocalDecimalNotation } from "../../common/helpers";
 
 @Component({
   props: ["transaction"],
@@ -129,10 +130,7 @@ import {
       this.$store.dispatch("SET_HASH", val);
       this.$router.push("/hashes/" + val);
     },
-    renderValue: function(value: any) {
-      return `${value} ${UNIT}`;
-    },
-    toLocalDecimalNotation: toLocalDecimalNotation
+    toLocalDecimalNotation
   }
 })
 export default class DefaultTransaction extends Vue {}
@@ -142,5 +140,10 @@ export default class DefaultTransaction extends Vue {}
   cursor: pointer;
   text-decoration: underline;
   color: blue;
+}
+.tx-table {
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>

@@ -10,7 +10,7 @@
         <td>Type</td>
         <td>{{ fulfillment.type }}</td>
       </tr>
-      <div v-for="(keypair, index) in fulfillment.pairs" v-bind:key="index">
+      <Fragment v-for="(keypair, index) in fulfillment.pairs" v-bind:key="index">
         <tr>
           <td>Publickey #{{ index + 1 }}</td>
           <td>{{ keypair.publickey }}</td>
@@ -19,12 +19,16 @@
           <td>Signature #{{ index + 1 }}</td>
           <td>{{ keypair.signature }}</td>
         </tr>
-      </div>
+      </Fragment>
     </tbody>
   </table>
 </template>
 <script lang="ts">
+import { Fragment } from 'vue-fragment'
 export default {
-  props: ["fulfillment"]
+  props: ["fulfillment"],
+  components: {
+    Fragment
+  }
 }
 </script>
