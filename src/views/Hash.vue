@@ -24,17 +24,9 @@
       <CoinOutputHash />
     </div>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'unlockhash'">
-      <UnlockHash />
+    <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
+      <Wallet :wallet="this.$store.getters.HASH" />
     </div>
-
-    <!-- <div v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
-      <DefaultTransaction v-bind="this.$store.getters.HASH" />
-    </div> -->
-
-    <!-- <div v-else-if="this.$store.getters.HASH.getTransactionType() === transactionType.DefaultTransaction">
-      <DefaultTransaction :transaction="this.$store.getters.HASH" />
-    </div> -->
     <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
       <Transaction :transaction="this.$store.getters.HASH" />
     </div>
@@ -43,10 +35,10 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
-import CoinOutputHash from './HashTypes/CoinOutputHash.vue'
-import UnlockHash from './HashTypes/UnlockHash.vue'
+import BlockstakeOutputHash from '../components/Outputs/BlockstakeOutputHash.vue'
+import CoinOutputHash from '../components/Outputs/CoinOutputHash.vue'
 import Transaction from '../components/Transactions/Transaction.vue'
+import Wallet from '../components/Wallets/Wallet.vue'
 import Navigation from '../components/Common/Navigation.vue'
 import Search from '../components/Common/Search.vue'
 import { ResponseType, TransactionType } from 'rivine-ts-types'
@@ -56,8 +48,8 @@ import { ResponseType, TransactionType } from 'rivine-ts-types'
   components: {
     BlockstakeOutputHash,
     CoinOutputHash,
-    UnlockHash,
     Transaction,
+    Wallet,
     Navigation,
     Search
   },
