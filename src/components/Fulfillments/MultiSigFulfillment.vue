@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Fragment } from 'vue-fragment'
 export default {
-  props: ["fulfillment"],
+  props: ['fulfillment'],
   components: {
     Fragment
   }

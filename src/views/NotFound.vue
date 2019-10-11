@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import Navigation from "@/components/Navigation.vue";
+import { Vue, Component } from 'vue-property-decorator'
+import Navigation from '../components/Common/Navigation.vue'
 
 @Component({
   components: {

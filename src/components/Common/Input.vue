@@ -37,26 +37,26 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { UnlockhashCondition, Currency } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
-import Fulfillment from "../Fulfillments/Fulfillment.vue";
-import Condition from "../Conditions/Condition.vue";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { UnlockhashCondition, Currency } from 'rivine-ts-types'
+import { PRECISION, UNIT } from '../../common/config'
+import Fulfillment from '../Fulfillments/Fulfillment.vue'
+import Condition from '../Conditions/Condition.vue'
 
 @Component({
-  props: ["input"],
-  name: "Input",
+  props: ['input'],
+  name: 'Input',
   components: {
     Fulfillment,
     Condition
   },
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
-    renderValue: function(value: any) {
-      return `${value} ${UNIT}`;
+    renderValue: function (value: any) {
+      return `${value} ${UNIT}`
     }
   }
 })

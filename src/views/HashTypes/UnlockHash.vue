@@ -461,117 +461,117 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapState } from "vuex";
-import { PRECISION, UNIT } from "../../common/config";
-import { flatten, toArray } from "lodash";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { mapState } from 'vuex'
+import { PRECISION, UNIT } from '../../common/config'
+import { flatten, toArray } from 'lodash'
 import {
   toLocalDecimalNotation,
   formatReadableDate
-} from "../../common/helpers";
+} from '../../common/helpers'
 
 @Component({
-  name: "UnlockHash",
+  name: 'UnlockHash',
   watch: {
-    "$route.params.block"(val) {
+    '$route.params.block' (val) {
       // call the method which loads your initial state
-      this.$store.dispatch("SET_BLOCK_HEIGHT", val);
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
     },
-    "$store.state.block": function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+    '$store.state.block': function () {
+      this.$router.push('/block/' + this.$store.state.block.block.height)
     }
   },
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
-    routeToBlockPage: function(val) {
-      this.$store.dispatch("SET_BLOCK_HEIGHT", val);
-      this.$router.push("/block/" + val);
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
+      this.$router.push('/block/' + val)
     }
   }
 })
 export default class UnlockHash extends Vue {
-  precision = Math.pow(10, PRECISION);
-  unit = UNIT;
-  availableBalance = 0;
-  availableBlockstakeBalance = 0;
-  blockHeight = 0;
-  txid = 0;
-  ucos = [];
-  scos = [];
-  blockCreatorRewardIsSpent = false;
-  blockstakeOutputIsSpent = false;
-  spentMinerPayouts: any = [];
-  unspentMinerPayouts: any = [];
-  spentCoinOutputsBlockCreator = [];
-  spentBlockStakesOutputsBlockCreator = [];
-  unspentBlockStakesOutputsBlockCreator = [];
-  toLocalDecimalNotation = toLocalDecimalNotation;
-  formatReadableDate = formatReadableDate;
-  isAtomicSwap: boolean = false;
-  lastCoinSpent: any = {};
-  lastBsSpent: any = {};
+  precision = Math.pow(10, PRECISION)
+  unit = UNIT
+  availableBalance = 0
+  availableBlockstakeBalance = 0
+  blockHeight = 0
+  txid = 0
+  ucos = []
+  scos = []
+  blockCreatorRewardIsSpent = false
+  blockstakeOutputIsSpent = false
+  spentMinerPayouts: any = []
+  unspentMinerPayouts: any = []
+  spentCoinOutputsBlockCreator = []
+  spentBlockStakesOutputsBlockCreator = []
+  unspentBlockStakesOutputsBlockCreator = []
+  toLocalDecimalNotation = toLocalDecimalNotation
+  formatReadableDate = formatReadableDate
+  isAtomicSwap: boolean = false
+  lastCoinSpent: any = {}
+  lastBsSpent: any = {}
 
-  created() {
-    window.scrollTo(0, 0);
+  created () {
+    window.scrollTo(0, 0)
 
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
-      const hash = newLocation.params.hash;
-      this.$store.dispatch("SET_HASH", hash).then(() => {
-        this.calculateTransactionList();
-        this.calculateTransactionListForBlockCreator();
-        this.checkIfAtomicSwap();
-      });
-    });
+      const hash = newLocation.params.hash
+      this.$store.dispatch('SET_HASH', hash).then(() => {
+        this.calculateTransactionList()
+        this.calculateTransactionListForBlockCreator()
+        this.checkIfAtomicSwap()
+      })
+    })
 
-    this.calculateTransactionList();
-    this.calculateTransactionListForBlockCreator();
-    this.checkIfAtomicSwap();
+    this.calculateTransactionList()
+    this.calculateTransactionListForBlockCreator()
+    this.checkIfAtomicSwap()
   }
 
-  checkIfAtomicSwap() {
-    const txs = this.$store.getters.HASH.transactions;
-    if (!txs) return;
+  checkIfAtomicSwap () {
+    const txs = this.$store.getters.HASH.transactions
+    if (!txs) return
 
     const idx = txs.findIndex((tx: any) => {
-      if (!tx.rawtransaction.data.coinoutputs) return;
+      if (!tx.rawtransaction.data.coinoutputs) return
       return (
         tx.rawtransaction.data.coinoutputs.findIndex((co: any) => {
-          if (!co.condition) return;
-          return co.condition.data.hashedsecret;
+          if (!co.condition) return
+          return co.condition.data.hashedsecret
         }) !== -1
-      );
-    });
+      )
+    })
     if (idx !== -1) {
-      this.isAtomicSwap = true;
+      this.isAtomicSwap = true
     }
   }
 
-  calculateTransactionList() {
-    const hashtype = this.$store.getters.HASH.hashtype;
-    if (hashtype === "coinoutputid") return;
-    if (hashtype === "blockstakeoutputid") {
-      return this.calculateBlockstakeOutputSpent();
+  calculateTransactionList () {
+    const hashtype = this.$store.getters.HASH.hashtype
+    if (hashtype === 'coinoutputid') return
+    if (hashtype === 'blockstakeoutputid') {
+      return this.calculateBlockstakeOutputSpent()
     }
 
-    const address = this.$route.params.hash;
-    const scos: any = [];
-    const transactions = this.$store.getters.HASH.transactions;
-    const blocks = this.$store.getters.HASH.blocks;
-    if (!transactions) return this.calculateCoinoutSpentForBlockCreatorReward();
+    const address = this.$route.params.hash
+    const scos: any = []
+    const transactions = this.$store.getters.HASH.transactions
+    const blocks = this.$store.getters.HASH.blocks
+    if (!transactions) return this.calculateCoinoutSpentForBlockCreatorReward()
 
     // If blocks field is populated then the address is probably the address of a blockcreator
-    if (blocks) return this.calculateTransactionListForBlockCreator();
+    if (blocks) return this.calculateTransactionListForBlockCreator()
 
     const ucos = transactions
       .map((tx: any, index: number) => {
         const ucoIndex = tx.coinoutputunlockhashes.findIndex(
           (uh: any) => uh === address
-        );
-        const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex];
+        )
+        const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex]
         if (coinOutput) {
           return {
             ...coinOutput,
@@ -579,178 +579,178 @@ export default class UnlockHash extends Vue {
             blockHeight: tx.height,
             txid: tx.id,
             txidx: index
-          };
+          }
         }
       })
-      .filter(Boolean);
+      .filter(Boolean)
     transactions.forEach((tx: any) => {
-      if (!tx.rawtransaction.data.coininputs) return;
+      if (!tx.rawtransaction.data.coininputs) return
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci: any) => {
         const existsInUcosIndex: number = ucos.findIndex(
           (uco: any) => uco.coinOutputId === ci.parentid
-        );
+        )
         if (existsInUcosIndex > -1) {
-          scos.push(ucos[existsInUcosIndex]);
-          ucos.splice(existsInUcosIndex, 1);
+          scos.push(ucos[existsInUcosIndex])
+          ucos.splice(existsInUcosIndex, 1)
         }
-      });
-    });
-    let sum = 0;
+      })
+    })
+    let sum = 0
     ucos.map((uco: any) => {
-      sum += parseInt(uco.value);
-    });
+      // sum += parseInt(uco.value)
+    })
 
-    this.scos = scos;
-    this.ucos = ucos;
-    this.availableBalance = sum / this.precision;
-    this.txid = ucos[0].txid;
-    this.blockHeight = ucos[0].blockHeight;
+    this.scos = scos
+    this.ucos = ucos
+    this.availableBalance = sum / this.precision
+    this.txid = ucos[0].txid
+    this.blockHeight = ucos[0].blockHeight
   }
 
-  calculateCoinoutSpentForBlockCreatorReward() {
-    const address = this.$route.params.hash;
-    const scos: any = [];
-    const transactions = this.$store.getters.HASH.transactions;
+  calculateCoinoutSpentForBlockCreatorReward () {
+    const address = this.$route.params.hash
+    const scos: any = []
+    const transactions = this.$store.getters.HASH.transactions
     if (!transactions) {
-      this.blockCreatorRewardIsSpent = false;
-      return;
+      this.blockCreatorRewardIsSpent = false
+      return
     }
 
     const ucos = transactions.map((tx: any) => {
       const ucoIndex = tx.coinoutputunlockhashes.findIndex(
         (uh: any) => uh === address
-      );
-      const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex];
+      )
+      const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex]
       if (coinOutput) {
         return {
           ...coinOutput,
           coinOutputId: tx.coinoutputids[ucoIndex],
           blockHeight: tx.height,
           txid: tx.id
-        };
+        }
       }
-    });
+    })
     transactions.forEach((tx: any) => {
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci: any) => {
         const existsInUcosIndex: number = ucos.findIndex(
           (uco: any) => uco.coinOutputId === ci.parentid
-        );
+        )
         if (existsInUcosIndex > -1) {
-          scos.push(ucos[existsInUcosIndex]);
-          ucos.splice(existsInUcosIndex, 1);
+          scos.push(ucos[existsInUcosIndex])
+          ucos.splice(existsInUcosIndex, 1)
         }
-      });
-    });
-    this.blockCreatorRewardIsSpent = scos.length > 0;
+      })
+    })
+    this.blockCreatorRewardIsSpent = scos.length > 0
   }
 
-  calculateBlockstakeOutputSpent() {
-    const address = this.$route.params.hash;
-    const scos: any = [];
-    const transactions = this.$store.getters.HASH.transactions;
+  calculateBlockstakeOutputSpent () {
+    const address = this.$route.params.hash
+    const scos: any = []
+    const transactions = this.$store.getters.HASH.transactions
     if (!transactions) {
-      this.blockstakeOutputIsSpent = false;
+      this.blockstakeOutputIsSpent = false
     }
 
     const bos = transactions.map((tx: any) => {
       const boindex = tx.blockstakeoutputids.findIndex(
         (id: any) => id === address
-      );
+      )
       if (boindex) {
-        return tx;
+        return tx
       }
-    });
+    })
 
-    this.blockstakeOutputIsSpent = bos.length > 0;
+    this.blockstakeOutputIsSpent = bos.length > 0
   }
 
-  calculateTransactionListForBlockCreator() {
-    const address = this.$route.params.hash;
-    let spentMinerPayouts: any = [];
-    const blocks = this.$store.getters.HASH.blocks;
-    const transactions = this.$store.getters.HASH.transactions;
-    if (!blocks || !transactions) return;
+  calculateTransactionListForBlockCreator () {
+    const address = this.$route.params.hash
+    let spentMinerPayouts: any = []
+    const blocks = this.$store.getters.HASH.blocks
+    const transactions = this.$store.getters.HASH.transactions
+    if (!blocks || !transactions) return
 
     const unspentMinerPayouts = flatten(
       blocks.map((block: any) => {
         return block.rawblock.minerpayouts.map((mp: any, index: number) => {
           if (mp.unlockhash === address) {
-            const minerPayout = block.rawblock.minerpayouts[index];
+            const minerPayout = block.rawblock.minerpayouts[index]
             if (minerPayout) {
               return {
                 ...minerPayout,
                 minerPayoutId: block.minerpayoutids[index],
                 blockid: block.blockid,
                 blockHeight: block.height
-              };
+              }
             }
           }
-        });
+        })
       })
-    ).filter(Boolean) as any;
+    ).filter(Boolean) as any
 
     transactions.forEach((tx: any) => {
-      if (!tx.rawtransaction.data.coininputs) return;
+      if (!tx.rawtransaction.data.coininputs) return
       const spentMinerFees = tx.rawtransaction.data.coininputs.map(
         (ci: any) => {
           const existsInUcosIndex: number = unspentMinerPayouts.findIndex(
             (uco: any) => uco.minerPayoutId === ci.parentid
-          );
+          )
           if (existsInUcosIndex > -1) {
-            spentMinerPayouts.push(unspentMinerPayouts[existsInUcosIndex]);
-            unspentMinerPayouts.splice(existsInUcosIndex, 1);
+            spentMinerPayouts.push(unspentMinerPayouts[existsInUcosIndex])
+            unspentMinerPayouts.splice(existsInUcosIndex, 1)
           }
         }
-      );
-    });
-    let sum = 0;
+      )
+    })
+    let sum = 0
     unspentMinerPayouts.map((uco: any) => {
-      sum += parseInt(uco.value);
-    });
+      // sum += parseInt(uco.value)
+    })
 
     const testIndex = unspentMinerPayouts.findIndex(
       (x: any) => x.blockHeight === 328
-    );
-    this.spentMinerPayouts = spentMinerPayouts;
-    this.unspentMinerPayouts = unspentMinerPayouts;
-    this.availableBalance = sum / this.precision;
+    )
+    this.spentMinerPayouts = spentMinerPayouts
+    this.unspentMinerPayouts = unspentMinerPayouts
+    this.availableBalance = sum / this.precision
     this.txid =
-      unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockid : "";
+      unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockid : ''
     this.blockHeight =
-      unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockHeight : 0;
-    this.calculateCoinOutputOutputAppearances();
-    this.calculateBlockStakeOutputOutputAppearances();
+      unspentMinerPayouts.length > 0 ? unspentMinerPayouts[0].blockHeight : 0
+    this.calculateCoinOutputOutputAppearances()
+    this.calculateBlockStakeOutputOutputAppearances()
   }
 
-  calculateCoinOutputOutputAppearances() {
-    const address = this.$route.params.hash;
-    const spentCoinOutputsBlockCreator: any = [];
-    const transactions = this.$store.getters.HASH.transactions;
+  calculateCoinOutputOutputAppearances () {
+    const address = this.$route.params.hash
+    const spentCoinOutputsBlockCreator: any = []
+    const transactions = this.$store.getters.HASH.transactions
 
     const ucos = transactions
       .map((tx: any) => {
-        if (!tx.coinoutputunlockhashes) return;
+        if (!tx.coinoutputunlockhashes) return
         const ucoIndex = tx.coinoutputunlockhashes.findIndex(
           (uh: any) => uh === address
-        );
-        const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex];
+        )
+        const coinOutput = tx.rawtransaction.data.coinoutputs[ucoIndex]
         if (coinOutput) {
           return {
             ...coinOutput,
             coinOutputId: tx.coinoutputids[ucoIndex],
             blockHeight: tx.height,
             txid: tx.id
-          };
+          }
         }
       })
-      .filter(Boolean);
-    let lastCoinSpent: any;
+      .filter(Boolean)
+    let lastCoinSpent: any
     transactions.forEach((tx: any) => {
-      if (!tx.rawtransaction.data.coininputs) return;
+      if (!tx.rawtransaction.data.coininputs) return
       const spentUcos = tx.rawtransaction.data.coininputs.map((ci: any) => {
         const existsInUcosIndex: number = ucos.findIndex(
           (uco: any) => uco.coinOutputId === ci.parentid
-        );
+        )
         if (existsInUcosIndex > -1) {
           // Save last coin spent
           if (lastCoinSpent && lastCoinSpent.height) {
@@ -758,56 +758,56 @@ export default class UnlockHash extends Vue {
               lastCoinSpent = {
                 height: tx.height,
                 txid: tx.id
-              };
+              }
             }
             // if it doesn't exist, initialize it
           } else {
             lastCoinSpent = {
               height: tx.height,
               txid: tx.id
-            };
+            }
           }
 
-          spentCoinOutputsBlockCreator.push(ucos[existsInUcosIndex]);
-          ucos.splice(existsInUcosIndex, 1);
+          spentCoinOutputsBlockCreator.push(ucos[existsInUcosIndex])
+          ucos.splice(existsInUcosIndex, 1)
         }
-      });
-    });
-    this.lastCoinSpent = lastCoinSpent;
-    this.spentCoinOutputsBlockCreator = spentCoinOutputsBlockCreator;
+      })
+    })
+    this.lastCoinSpent = lastCoinSpent
+    this.spentCoinOutputsBlockCreator = spentCoinOutputsBlockCreator
   }
 
-  calculateBlockStakeOutputOutputAppearances() {
-    const address = this.$route.params.hash;
-    const spentBlockStakesOutputsBlockCreator: any = [];
-    const transactions = this.$store.getters.HASH.transactions;
+  calculateBlockStakeOutputOutputAppearances () {
+    const address = this.$route.params.hash
+    const spentBlockStakesOutputsBlockCreator: any = []
+    const transactions = this.$store.getters.HASH.transactions
 
     const ucos = transactions
       .map((tx: any) => {
-        if (!tx.blockstakeunlockhashes) return;
+        if (!tx.blockstakeunlockhashes) return
         const buIndex = tx.blockstakeunlockhashes.findIndex(
           (uh: any) => uh === address
-        );
+        )
         const blockstakeOutput =
-          tx.rawtransaction.data.blockstakeoutputs[buIndex];
+          tx.rawtransaction.data.blockstakeoutputs[buIndex]
         if (blockstakeOutput) {
           return {
             ...blockstakeOutput,
             blockstakeOutputId: tx.blockstakeoutputids[buIndex],
             blockHeight: tx.height,
             txid: tx.id
-          };
+          }
         }
       })
-      .filter(Boolean);
-    let lastBsSpent: any;
+      .filter(Boolean)
+    let lastBsSpent: any
     transactions.forEach((tx: any) => {
-      if (!tx.rawtransaction.data.blockstakeinputs) return;
+      if (!tx.rawtransaction.data.blockstakeinputs) return
       const spentUcos = tx.rawtransaction.data.blockstakeinputs.map(
         (ci: any) => {
           const existsInBusIndex: number = ucos.findIndex(
             (uco: any) => uco.blockstakeOutputId === ci.parentid
-          );
+          )
           if (existsInBusIndex > -1) {
             // Save last bs spent
             if (lastBsSpent && lastBsSpent.height) {
@@ -815,31 +815,31 @@ export default class UnlockHash extends Vue {
                 lastBsSpent = {
                   height: tx.height,
                   txid: tx.id
-                };
+                }
               }
               // if it doesn't exist, initialize it
             } else {
               lastBsSpent = {
                 height: tx.height,
                 txid: tx.id
-              };
+              }
             }
 
-            spentBlockStakesOutputsBlockCreator.push(ucos[existsInBusIndex]);
-            ucos.splice(existsInBusIndex, 1);
+            spentBlockStakesOutputsBlockCreator.push(ucos[existsInBusIndex])
+            ucos.splice(existsInBusIndex, 1)
           }
         }
-      );
-    });
+      )
+    })
 
-    let sum = 0;
+    let sum = 0
     ucos.map((uco: any) => {
-      sum += parseInt(uco.value);
-    });
-    this.availableBlockstakeBalance = sum;
-    this.spentBlockStakesOutputsBlockCreator = spentBlockStakesOutputsBlockCreator;
-    this.unspentBlockStakesOutputsBlockCreator = ucos;
-    this.lastBsSpent = lastBsSpent;
+      sum += parseInt(uco.value)
+    })
+    this.availableBlockstakeBalance = sum
+    this.spentBlockStakesOutputsBlockCreator = spentBlockStakesOutputsBlockCreator
+    this.unspentBlockStakesOutputsBlockCreator = ucos
+    this.lastBsSpent = lastBsSpent
   }
 }
 </script>

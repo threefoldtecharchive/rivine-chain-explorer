@@ -1,13 +1,14 @@
 import { PRECISION } from './config'
 import {
   BlockstakeOutputInfo, CoinOutputInfo, ConditionType,
-  UnlockhashCondition, AtomicSwapCondition, TimelockCondition, Condition, MultisignatureCondition
+  UnlockhashCondition, AtomicSwapCondition, TimelockCondition, Condition,
+  MultisignatureCondition, SingleSignatureFulfillment
 } from 'rivine-ts-types'
 
 export function toLocalDecimalNotation (x: number) {
   if (!x) return
   return x.toLocaleString(navigator.language, {
-    maximumFractionDigits: PRECISION
+    maximumFractionDigits: parseInt(PRECISION.toString(), 10)
   })
 }
 
@@ -33,16 +34,16 @@ export function getUnlockhashFromCondition (condition: Condition): string {
     case ConditionType.NilCondition:
       return ''
     case ConditionType.UnlockhashCondition:
-      const uhCondition = condition
+      const uhCondition = condition as UnlockhashCondition
       return uhCondition.unlockhash
     case ConditionType.AtomicSwapCondition:
-      const atCondition = condition
+      const atCondition = condition as AtomicSwapCondition
       return atCondition.receiver
     case ConditionType.TimelockCondition:
-      const tmCondition = condition
+      const tmCondition = condition as TimelockCondition
       return getUnlockhashFromCondition(tmCondition)
     case ConditionType.MultisignatureCondition:
-      const msCondition = condition
+      const msCondition = condition as MultisignatureCondition
       return msCondition.unlockhashes.join(',')
     default:
       return ''

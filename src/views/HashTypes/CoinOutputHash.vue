@@ -155,75 +155,76 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapState } from "vuex";
-import { PRECISION, UNIT } from "../../common/config";
-import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition, CoinOutputInfo } from "rivine-ts-types"
-import { getUnlockHash } from "../../common/helpers";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { mapState } from 'vuex'
+import { PRECISION, UNIT } from '../../common/config'
+import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition, CoinOutputInfo } from 'rivine-ts-types'
+import { getUnlockHash } from '../../common/helpers'
 
 import {
   toLocalDecimalNotation,
   formatReadableDate
-} from "../../common/helpers";
+} from '../../common/helpers'
 
 @Component({
-  name: "CoinOutputHash",
+  name: 'CoinOutputHash',
   watch: {
-    "$route.params.block"(val) {
+    '$route.params.block' (val) {
       // call the method which loads your initial state
-      this.$store.dispatch("SET_BLOCK_HEIGHT", val);
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
     },
-    "$store.state.block": function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+    '$store.state.block': function () {
+      this.$router.push('/block/' + this.$store.state.block.block.height)
     }
   },
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
-    routeToBlockPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/block/" + val);
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/block/' + val)
     }
   }
 })
 export default class CoinOutputHash extends Vue {
-  precision: number = Math.pow(10, PRECISION);
-  unit: string = UNIT;
-  toLocalDecimalNotation = toLocalDecimalNotation;
-  formatReadableDate = formatReadableDate;
-  isAtomicSwap: boolean = false;
-  isLoading: boolean = false;
+  precision: number = Math.pow(10, PRECISION)
+  unit: string = UNIT
+  toLocalDecimalNotation = toLocalDecimalNotation
+  formatReadableDate = formatReadableDate
+  isAtomicSwap: boolean = false
+  isLoading: boolean = false
 
-  coinOutputInfo?: CoinOutputInfo;
-  unlockhash?: string;
+  coinOutputInfo?: CoinOutputInfo
+  unlockhash?: string
 
-  created() {
-    window.scrollTo(0, 0);
-    this.coinOutputInfo = this.$store.getters.HASH as CoinOutputInfo;
+  created () {
+    window.scrollTo(0, 0)
+    this.coinOutputInfo = this.$store.getters.HASH as CoinOutputInfo
     // this.renderUnlockHash(this.coinOutputInfo);
     this.unlockhash = getUnlockHash(this.coinOutputInfo)
-    this.isLoading = true;
+    this.isLoading = true
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
-      const hash = newLocation.params.hash;
-      this.$store.dispatch("SET_HASH", hash).then(() => {
-        this.checkIfAtomicSwap();
-        this.isLoading = false;
-        this.coinOutputInfo = this.$store.getters.HASH as CoinOutputInfo;
+      const hash = newLocation.params.hash
+      this.$store.dispatch('SET_HASH', hash).then(() => {
+        this.checkIfAtomicSwap()
+        this.isLoading = false
+        this.coinOutputInfo = this.$store.getters.HASH as CoinOutputInfo
         // this.renderUnlockHash(this.coinOutputInfo);
         this.unlockhash = getUnlockHash(this.coinOutputInfo)
-      });
-    });
-    this.checkIfAtomicSwap();
-    this.isLoading = false;
+      })
+    })
+    this.checkIfAtomicSwap()
+    this.isLoading = false
   }
 
-  checkIfAtomicSwap() {
+  checkIfAtomicSwap () {
     if (this.coinOutputInfo) {
       if (this.coinOutputInfo.output.condition) {
-        this.isAtomicSwap = this.coinOutputInfo.output.condition.getConditionType() === ConditionType.AtomicSwapCondition
+        this.isAtomicSwap =
+          this.coinOutputInfo.output.condition.getConditionType() === ConditionType.AtomicSwapCondition
       }
     }
   }

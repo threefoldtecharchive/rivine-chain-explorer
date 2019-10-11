@@ -73,52 +73,52 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapState } from "vuex";
-import { BlockstakeOutputInfo } from 'rivine-ts-types';
-import { getUnlockHash } from "../../common/helpers";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { mapState } from 'vuex'
+import { BlockstakeOutputInfo } from 'rivine-ts-types'
+import { getUnlockHash } from '../../common/helpers'
 
 @Component({
-  name: "BlockstakeOutputHash",
+  name: 'BlockstakeOutputHash',
   watch: {
-    "$route.params.block"(val) {
+    '$route.params.block' (val) {
       // call the method which loads your initial state
-      this.$store.dispatch("SET_BLOCK_HEIGHT", val);
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
     },
-    "$store.state.block": function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+    '$store.state.block': function () {
+      this.$router.push('/block/' + this.$store.state.block.block.height)
     }
   },
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
-    routeToBlockPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/block/" + val);
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/block/' + val)
     }
   }
 })
 export default class BlockstakeOutputHash extends Vue {
-  blockStakeOutputInfo?: BlockstakeOutputInfo;
-  isLoading: boolean = false;
-  unlockhash?: string;
+  blockStakeOutputInfo?: BlockstakeOutputInfo
+  isLoading: boolean = false
+  unlockhash?: string
 
-  created() {
-    window.scrollTo(0, 0);
-    this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo;
-    this.unlockhash = getUnlockHash(this.blockStakeOutputInfo);
-    this.isLoading = true;
+  created () {
+    window.scrollTo(0, 0)
+    this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo
+    this.unlockhash = getUnlockHash(this.blockStakeOutputInfo)
+    this.isLoading = true
     // If users navigates, recalculate lists
     this.$router.afterEach((newLocation: any) => {
-      const hash = newLocation.params.hash;
-      this.$store.dispatch("SET_HASH", hash).then(() => {
-        this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo;
-        this.unlockhash = getUnlockHash(this.blockStakeOutputInfo);
-      });
-    });
-    this.isLoading = false;
+      const hash = newLocation.params.hash
+      this.$store.dispatch('SET_HASH', hash).then(() => {
+        this.blockStakeOutputInfo = this.$store.getters.HASH as BlockstakeOutputInfo
+        this.unlockhash = getUnlockHash(this.blockStakeOutputInfo)
+      })
+    })
+    this.isLoading = false
   }
 }
 </script>

@@ -25,16 +25,16 @@
   </Fragment>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 
 @Component({
-  props: ["condition"],
-  name: "MultisigCondition",
+  props: ['condition'],
+  name: 'MultisigCondition',
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     }
   },
   components: {

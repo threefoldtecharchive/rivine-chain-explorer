@@ -112,23 +112,23 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { UNIT } from "../../common/config";
-import Input from "../Common/Input.vue"
-import Output from "../Common/Output.vue"
-import { toLocalDecimalNotation } from "../../common/helpers";
+import { Component, Vue } from 'vue-property-decorator'
+import { UNIT } from '../../common/config'
+import Input from '../Common/Input.vue'
+import Output from '../Common/Output.vue'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
-  props: ["transaction"],
-  name: "DefaultTransaction",
+  props: ['transaction'],
+  name: 'DefaultTransaction',
   components: {
     Input,
     Output
   },
   methods: {
-    routeToHashPage: function(val: string) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val: string) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
     toLocalDecimalNotation
   }

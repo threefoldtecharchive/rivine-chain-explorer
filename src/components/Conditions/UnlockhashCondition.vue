@@ -8,15 +8,15 @@
   </tr>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  props: ["condition"],
-  name: "UnlockhashCondition",
+  props: ['condition'],
+  name: 'UnlockhashCondition',
   methods: {
-    routeToHashPage: function(val) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     }
   }
 })

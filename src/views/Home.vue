@@ -16,10 +16,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Search from "@/components/Search.vue";
-import Navigation from "@/components/Navigation.vue";
-import { NAME } from "../common/config";
+import { Component, Vue } from 'vue-property-decorator'
+import Search from '../components/Common/Search.vue'
+import Navigation from '../components/Common/Navigation.vue'
+import { NAME } from '../common/config'
 
 @Component({
   components: {
@@ -28,8 +28,8 @@ import { NAME } from "../common/config";
   }
 })
 export default class Home extends Vue {
-  Name = NAME;
-  SearchVal: string = "";
+  Name = NAME
+  SearchVal: string = ''
 }
 </script>
 <style scoped>

@@ -1,7 +1,7 @@
 import { API_URL } from '@/common/config'
 import axios from 'axios'
 
-const explorer = {
+const transactions = {
   state: {
     transactions: Array
   },
@@ -22,4 +22,4 @@ const explorer = {
   }
 }
 
-export default explorer
+export default transactions

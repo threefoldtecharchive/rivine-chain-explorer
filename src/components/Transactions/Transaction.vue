@@ -6,12 +6,12 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { TransactionType } from "rivine-ts-types";
-import { PRECISION, UNIT } from "../../common/config";
-import DefaultTransaction from "./DefaultTransaction.vue";
-import MinterDefinitionTransaction from "./MinterDefinitionTransaction.vue";
-import CoinCreationTransaction from "./CoinCreationTransaction.vue";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { TransactionType } from 'rivine-ts-types'
+import { PRECISION, UNIT } from '../../common/config'
+import DefaultTransaction from './DefaultTransaction.vue'
+import MinterDefinitionTransaction from './MinterDefinitionTransaction.vue'
+import CoinCreationTransaction from './CoinCreationTransaction.vue'
 
 export default {
   data () {
@@ -19,12 +19,12 @@ export default {
       transactionType: TransactionType
     }
   },
-  props: ["transaction"],
+  props: ['transaction'],
   components: {
     DefaultTransaction,
     MinterDefinitionTransaction,
     CoinCreationTransaction
   },
-  name: "Transaction"
+  name: 'Transaction'
 }
 </script>

@@ -6,11 +6,11 @@
   </Fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { ConditionType } from "rivine-ts-types";
-import UnlockhashCondition from "./UnlockhashCondition.vue";
-import MultisignatureCondition from "./MultisignatureCondition.vue";
-import AtomicSwapCondition from "./AtomicSwapCondition.vue";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { ConditionType } from 'rivine-ts-types'
+import UnlockhashCondition from './UnlockhashCondition.vue'
+import MultisignatureCondition from './MultisignatureCondition.vue'
+import AtomicSwapCondition from './AtomicSwapCondition.vue'
 import { Fragment } from 'vue-fragment'
 
 export default {
@@ -19,13 +19,13 @@ export default {
       ConditionType
     }
   },
-  props: ["condition"],
+  props: ['condition'],
   components: {
     UnlockhashCondition,
     MultisignatureCondition,
     AtomicSwapCondition,
     Fragment
   },
-  name: "condition"
+  name: 'condition'
 }
 </script>

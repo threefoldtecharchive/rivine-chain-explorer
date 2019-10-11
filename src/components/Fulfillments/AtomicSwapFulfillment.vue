@@ -27,6 +27,6 @@
 </template>
 <script lang="ts">
 export default {
-  props: ["fulfillment"]
+  props: ['fulfillment']
 }
 </script>

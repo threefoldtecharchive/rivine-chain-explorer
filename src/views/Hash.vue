@@ -42,17 +42,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import BlockstakeOutputHash from "./HashTypes/BlockstakeOutputHash.vue";
-import CoinOutputHash from "./HashTypes/CoinOutputHash.vue";
-import UnlockHash from "./HashTypes/UnlockHash.vue";
-import Transaction from "./Transactions/Transaction.vue";
-import Navigation from "../components/Navigation.vue";
-import Search from "../components/Search.vue";
-import { ResponseType, TransactionType } from "rivine-ts-types"
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import BlockstakeOutputHash from './HashTypes/BlockstakeOutputHash.vue'
+import CoinOutputHash from './HashTypes/CoinOutputHash.vue'
+import UnlockHash from './HashTypes/UnlockHash.vue'
+import Transaction from '../components/Transactions/Transaction.vue'
+import Navigation from '../components/Common/Navigation.vue'
+import Search from '../components/Common/Search.vue'
+import { ResponseType, TransactionType } from 'rivine-ts-types'
 
 @Component({
-  name: "Hash",
+  name: 'Hash',
   components: {
     BlockstakeOutputHash,
     CoinOutputHash,
@@ -62,29 +62,29 @@ import { ResponseType, TransactionType } from "rivine-ts-types"
     Search
   },
   watch: {
-    "$store.state.block": function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+    '$store.state.block': function () {
+      this.$router.push('/block/' + this.$store.state.block.block.height)
     }
   }
 })
 export default class Hash extends Vue {
-  loading: boolean = false;
-  responseType = ResponseType;
-  transactionType = TransactionType;
+  loading: boolean = false
+  responseType = ResponseType
+  transactionType = TransactionType
 
-  created() {
+  created () {
     if (!this.$route.params.hash) {
-      this.$router.push("/");
+      this.$router.push('/')
     }
     if (!this.$store.getters.HASH.hashtype) {
-      this.loading = true;
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
-        this.loading = false;
-      });
+      this.loading = true
+      this.$store.dispatch('SET_HASH', this.$route.params.hash).then(() => {
+        this.loading = false
+      })
     }
 
-    if (this.$store.getters.HASH === "") {
-      this.$router.push("/notfound");
+    if (this.$store.getters.HASH === '') {
+      this.$router.push('/notfound')
     }
   }
 }

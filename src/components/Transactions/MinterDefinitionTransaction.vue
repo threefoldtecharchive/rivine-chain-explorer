@@ -46,23 +46,23 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { UNIT } from "../../common/config";
-import Fulfillment from "../Fulfillments/Fulfillment.vue";
-import Condition from "../Conditions/Condition.vue"
-import { toLocalDecimalNotation } from "../../common/helpers";
+import { Component, Vue } from 'vue-property-decorator'
+import { UNIT } from '../../common/config'
+import Fulfillment from '../Fulfillments/Fulfillment.vue'
+import Condition from '../Conditions/Condition.vue'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
-  props: ["transaction"],
-  name: "MinterDefinitionTransaction",
+  props: ['transaction'],
+  name: 'MinterDefinitionTransaction',
   components: {
     Fulfillment,
     Condition
   },
   methods: {
-    routeToHashPage: function(val: string) {
-      this.$store.dispatch("SET_HASH", val);
-      this.$router.push("/hashes/" + val);
+    routeToHashPage: function (val: string) {
+      this.$store.dispatch('SET_HASH', val)
+      this.$router.push('/hashes/' + val)
     },
     toLocalDecimalNotation
   }

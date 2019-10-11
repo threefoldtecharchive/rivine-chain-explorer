@@ -29,9 +29,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import Search from "@/components/Search.vue";
-const { Slide } = require("vue-burger-menu");
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import Search from './Search.vue'
+const { Slide } = require('vue-burger-menu')
 
 @Component({
   components: {
