@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h2 class="tx-table">Transaction</h2>
     <table class="ui celled table">
       <thead>
         <tr>
@@ -29,7 +28,10 @@
         </tr>
         <tr>
           <td>ID</td>
-          <td>{{ transaction.id }}</td>
+          <td
+            class="clickable"
+            v-on:click="routeToBlockPage(transaction.id)"
+          >{{ transaction.id }}</td>
         </tr>
         <tr v-if="transaction.coinInputs.length > 0">
           <td>Coin Input Count</td>
@@ -64,7 +66,7 @@
       </tbody>
     </table>
 
-    <div v-if="transaction.blockStakeInputs.length > 0" class="tx-table">
+    <div v-if="transaction.blockStakeInputs > 0" class="tx-table">
       <h3>Blockstake Inputs</h3>
       <div
         v-for="(input, index) in transaction.blockStakeInputs"
@@ -75,7 +77,7 @@
       </div>
     </div>
 
-    <div v-if="transaction.blockStakeOutputs.length > 0" class="tx-table">
+    <div v-if="transaction.blockStakeOutputs > 0" class="tx-table">
       <h3>Blockstake Outputs</h3>
 
       <div
@@ -87,7 +89,7 @@
       </div>
     </div>
 
-    <div v-if="transaction.coinInputs.length > 0" class="tx-table">
+    <div v-if="transaction.coinInputs > 0" class="tx-table">
       <h3>Coin Inputs</h3>
       <div
         v-for="(input, index) in transaction.coinInputs"
@@ -98,7 +100,7 @@
       </div>
     </div>
 
-    <div v-if="transaction.coinOutputs.length > 0" class="tx-table">
+    <div v-if="transaction.coinOutputs > 0" class="tx-table">
       <h3>Coin Outputs</h3>
 
       <div

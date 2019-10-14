@@ -1,8 +1,7 @@
-import { API_URL } from '@/common/config'
+import { API_URL, PRECISION } from '../../common/config'
 import axios from 'axios'
 import router from '../../router'
 import { Response, Parser } from 'rivine-ts-types'
-import { PRECISION } from '../../common/config'
 
 const parser: Parser = new Parser(PRECISION)
 
@@ -47,7 +46,8 @@ const explorer = {
         url: API_URL + '/explorer/blocks/' + height
       }).then(
         result => {
-          context.commit('SET_BLOCK_HEIGHT', result.data)
+          const parsedResponse = parser.ParseBlockResponseJSON(result.data)
+          context.commit('SET_BLOCK_HEIGHT', parsedResponse)
         },
         error => {
           if (error.response.status === 400) {
@@ -58,6 +58,7 @@ const explorer = {
     },
     SET_HASH: async (context: any, hash: string) => {
       if (!hash) return
+      let parsedResponse
       await context.commit('SET_LOADING', true)
       await axios({
         method: 'GET',
@@ -66,11 +67,12 @@ const explorer = {
         result => {
           switch (result.data.hashtype) {
             case 'blockid':
+              parsedResponse = parser.ParseBlockResponseJSON(result.data)
               context.commit('SET_BLOCK_HEIGHT', result.data)
               context.commit('SET_LOADING', false)
               break
             default:
-              const parsedResponse = parser.ParseHashResponseJSON(result.data, hash)
+              parsedResponse = parser.ParseHashResponseJSON(result.data, hash)
               context.commit('SET_HASH', parsedResponse)
               context.commit('SET_LOADING', false)
           }

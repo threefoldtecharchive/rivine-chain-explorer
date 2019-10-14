@@ -2,7 +2,7 @@
   <div>
     <navigation />
     <Search category="block" description="Block Heights" class="searchBar" />
-    <Block />
+    <Block :block="this.$store.getters.BLOCK" />
   </div>
 </template>
 
@@ -26,7 +26,6 @@ export default class Blocks extends Vue {
   }
 
   beforeCreate () {
-    console.log(process.env.BASE_URL)
     const { height } = this.$route.params
     if (height) {
       this.$store.dispatch('SET_BLOCK_HEIGHT', height)

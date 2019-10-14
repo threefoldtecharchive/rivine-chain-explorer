@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
       <DefaultTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"/>
       <MinterDefinitionTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"/>
       <CoinCreationTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"/>

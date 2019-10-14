@@ -7,7 +7,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="output.blockId">
           <td>Previous Block Id</td>
           <td
             class="clickable"
@@ -32,9 +32,22 @@
           <td>Value</td>
           <td>{{ renderValue(output.value) }}</td>
         </tr>
+        <tr v-if="!output.isBlockCreatorReward">
+          <td>Source Transaction Identifiers</td>
+          <td>
+            <span
+              v-for="id in output.sourceTransactionIds"
+              v-bind:key="id"
+              class="clickable"
+              v-on:click="routeToHashPage(id)"
+            >
+              {{ id }}
+            </span>
+          </td>
+        </tr>
         <tr>
-          <td>Has been spent</td>
-          <td>{{ output.spent ? 'Yes' : 'No' }}</td>
+          <td>Source Description</td>
+          <td>{{ output.description }}</td>
         </tr>
       </tbody>
     </table>
