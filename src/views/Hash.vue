@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="container">
     <navigation />
 
     <div class="searchBar">
@@ -27,6 +27,7 @@
     <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
       <Wallet :wallet="this.$store.getters.HASH" />
     </div>
+
     <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
       <Transaction :transaction="this.$store.getters.HASH" />
     </div>

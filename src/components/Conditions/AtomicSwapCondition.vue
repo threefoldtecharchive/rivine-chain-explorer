@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <Fragment>
     <tr>
       <td>Contract Address</td>
-      <td
-        class="clickable"
-        v-on:click="routeToHashPage(condition.contractAddress)"
-      >{{condition.contractAddress}}
+      <td>
+        {{ this.$route.params.hash }}
       </td>
     </tr>
 
@@ -39,15 +37,19 @@
       <td>Unlocked for refunding since</td>
       <td>{{ formatReadableDate(condition.timelock) }}</td>
     </tr>
-  </div>
+  </Fragment>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { formatReadableDate } from '../../common/helpers'
+import { Fragment } from 'vue-fragment'
 
 @Component({
   props: ['condition'],
   name: 'AtomicSwapOutputTable',
+  components: {
+    Fragment
+  },
   methods: {
     routeToHashPage: function (val) {
       this.$store.dispatch('SET_HASH', val)

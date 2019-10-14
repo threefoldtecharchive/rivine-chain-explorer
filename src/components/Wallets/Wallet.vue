@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-      <BlockCreatorWallet :wallet="wallet" v-if="wallet.isBlockCreator"/>
-      <DefaultWallet :wallet="wallet" v-else/>
+  <div class="tx-table">
+    <BlockCreatorWallet :wallet="wallet" v-if="wallet.isBlockCreator"/>
+    <DefaultWallet :wallet="wallet" v-else/>
   </div>
 </template>
 <script lang="ts">

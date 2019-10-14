@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="tx-table">
     <table class="ui celled table">
       <thead>
         <tr>
@@ -66,8 +66,8 @@
       </tbody>
     </table>
 
-    <div v-if="transaction.blockStakeInputs > 0" class="tx-table">
-      <h3>Blockstake Inputs</h3>
+    <div v-if="transaction.blockStakeInputs" class="tx-table">
+      <h3 v-if="transaction.blockStakeInputs.length > 0">Blockstake Inputs</h3>
       <div
         v-for="(input, index) in transaction.blockStakeInputs"
         v-bind:key="index"
@@ -77,8 +77,8 @@
       </div>
     </div>
 
-    <div v-if="transaction.blockStakeOutputs > 0" class="tx-table">
-      <h3>Blockstake Outputs</h3>
+    <div v-if="transaction.blockStakeOutputs" class="tx-table">
+      <h3 v-if="transaction.blockStakeOutputs.length > 0">Blockstake Outputs</h3>
 
       <div
         v-for="(output, index) in transaction.blockStakeOutputs"
@@ -89,8 +89,8 @@
       </div>
     </div>
 
-    <div v-if="transaction.coinInputs > 0" class="tx-table">
-      <h3>Coin Inputs</h3>
+    <div v-if="transaction.coinInputs" class="tx-table">
+      <h3 v-if="transaction.coinInputs.length > 0">Coin Inputs</h3>
       <div
         v-for="(input, index) in transaction.coinInputs"
         v-bind:key="index"
@@ -100,9 +100,8 @@
       </div>
     </div>
 
-    <div v-if="transaction.coinOutputs > 0" class="tx-table">
-      <h3>Coin Outputs</h3>
-
+    <div v-if="transaction.coinOutputs" class="tx-table">
+      <h3 v-if="transaction.coinOutputs.length > 0">Coin Outputs</h3>
       <div
         v-for="(output, index) in transaction.coinOutputs"
         v-bind:key="index"

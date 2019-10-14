@@ -1,8 +1,8 @@
 <template>
   <div>
-      <DefaultTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"/>
-      <MinterDefinitionTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"/>
-      <CoinCreationTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"/>
+    <DefaultTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"/>
+    <MinterDefinitionTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"/>
+    <CoinCreationTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"/>
   </div>
 </template>
 <script lang="ts">

@@ -16,14 +16,6 @@
         </tr>
 
         <Condition :condition="input.parentOutput.condition" />
-        <!-- <tr>
-          <td>Address</td>
-          <td
-            class="clickable"
-            v-on:click="routeToHashPage(input.unlockhash)">
-              {{ input.unlockhash }}
-          </td>
-        </tr> -->
 
         <tr>
           <td>Value</td>

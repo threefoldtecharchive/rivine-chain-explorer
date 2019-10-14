@@ -28,6 +28,7 @@
             v-on:click="routeToHashPage(output.id)"
           >{{ output.id }}</td>
         </tr>
+        <Condition :condition="output.condition" v-if="output.condition"/>
         <tr>
           <td>Value</td>
           <td>{{ renderValue(output.value) }}</td>
