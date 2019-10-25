@@ -33,15 +33,17 @@
         </tr>
       </tbody>
     </table>
-    <div class="tx-table">
-      <h2>Minter Definition Fulfillment</h2>
-      <Fulfillment :fulfillment="transaction.minterDefinitionFulfillment" />
-    </div>
-    <div class="tx-table">
-      <h2>New Mint Condition</h2>
-      <table class="ui celled table">
-        <Condition :condition="transaction.minterDefinitionCondition" />
-      </table>
+    <div v-if="showOutputs">
+      <div class="tx-table">
+        <h2>Minter Definition Fulfillment</h2>
+        <Fulfillment :fulfillment="transaction.minterDefinitionFulfillment" />
+      </div>
+      <div class="tx-table">
+        <h2>New Mint Condition</h2>
+        <table class="ui celled table">
+          <Condition :condition="transaction.minterDefinitionCondition" />
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -53,7 +55,7 @@ import Condition from '../Conditions/Condition.vue'
 import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
-  props: ['transaction'],
+  props: ['transaction', 'showOutputs'],
   name: 'MinterDefinitionTransaction',
   components: {
     Fulfillment,
@@ -63,6 +65,10 @@ import { toLocalDecimalNotation } from '../../common/helpers'
     routeToHashPage: function (val: string) {
       this.$store.dispatch('SET_HASH', val)
       this.$router.push('/hashes/' + val)
+    },
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
+      this.$router.push('/block/' + val)
     },
     toLocalDecimalNotation
   }

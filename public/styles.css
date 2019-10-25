@@ -15,6 +15,7 @@
   /* z-index: -1; */
   min-height: 100vh;
   padding: 1em 0em;
+  background: #1C1D31 !important;
 }
 .masthead .logo.item img {
   margin-right: 1em;

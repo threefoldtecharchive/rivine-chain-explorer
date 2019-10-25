@@ -30,7 +30,7 @@
           <td>ID</td>
           <td
             class="clickable"
-            v-on:click="routeToBlockPage(transaction.id)"
+            v-on:click="routeToHashPage(transaction.id)"
           >{{ transaction.id }}</td>
         </tr>
         <tr v-if="transaction.coinInputs.length > 0">
@@ -66,48 +66,50 @@
       </tbody>
     </table>
 
-    <div v-if="transaction.blockStakeInputs" class="tx-table">
-      <h3 v-if="transaction.blockStakeInputs.length > 0">Blockstake Inputs</h3>
-      <div
-        v-for="(input, index) in transaction.blockStakeInputs"
-        v-bind:key="index"
-        class="tx-table"
-      >
-        <Input :input="input" />
+    <div v-if="showOutputs">
+      <div v-if="transaction.blockStakeInputs" class="tx-table">
+        <h3 v-if="transaction.blockStakeInputs.length > 0">Blockstake Inputs</h3>
+        <div
+          v-for="(input, index) in transaction.blockStakeInputs"
+          v-bind:key="index"
+          class="tx-table"
+        >
+          <Input :input="input" />
+        </div>
       </div>
-    </div>
 
-    <div v-if="transaction.blockStakeOutputs" class="tx-table">
-      <h3 v-if="transaction.blockStakeOutputs.length > 0">Blockstake Outputs</h3>
+      <div v-if="transaction.blockStakeOutputs" class="tx-table">
+        <h3 v-if="transaction.blockStakeOutputs.length > 0">Blockstake Outputs</h3>
 
-      <div
-        v-for="(output, index) in transaction.blockStakeOutputs"
-        v-bind:key="index"
-        class="tx-table"
-      >
-        <Output :output="output" />
+        <div
+          v-for="(output, index) in transaction.blockStakeOutputs"
+          v-bind:key="index"
+          class="tx-table"
+        >
+          <Output :output="output" />
+        </div>
       </div>
-    </div>
 
-    <div v-if="transaction.coinInputs" class="tx-table">
-      <h3 v-if="transaction.coinInputs.length > 0">Coin Inputs</h3>
-      <div
-        v-for="(input, index) in transaction.coinInputs"
-        v-bind:key="index"
-        class="tx-table"
-      >
-        <Input :input="input" />
+      <div v-if="transaction.coinInputs" class="tx-table">
+        <h3 v-if="transaction.coinInputs.length > 0">Coin Inputs</h3>
+        <div
+          v-for="(input, index) in transaction.coinInputs"
+          v-bind:key="index"
+          class="tx-table"
+        >
+          <Input :input="input" />
+        </div>
       </div>
-    </div>
 
-    <div v-if="transaction.coinOutputs" class="tx-table">
-      <h3 v-if="transaction.coinOutputs.length > 0">Coin Outputs</h3>
-      <div
-        v-for="(output, index) in transaction.coinOutputs"
-        v-bind:key="index"
-        class="tx-table"
-      >
-        <Output :output="output" />
+      <div v-if="transaction.coinOutputs" class="tx-table">
+        <h3 v-if="transaction.coinOutputs.length > 0">Coin Outputs</h3>
+        <div
+          v-for="(output, index) in transaction.coinOutputs"
+          v-bind:key="index"
+          class="tx-table"
+        >
+          <Output :output="output" />
+        </div>
       </div>
     </div>
   </div>
@@ -120,7 +122,7 @@ import Output from '../Common/Output.vue'
 import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
-  props: ['transaction'],
+  props: ['transaction', 'showOutputs'],
   name: 'DefaultTransaction',
   components: {
     Input,
@@ -130,6 +132,10 @@ import { toLocalDecimalNotation } from '../../common/helpers'
     routeToHashPage: function (val: string) {
       this.$store.dispatch('SET_HASH', val)
       this.$router.push('/hashes/' + val)
+    },
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
+      this.$router.push('/block/' + val)
     },
     toLocalDecimalNotation
   }

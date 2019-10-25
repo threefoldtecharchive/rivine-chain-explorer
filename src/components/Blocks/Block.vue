@@ -67,7 +67,7 @@
         v-for="(tx, index) in block.transactions"
         v-bind:key="index"
       >
-        <Transaction :transaction="tx" class="tx-table"/>
+        <Transaction :transaction="tx" showOutputs:="false" class="tx-table"/>
       </div>
     </div>
   </div>

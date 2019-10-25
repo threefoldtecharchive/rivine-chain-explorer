@@ -6,6 +6,7 @@ const getters = {
   BLOCK: (state: any) => state.explorer.block,
   HASH: (state: any) => state.explorer.hash,
   LOADING: (state: any) => state.explorer.loading,
+  ERROR: (state: any) => state.explorer.error,
 
   /**
    * Transactions

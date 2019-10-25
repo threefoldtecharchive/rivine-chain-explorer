@@ -49,6 +49,9 @@ export default class Search extends Vue {
     } else if (parseInt(this.SearchVal) || this.category === 'block') {
       this.$store.dispatch('SET_BLOCK_HEIGHT', this.SearchVal)
       this.$router.push('/block/' + this.SearchVal)
+    } else {
+      this.$store.dispatch('SET_ERROR', `${this.SearchVal}`)
+      this.$router.push('/notfound')
     }
   }
 

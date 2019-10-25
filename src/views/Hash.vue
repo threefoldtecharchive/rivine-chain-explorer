@@ -29,7 +29,7 @@
     </div>
 
     <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
-      <Transaction :transaction="this.$store.getters.HASH" />
+      <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
     </div>
   </div>
 </template>

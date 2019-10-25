@@ -32,7 +32,7 @@
           <td>Value</td>
           <td>{{ renderValue(output.value) }}</td>
         </tr>
-        <tr v-if="!output.isBlockCreatorReward">
+        <tr v-if="!output.isBlockCreatorReward && output.sourceTransactionIds">
           <td>Source Transaction Identifiers</td>
           <td>
             <span
@@ -45,9 +45,13 @@
             </span>
           </td>
         </tr>
-        <tr>
+        <tr v-if="output.description">
           <td>Source Description</td>
           <td>{{ output.description }}</td>
+        </tr>
+        <tr v-if="output.spent != undefined">
+          <td>Has been spent</td>
+          <td>{{ output.spent ? 'Yes' : 'No' }}</td>
         </tr>
       </tbody>
     </table>

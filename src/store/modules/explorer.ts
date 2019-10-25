@@ -5,13 +5,13 @@ import { Response, Parser } from 'rivine-ts-types'
 
 const parser: Parser = new Parser(PRECISION)
 
-
 const explorer = {
   state: {
     explorer: Object,
     block: Object,
     hash:  Response,
-    loading: Boolean(false)
+    loading: Boolean(false),
+    error: String
   },
   mutations: {
     SET_EXPLORER: (state: any, explorer: object) => {
@@ -25,6 +25,9 @@ const explorer = {
     },
     SET_LOADING: (state: any, loading: boolean) => {
       state.loading = loading
+    },
+    SET_ERROR: (state: any, error: string) => {
+      state.error = error
     }
   },
   actions: {
@@ -51,6 +54,7 @@ const explorer = {
         },
         error => {
           if (error.response.status === 400) {
+            context.commit('SET_ERROR', `${height}`)
             router.push('/notfound')
           }
         }
@@ -65,6 +69,10 @@ const explorer = {
         url: API_URL + '/explorer/hashes/' + hash
       }).then(
         result => {
+          if (result.data === '') {
+            context.commit('SET_ERROR', `${hash}`)
+            router.push('/notfound')
+          }
           switch (result.data.hashtype) {
             case 'blockid':
               parsedResponse = parser.ParseBlockResponseJSON(result.data)
@@ -79,10 +87,14 @@ const explorer = {
         },
         error => {
           if (error.response.status === 400) {
+            context.commit('SET_ERROR', `${hash}`)
             router.push('/notfound')
           }
         }
       )
+    },
+    SET_ERROR: (context: any, error: string) => {
+      context.commit('SET_ERROR', error)
     }
   }
 }

@@ -33,15 +33,17 @@
         </tr>
       </tbody>
     </table>
-    <div class="tx-table">
-      <h2>Coin Creation Fulfillment</h2>
-      <Fulfillment :fulfillment="transaction.coinCreationFulfillment" />
-    </div>
-    <div class="tx-table">
-      <h2>Coin Creation Outputs</h2>
-      <Fragment v-for="(output, index) in transaction.coinCreationOutputs" v-bind:key="index">
-        <Output :output="output" />
-      </Fragment>
+    <div v-if="showOutputs">
+      <div class="tx-table">
+        <h2>Coin Creation Fulfillment</h2>
+        <Fulfillment :fulfillment="transaction.coinCreationFulfillment" />
+      </div>
+      <div class="tx-table">
+        <h2>Coin Creation Outputs</h2>
+        <Fragment v-for="(output, index) in transaction.coinCreationOutputs" v-bind:key="index">
+          <Output :output="output" />
+        </Fragment>
+      </div>
     </div>
   </div>
 </template>
@@ -55,7 +57,7 @@ import Condition from '../Conditions/Condition.vue'
 import Output from '../Common/Output.vue'
 
 @Component({
-  props: ['transaction'],
+  props: ['transaction', 'showOutputs'],
   name: 'CoinCreationTransaction',
   components: {
     Fulfillment,
@@ -67,6 +69,10 @@ import Output from '../Common/Output.vue'
     routeToHashPage: function (val: string) {
       this.$store.dispatch('SET_HASH', val)
       this.$router.push('/hashes/' + val)
+    },
+    routeToBlockPage: function (val) {
+      this.$store.dispatch('SET_BLOCK_HEIGHT', val)
+      this.$router.push('/block/' + val)
     },
     toLocalDecimalNotation
   }

@@ -1,8 +1,20 @@
 <template>
   <div>
-    <DefaultTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"/>
-    <MinterDefinitionTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"/>
-    <CoinCreationTransaction :transaction="transaction" v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"/>
+    <DefaultTransaction
+      :transaction="transaction"
+      v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"
+      :showOutputs="showOutputs"
+    />
+    <MinterDefinitionTransaction
+      :transaction="transaction"
+      v-if="transaction.getTransactionType() === transactionType.MinterDefinitionTransaction"
+      :showOutputs="showOutputs"
+    />
+    <CoinCreationTransaction
+      :transaction="transaction"
+      v-if="transaction.getTransactionType() === transactionType.CoinCreationTransaction"
+      :showOutputs="showOutputs"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -19,7 +31,7 @@ export default {
       transactionType: TransactionType
     }
   },
-  props: ['transaction'],
+  props: ['transaction', 'showOutputs'],
   components: {
     DefaultTransaction,
     MinterDefinitionTransaction,

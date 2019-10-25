@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="container">
+  <div class="tx-table">
     <h1>Hash</h1>
     <table class="ui celled table" v-if="!isAtomicSwap">
       <thead>
@@ -231,11 +231,6 @@ export default class CoinOutputHash extends Vue {
 }
 </script>
 <style scoped>
-.container {
-  width: 80%;
-  margin: "auto";
-  margin-top: 50px;
-}
 .tx-table {
   text-align: left;
   margin-top: 20px;
