@@ -7,7 +7,7 @@
     </div>
 
     <div
-      class="ui segment container spinner"
+      class="ui segment spinner"
       v-if="this.$store.getters.LOADING"
     >
       <div class="ui active inverted dimmer">
@@ -108,9 +108,5 @@ export default class Hash extends Vue {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
-}
-.container h1 {
-  text-align: left;
-  font-size: 30px;
 }
 </style>

@@ -73,7 +73,6 @@ const explorer = {
             context.commit('SET_ERROR', `${hash}`)
             router.push('/notfound')
           }
-          debugger
           switch (result.data.hashtype) {
             case 'blockid':
               parsedResponse = parser.ParseBlockResponseJSON(result.data)

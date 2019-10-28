@@ -114,6 +114,9 @@ export default {
     },
     toLocalDecimalNotation
   },
+  created () {
+    window.scrollTo(0, 0)
+  },
   name: 'Transaction'
 }
 </script>

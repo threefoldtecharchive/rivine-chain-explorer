@@ -1,5 +1,5 @@
 <template>
-  <div class="tx-table">
+  <div>
     <BlockCreatorWallet :wallet="wallet" v-if="wallet.isBlockCreator"/>
     <DefaultWallet :wallet="wallet" v-else/>
   </div>

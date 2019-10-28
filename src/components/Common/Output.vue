@@ -28,6 +28,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { UnlockhashCondition, Currency } from 'rivine-ts-types'
 import { PRECISION, UNIT } from '../../common/config'
 import Condition from '../Conditions/Condition.vue'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   props: ['output'],
@@ -41,7 +42,7 @@ import Condition from '../Conditions/Condition.vue'
       this.$router.push('/hashes/' + val)
     },
     renderValue: function (value: any) {
-      return `${value} ${UNIT}`
+      return `${toLocalDecimalNotation(value)} ${UNIT}`
     }
   }
 })

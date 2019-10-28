@@ -5,7 +5,7 @@
       <table class="ui celled table">
         <thead>
           <tr>
-            <th colspan="3">Wallet Address</th>
+            <th colspan="3" class="eight wide">Wallet Address</th>
           </tr>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@
           </tr>
           <tr>
             <td>Confirmed Coin Balance</td>
-            <td>{{ wallet.confirmedCoinBalance.toString() }} {{ unit }}</td>
+            <td>{{ renderValue(wallet.confirmedCoinBalance) }}</td>
           </tr>
           <tr v-if="wallet.lastCoinSpent">
             <td>Last Coin Spend</td>
@@ -93,6 +93,7 @@ import { UNIT } from '../../common/config'
 import MinerOutput from '../Common/MinerOutput.vue'
 import CoinOutput from '../Common/CoinOutput.vue'
 import BlockStakeOutput from '../Common/BlockStakeOutput.vue'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   props: ['wallet'],
@@ -119,6 +120,9 @@ import BlockStakeOutput from '../Common/BlockStakeOutput.vue'
     routeToBlockPage: function (val) {
       this.$store.dispatch('SET_BLOCK_HEIGHT', val)
       this.$router.push('/block/' + val)
+    },
+    renderValue: function (value: any) {
+      return `${toLocalDecimalNotation(value)} ${UNIT}`
     }
   }
 })

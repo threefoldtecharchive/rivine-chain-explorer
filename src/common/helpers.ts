@@ -2,13 +2,16 @@ import { PRECISION } from './config'
 import {
   BlockstakeOutputInfo, CoinOutputInfo, ConditionType,
   UnlockhashCondition, AtomicSwapCondition, TimelockCondition, Condition,
-  MultisignatureCondition, SingleSignatureFulfillment
+  MultisignatureCondition
 } from 'rivine-ts-types'
 
-export function toLocalDecimalNotation (x: number) {
+export function toLocalDecimalNotation (x: any) {
+  debugger
   if (!x) return
-  return x.toLocaleString(navigator.language, {
-    maximumFractionDigits: parseInt(PRECISION.toString(), 10)
+  const w = parseFloat(x)
+  const v = Number(w)
+  return v.toLocaleString(navigator.language, {
+    maximumFractionDigits: PRECISION
   })
 }
 

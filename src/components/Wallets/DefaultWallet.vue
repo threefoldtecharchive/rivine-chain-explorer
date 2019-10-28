@@ -5,7 +5,7 @@
       <table class="ui celled table">
         <thead>
           <tr>
-            <th colspan="3">Wallet Address</th>
+            <th colspan="3" class="ten wide">Wallet Address</th>
           </tr>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@
           </tr>
           <tr>
             <td>Confirmed Coin Balance</td>
-            <td>{{ wallet.confirmedCoinBalance.toString() }} {{ unit }}</td>
+            <td>{{ renderValue(wallet.confirmedCoinBalance) }}</td>
           </tr>
           <tr v-if="wallet.lastCoinSpent">
             <td>Last Coin Spend</td>
@@ -70,6 +70,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { mapState } from 'vuex'
 import { UNIT } from '../../common/config'
 import CoinOutput from '../Common/CoinOutput.vue'
+import { toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   props: ['wallet'],
@@ -94,6 +95,9 @@ import CoinOutput from '../Common/CoinOutput.vue'
     routeToBlockPage: function (val) {
       this.$store.dispatch('SET_BLOCK_HEIGHT', val)
       this.$router.push('/block/' + val)
+    },
+    renderValue: function (value: any) {
+      return `${toLocalDecimalNotation(value)} ${UNIT}`
     }
   }
 })
