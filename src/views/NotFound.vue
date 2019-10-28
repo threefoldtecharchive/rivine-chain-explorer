@@ -63,7 +63,7 @@ export default class Error extends Vue {
 
   beforeDestroy () {
     const _this = this
-    // tslint:disable next-line
+    // tslint:disable-next-line
     window.onpopstate = function () {}
   }
 }

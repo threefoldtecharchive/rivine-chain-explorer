@@ -73,11 +73,14 @@ const explorer = {
             context.commit('SET_ERROR', `${hash}`)
             router.push('/notfound')
           }
+          debugger
           switch (result.data.hashtype) {
             case 'blockid':
               parsedResponse = parser.ParseBlockResponseJSON(result.data)
-              context.commit('SET_BLOCK_HEIGHT', result.data)
+              context.commit('SET_BLOCK_HEIGHT', parsedResponse)
               context.commit('SET_LOADING', false)
+              // route to block page
+              router.push(`/block/${parsedResponse.height}`)
               break
             default:
               parsedResponse = parser.ParseHashResponseJSON(result.data, hash)

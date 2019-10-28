@@ -1,4 +1,4 @@
-import { API_URL } from '@/common/config'
+import { API_URL } from '../../common/config'
 import axios from 'axios'
 
 const transactions = {
