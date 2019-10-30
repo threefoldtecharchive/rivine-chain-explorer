@@ -6,7 +6,6 @@ import {
 } from 'rivine-ts-types'
 
 export function toLocalDecimalNotation (x: any) {
-  debugger
   if (!x) return
   const w = parseFloat(x)
   const v = Number(w)
@@ -25,6 +24,29 @@ export function formatReadableDate (time: number) {
   const minutes = tempMinutes < 10 ? `0${tempMinutes}` : tempMinutes
 
   return `${hours}:${minutes}, ${month} ${day}, ${year}`
+}
+
+// formatTimeElapsed takes a duration in seconds and returns it in a more human readable format
+export function formatTimeElapsed (seconds: number) {
+  if (!seconds) {
+    return '0 seconds'
+  }
+  const levels = [
+    [Math.floor(seconds / 31536000), 'years'],
+    [Math.floor((seconds % 31536000) / 86400), 'days'],
+    [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hours'],
+    [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'minutes'],
+    [(((seconds % 31536000) % 86400) % 3600) % 60, 'seconds']
+  ]
+  let returntext = ''
+
+  // tslint:disable-next-line
+  for (let i = 0, max = levels.length; i < max; i++) {
+    if (levels[i][0] === 0) continue
+    // tslint:disable-next-line
+    returntext += ', ' + levels[i][0] + ' ' + (levels[i][0] === 1 ? levels[i][1].toString().substr(0, levels[i][1].toString().length-1): levels[i][1])
+  }
+  return returntext.trim().substr(2)
 }
 
 export function formatReadableDateForCharts (time: number) {

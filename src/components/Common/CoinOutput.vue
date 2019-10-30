@@ -33,6 +33,32 @@
           <td>Value</td>
           <td>{{ renderValue(output.value) }}</td>
         </tr>
+
+        <tr v-if="output.creationTime">
+          <td>Creation Time</td>
+          <td>{{ formatReadableDate(output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="output.creationValue">
+          <td>Creation Value</td>
+          <td>{{ output.creationValue }}</td>
+        </tr>
+
+        <tr v-if="output.feeComputationTime">
+          <td>Current Age</td>
+          <td>{{ formatTimeElapsed(output.feeComputationTime - output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="output.custodyFee">
+          <td>Custody Fee Paid</td>
+          <td>{{ renderValue(output.custodyFee) }}</td>
+        </tr>
+
+        <tr v-if="output.spendableValue">
+          <td>Spendable Value</td>
+          <td>{{ renderValue(output.spendableValue) }}</td>
+        </tr>
+
         <tr>
           <td>Has been spent</td>
           <td>{{ output.spent ? 'Yes' : 'No' }}</td>

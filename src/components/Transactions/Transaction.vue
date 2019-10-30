@@ -3,7 +3,7 @@
     <table class="ui celled table">
       <thead>
         <tr>
-          <th colspan="3">Transaction version {{ transaction.version }}</th>
+          <th colspan="3" class="six wide">Transaction version {{ transaction.version }}</th>
         </tr>
       </thead>
       <tbody>

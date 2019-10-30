@@ -47,6 +47,32 @@
           </td>
         </tr>
 
+        <tr v-if="coinOutputInfo.output.creationTime">
+          <td>Creation Time</td>
+          <td>{{ formatReadableDate(coinOutputInfo.output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="coinOutputInfo.output.creationValue">
+          <td>Creation Value</td>
+          <td>{{ coinOutputInfo.output.creationValue }}</td>
+        </tr>
+
+        <tr v-if="coinOutputInfo.output.feeComputationTime">
+          <td v-if="coinOutputInfo.input">Age When Spent</td>
+          <td v-else>Current Age</td>
+          <td>{{ formatTimeElapsed(coinOutputInfo.output.feeComputationTime - coinOutputInfo.output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="coinOutputInfo.output.custodyFee">
+          <td>Custody Fee Paid</td>
+          <td>{{ renderValue(coinOutputInfo.output.custodyFee) }}</td>
+        </tr>
+
+        <tr v-if="coinOutputInfo.output.spendableValue">
+          <td>Spendable Value</td>
+          <td>{{ renderValue(coinOutputInfo.output.spendableValue) }}</td>
+        </tr>
+
         <tr>
           <td>Has been spent</td>
           <td v-if="coinOutputInfo.input">Yes</td>
@@ -159,12 +185,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { mapState } from 'vuex'
 import { PRECISION, UNIT } from '../../common/config'
 import { ConditionType, UnlockhashCondition, AtomicSwapCondition, TimelockCondition, CoinOutputInfo } from 'rivine-ts-types'
-import { getUnlockHash } from '../../common/helpers'
-
-import {
-  toLocalDecimalNotation,
-  formatReadableDate
-} from '../../common/helpers'
+import { getUnlockHash, formatReadableDate, formatTimeElapsed, toLocalDecimalNotation } from '../../common/helpers'
 
 @Component({
   name: 'CoinOutputHash',
@@ -185,6 +206,9 @@ import {
     routeToBlockPage: function (val) {
       this.$store.dispatch('SET_HASH', val)
       this.$router.push('/block/' + val)
+    },
+    renderValue: function (value: any) {
+      return `${toLocalDecimalNotation(value)} ${UNIT}`
     }
   }
 })
@@ -193,6 +217,7 @@ export default class CoinOutputHash extends Vue {
   unit: string = UNIT
   toLocalDecimalNotation = toLocalDecimalNotation
   formatReadableDate = formatReadableDate
+  formatTimeElapsed = formatTimeElapsed
   isAtomicSwap: boolean = false
   isLoading: boolean = false
 

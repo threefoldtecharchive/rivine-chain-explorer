@@ -17,6 +17,32 @@
 
         <Condition :condition="input.parentOutput.condition" />
 
+
+        <tr v-if="input.creationTime">
+          <td>Creation Time</td>
+          <td>{{ formatReadableDate(input.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="input.creationValue">
+          <td>Creation Value</td>
+          <td>{{ input.creationValue }}</td>
+        </tr>
+
+        <tr v-if="input.feeComputationTime">
+          <td>Current Age</td>
+          <td>{{ formatTimeElapsed(input.feeComputationTime - input.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="input.custodyFee">
+          <td>Custody Fee Paid</td>
+          <td>{{ renderValue(input.custodyFee) }}</td>
+        </tr>
+
+        <tr v-if="input.spendableValue">
+          <td>Spendable Value</td>
+          <td>{{ renderValue(input.spendableValue) }}</td>
+        </tr>
+
         <tr>
           <td>Value</td>
           <td>{{ renderValue(input.parentOutput.value) }}</td>
@@ -34,7 +60,7 @@ import { UnlockhashCondition, Currency } from 'rivine-ts-types'
 import { PRECISION, UNIT } from '../../common/config'
 import Fulfillment from '../Fulfillments/Fulfillment.vue'
 import Condition from '../Conditions/Condition.vue'
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatReadableDate, formatTimeElapsed } from '../../common/helpers'
 
 @Component({
   props: ['input'],
@@ -50,7 +76,9 @@ import { toLocalDecimalNotation } from '../../common/helpers'
     },
     renderValue: function (value: any) {
       return `${toLocalDecimalNotation(value)} ${UNIT}`
-    }
+    },
+    formatReadableDate,
+    formatTimeElapsed
   }
 })
 export default class Input extends Vue {}

@@ -3,7 +3,7 @@
     <table class="ui celled table">
       <thead>
         <tr>
-          <th colspan="3" class="ten wide">Miner Payout</th>
+          <th colspan="3" class="six wide">Miner Payout</th>
         </tr>
       </thead>
       <tbody>
@@ -14,6 +14,7 @@
             v-on:click="routeToHashPage(output.blockId)"
           >{{ output.blockId }}</td>
         </tr>
+
         <tr>
           <td>Miner Payout Id</td>
           <td
@@ -21,6 +22,7 @@
             v-on:click="routeToHashPage(output.id)"
           >{{ output.id }}</td>
         </tr>
+
         <tr>
           <td>Payout Address</td>
           <td
@@ -28,10 +30,12 @@
             v-on:click="routeToHashPage(output.unlockhash)"
           >{{ output.unlockhash }}</td>
         </tr>
+
         <tr>
           <td>Value</td>
           <td>{{ renderValue(output.value) }}</td>
         </tr>
+
         <tr v-if="!output.isBlockCreatorReward && output.sourceTransactionIds">
           <td>Source Transaction Identifiers</td>
           <td>
@@ -45,14 +49,42 @@
             </span>
           </td>
         </tr>
+
+        <tr v-if="output.creationTime">
+          <td>Creation Time</td>
+          <td>{{ formatReadableDate(output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="output.creationValue">
+          <td>Creation Value</td>
+          <td>{{ output.creationValue }}</td>
+        </tr>
+
+        <tr v-if="output.feeComputationTime">
+          <td>Current Age</td>
+          <td>{{ formatTimeElapsed(output.feeComputationTime - output.creationTime) }}</td>
+        </tr>
+
+        <tr v-if="output.custodyFee">
+          <td>Custody Fee To Pay</td>
+          <td>{{ renderValue(output.custodyFee) }}</td>
+        </tr>
+
+        <tr v-if="output.spendableValue">
+          <td>Spendable Value</td>
+          <td>{{ renderValue(output.spendableValue) }}</td>
+        </tr>
+
         <tr v-if="output.description">
           <td>Source Description</td>
           <td>{{ output.description }}</td>
         </tr>
+
         <tr v-if="output.spent != undefined">
           <td>Has been spent</td>
           <td>{{ output.spent ? 'Yes' : 'No' }}</td>
         </tr>
+
       </tbody>
     </table>
   </div>
@@ -62,7 +94,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { UnlockhashCondition, Currency } from 'rivine-ts-types'
 import { PRECISION, UNIT } from '../../common/config'
 import Condition from '../Conditions/Condition.vue'
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatReadableDate, formatTimeElapsed } from '../../common/helpers'
 
 @Component({
   props: ['output'],
@@ -77,7 +109,9 @@ import { toLocalDecimalNotation } from '../../common/helpers'
     },
     renderValue: function (value: any) {
       return `${toLocalDecimalNotation(value)} ${UNIT}`
-    }
+    },
+    formatReadableDate,
+    formatTimeElapsed
   }
 })
 export default class MinerOutput extends Vue {}

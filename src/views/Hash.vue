@@ -16,20 +16,22 @@
       <p></p>
     </div>
 
-    <div v-else-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
-      <BlockstakeOutputHash />
-    </div>
+    <div class="margin">
+      <div v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
+        <BlockstakeOutputHash />
+      </div>
 
-    <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
-      <CoinOutputHash />
-    </div>
+      <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
+        <CoinOutputHash />
+      </div>
 
-    <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
-      <Wallet :wallet="this.$store.getters.HASH" />
-    </div>
+      <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
+        <Wallet :wallet="this.$store.getters.HASH" />
+      </div>
 
-    <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
-      <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
+      <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
+        <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +68,7 @@ export default class Hash extends Vue {
   transactionType = TransactionType
 
   created () {
+    console.log(this.$store.getters.HASH)
     if (!this.$route.params.hash) {
       this.$router.push('/')
     }
@@ -100,7 +103,7 @@ export default class Hash extends Vue {
   margin-top: 50px;
   height: 500px;
 }
-.tx-table {
+.margin {
   margin-top: 20px;
   margin-bottom: 20px;
 }
