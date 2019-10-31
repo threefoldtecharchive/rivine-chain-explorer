@@ -72,7 +72,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { UnlockhashCondition, Currency } from 'rivine-ts-types'
 import { PRECISION, UNIT } from '../../common/config'
 import Condition from '../Conditions/Condition.vue'
-import { toLocalDecimalNotation } from '../../common/helpers'
+import { toLocalDecimalNotation, formatTimeElapsed, formatReadableDate } from '../../common/helpers'
 
 @Component({
   props: ['output'],
@@ -91,9 +91,10 @@ import { toLocalDecimalNotation } from '../../common/helpers'
     },
     renderValue: function (value: any) {
       const v = toLocalDecimalNotation(value)
-      debugger
       return `${toLocalDecimalNotation(value)} ${UNIT}`
-    }
+    },
+    formatTimeElapsed,
+    formatReadableDate
   }
 })
 export default class CoinOuput extends Vue {}

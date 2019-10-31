@@ -58,6 +58,15 @@
         </tbody>
       </table>
 
+      <table class="ui celled table" v-if="wallet.multisigAddressess">
+        <tbody>
+          <tr v-for="(multisigAddress, index) in wallet.multisigAddressess">
+            <td>Multisig Address #{{ index + 1 }}</td>
+            <td>{{ multisigAddress }}</td>
+          </tr>
+        </tbody>
+      </table>
+
       <div v-for="(coinOutput, idx) in wallet.coinOutputs" v-bind:key="idx">
         <CoinOutput :output="coinOutput" class="tx-table"/>
       </div>
