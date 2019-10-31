@@ -1,7 +1,7 @@
 <template lang="html">
-  <div class="tx-table">
+  <div class="tx-v-simple-table dark">
     <h1>Hash</h1>
-    <table class="ui celled table">
+    <v-simple-table dark >
       <thead>
         <tr>
           <th colspan="3">BlockStake Output</th>
@@ -44,9 +44,9 @@
           <td v-else>No</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
-    <table class="ui celled table" v-if="blockStakeOutputInfo.input">
+    <v-simple-table dark  v-if="blockStakeOutputInfo.input">
       <thead>
         <tr>
           <th colspan="3">BlockStake Input</th>
@@ -68,7 +68,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
   </div>
 </template>
 
@@ -123,7 +123,7 @@ export default class BlockstakeOutputHash extends Vue {
 }
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

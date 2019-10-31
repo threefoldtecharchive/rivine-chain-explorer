@@ -1,23 +1,21 @@
 <template>
-  <section>
-    <form v-on:submit.prevent="handleSearch">
-      <div class="ui icon input searchBar">
-        <i class="search icon"></i>
-        <input
-          v-model="SearchVal"
-          type="search"
-          name="search"
-          :error="this.error"
-          :placeholder="getPlaceHolder()"
-          v-on:keyup.enter="handleSearch"
-          icon-pack="fas"
-          icon="search"
-          v-validate="'required'"
-        />
-      </div>
-      <p v-if="error">{{ error }}</p>
-    </form>
-  </section>
+  <v-form v-on:submit.prevent="handleSearch">
+    <div class="ui icon input searchBar">
+      <i class="search icon"></i>
+      <v-text-field
+        v-model="SearchVal"
+        type="search"
+        name="search"
+        :error="this.error"
+        :placeholder="getPlaceHolder()"
+        v-on:keyup.enter="handleSearch"
+        icon-pack="fas"
+        icon="search"
+        v-validate="'required'"
+      />
+    </div>
+    <p v-if="error">{{ error }}</p>
+  </v-form>
 </template>
 
 <script lang="ts">

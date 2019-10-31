@@ -8,11 +8,11 @@
     <div class="container">
       <h1>Recent Blocks</h1>
       <div
-        class="tx-table"
+        class="tx-v-simple-table dark"
         v-for="(block, idx) in flatten(recentBlockTransactions)"
         v-bind:key="idx"
       >
-        <table class="ui celled table tx-table">
+        <v-simple-table dark class="ui celled v-simple-table dark tx-v-simple-table dark">
           <thead>
             <tr>
               <th colspan="3">Block: {{ block.height }}</th>
@@ -32,7 +32,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </v-simple-table>
       </div>
     </div>
   </div>
@@ -131,7 +131,7 @@ export default class Transactions extends Vue {
   margin-top: 50px;
   height: 500px;
 }
-.tx-table {
+.tx-v-simple-table dark {
   margin-top: 20px;
   margin-bottom: 20px;
 }

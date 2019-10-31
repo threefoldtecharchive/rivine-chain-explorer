@@ -1,14 +1,14 @@
 <template>
   <div v-if="showOutputs">
-    <div class="tx-table">
+    <div class="tx-v-simple-table dark">
       <h2>Minter Definition Fulfillment</h2>
       <Fulfillment :fulfillment="transaction.minterDefinitionFulfillment" />
     </div>
-    <div class="tx-table">
+    <div class="tx-v-simple-table dark">
       <h2>New Mint Condition</h2>
-      <table class="ui celled table">
+      <v-simple-table dark >
         <Condition :condition="transaction.minterDefinitionCondition" />
-      </table>
+      </v-simple-table>
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ import Condition from '../Conditions/Condition.vue'
 export default class MinterDefinitionTransaction extends Vue {}
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

@@ -1,46 +1,46 @@
 <template>
-  <div class="tx-table">
+  <div class="tx-v-simple-table dark">
     <div v-if="showOutputs">
-      <div v-if="transaction.blockStakeInputs" class="tx-table">
+      <div v-if="transaction.blockStakeInputs" class="tx-v-simple-table dark">
         <h3 v-if="transaction.blockStakeInputs.length > 0">Blockstake Inputs</h3>
         <div
           v-for="(input, index) in transaction.blockStakeInputs"
           v-bind:key="index"
-          class="tx-table"
+          class="tx-v-simple-table dark"
         >
           <Input :input="input" />
         </div>
       </div>
 
-      <div v-if="transaction.blockStakeOutputs" class="tx-table">
+      <div v-if="transaction.blockStakeOutputs" class="tx-v-simple-table dark">
         <h3 v-if="transaction.blockStakeOutputs.length > 0">Blockstake Outputs</h3>
 
         <div
           v-for="(output, index) in transaction.blockStakeOutputs"
           v-bind:key="index"
-          class="tx-table"
+          class="tx-v-simple-table dark"
         >
           <Output :output="output" />
         </div>
       </div>
 
-      <div v-if="transaction.coinInputs" class="tx-table">
+      <div v-if="transaction.coinInputs" class="tx-v-simple-table dark">
         <h3 v-if="transaction.coinInputs.length > 0">Coin Inputs</h3>
         <div
           v-for="(input, index) in transaction.coinInputs"
           v-bind:key="index"
-          class="tx-table"
+          class="tx-v-simple-table dark"
         >
           <Input :input="input" />
         </div>
       </div>
 
-      <div v-if="transaction.coinOutputs" class="tx-table">
+      <div v-if="transaction.coinOutputs" class="tx-v-simple-table dark">
         <h3 v-if="transaction.coinOutputs.length > 0">Coin Outputs</h3>
         <div
           v-for="(output, index) in transaction.coinOutputs"
           v-bind:key="index"
-          class="tx-table"
+          class="tx-v-simple-table dark"
         >
           <Output :output="output" />
         </div>
@@ -64,7 +64,7 @@ import Output from '../Common/Output.vue'
 export default class DefaultTransaction extends Vue {}
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

@@ -1,8 +1,16 @@
 <template>
   <div>
     <navigation />
-    <Search category="block" description="Block Heights" class="searchBar" />
-    <Block :block="this.$store.getters.BLOCK" />
+
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <Search category="block" description="Block Heights" class="searchBar" />
+        <Block :block="this.$store.getters.BLOCK" />
+      </v-container>
+    </v-content>
   </div>
 </template>
 
@@ -35,8 +43,7 @@ export default class Blocks extends Vue {
 </script>
 <style scoped>
 .searchBar {
-  width: 80vw;
-  margin-top: 100px;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
 }

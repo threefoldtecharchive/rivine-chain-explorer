@@ -1,5 +1,5 @@
 <template>
-  <table class="ui celled table">
+  <v-simple-table dark >
     <thead>
       <tr>
         <th colspan="3">Multi Signature Fulfillment</th>
@@ -21,7 +21,7 @@
         </tr>
       </Fragment>
     </tbody>
-  </table>
+  </v-simple-table>
 </template>
 <script lang="ts">
 import { Fragment } from 'vue-fragment'

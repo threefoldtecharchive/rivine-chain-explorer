@@ -2,7 +2,7 @@
   <div>
     <h1>Hash</h1>
     <div>
-      <table class="ui celled table">
+      <v-simple-table dark >
         <thead>
           <tr>
             <th colspan="3" class="eight wide">Wallet Address</th>
@@ -56,20 +56,20 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </v-simple-table>
 
       <h3 v-if="wallet.minerPayouts.length > 0">
         Fee/Reward Payout Appearances
       </h3>
       <div v-for="(mp, idx) in wallet.minerPayouts" v-bind:key="mp.id">
-        <MinerOutput :output="mp" class="tx-table" />
+        <MinerOutput :output="mp" class="tx-v-simple-table dark" />
       </div>
 
       <h3 v-if="wallet.coinOutputsBlockCreator.length > 0">
         Coin Output Appearances
       </h3>
       <div v-for="(co, idx) in wallet.coinOutputsBlockCreator" v-bind:key="co.id">
-         <CoinOutput :output="co" class="tx-table" />
+         <CoinOutput :output="co" class="tx-v-simple-table dark" />
       </div>
 
       <h3 v-if="wallet.blockStakesOutputsBlockCreator.length > 0">
@@ -79,7 +79,7 @@
         v-for="(sbo, idx) in wallet.blockStakesOutputsBlockCreator"
         v-bind:key="sbo.id"
       >
-        <BlockStakeOutput :output="sbo" class="tx-table" />
+        <BlockStakeOutput :output="sbo" class="tx-v-simple-table dark" />
       </div>
 
     </div>
@@ -140,7 +140,7 @@ export default class UnlockHash extends Vue {
 }
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="ui celled table">
+    <v-simple-table dark>
       <thead>
         <tr>
           <th colspan="3" class="ten wide">Coin Output</th>
@@ -64,7 +64,7 @@
           <td>{{ output.spent ? 'Yes' : 'No' }}</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
   </div>
 </template>
 <script lang="ts">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="ui celled table">
+    <v-simple-table dark >
       <thead>
         <tr>
           <th colspan="3" class="ten wide">Used output</th>
@@ -48,7 +48,7 @@
           <td>{{ renderValue(input.parentOutput.value) }}</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
     <Fulfillment :fulfillment="input.fulfillment" />
 

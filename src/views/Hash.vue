@@ -1,38 +1,46 @@
 <template lang="html">
-  <div class="container">
+  <div>
     <navigation />
 
-    <div class="searchBar">
-      <Search category="hash" description="Hash" />
-    </div>
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
 
-    <div
-      class="ui segment spinner"
-      v-if="this.$store.getters.LOADING"
-    >
-      <div class="ui active inverted dimmer">
-        <div class="ui text loader">Loading</div>
-      </div>
-      <p></p>
-    </div>
+        <div class="searchBar">
+          <Search category="hash" description="Hash" />
+        </div>
 
-    <div class="margin">
-      <div v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
-        <BlockstakeOutputHash />
-      </div>
+        <div
+          class="ui segment spinner"
+          v-if="this.$store.getters.LOADING"
+        >
+          <div class="ui active inverted dimmer">
+            <div class="ui text loader">Loading</div>
+          </div>
+          <p></p>
+        </div>
 
-      <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
-        <CoinOutputHash />
-      </div>
+        <div v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
+          <BlockstakeOutputHash />
+        </div>
 
-      <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
-        <Wallet :wallet="this.$store.getters.HASH" />
-      </div>
+        <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
+          <CoinOutputHash />
+        </div>
 
-      <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
-        <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
-      </div>
-    </div>
+        <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
+          <Wallet :wallet="this.$store.getters.HASH" />
+        </div>
+
+        <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
+          <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
+        </div>
+
+      </v-container>
+    </v-content>
+
   </div>
 </template>
 
@@ -87,14 +95,12 @@ export default class Hash extends Vue {
 </script>
 <style scoped>
 .container {
-  width: 80%;
+  width: 80vw;
   margin: auto;
-  margin-top: 50px;
   text-align: center;
 }
 .searchBar {
-  width: 80vw;
-  margin-top: 100px;
+  width: 70vw;
   margin-left: auto;
   margin-right: auto;
 }

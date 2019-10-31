@@ -1,9 +1,9 @@
 <template>
-  <div class="margin">
-    <table class="ui celled table">
+  <div>
+    <v-simple-table dark >
       <thead>
         <tr>
-          <th colspan="3" class="six wide">Transaction version {{ transaction.version }}</th>
+          <th colspan="3">Transaction version {{ transaction.version }}</th>
         </tr>
       </thead>
       <tbody>
@@ -64,7 +64,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
     <DefaultTransaction
       :transaction="transaction"
       v-if="transaction.getTransactionType() === transactionType.DefaultTransaction"
@@ -125,8 +125,5 @@ export default {
   cursor: pointer;
   text-decoration: underline;
   color: blue;
-}
-.margin {
-  margin-top: 20px;
 }
 </style>

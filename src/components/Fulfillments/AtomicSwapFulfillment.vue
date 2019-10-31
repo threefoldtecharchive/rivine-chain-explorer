@@ -1,5 +1,5 @@
 <template>
-  <table class="ui celled table">
+  <v-simple-table dark >
     <thead>
       <tr>
         <th colspan="3">Atomic Swap Fulfillment</th>
@@ -23,7 +23,7 @@
         <td>{{ fulfillment.secret }}</td>
       </tr>
     </tbody>
-  </table>
+  </v-simple-table>
 </template>
 <script lang="ts">
 export default {

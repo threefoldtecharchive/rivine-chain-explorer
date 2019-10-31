@@ -1,20 +1,28 @@
 <template>
-  <div>
-    <div class="pusher">
-      <div class="ui inverted vertical masthead center aligned segment">
-        <navigation />
-        <div class="ui text container">
-          <h1 class="ui inverted header">{{ Name }} Explorer</h1>
-          <h2>Search any hash or block.</h2>
-          <div class="searchBar">
-            <search />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+  <v-app id="inspire">
+    <Navigation />
 
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <div class="header">
+            <h1>{{ Name }} Explorer</h1>
+            <h2>Search any hash or block.</h2>
+            <div class="searchBar">
+              <Search />
+            </div>
+          </div>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
+</template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Search from '../components/Common/Search.vue'
@@ -25,6 +33,9 @@ import { NAME } from '../common/config'
   components: {
     Search,
     Navigation
+  },
+  created () {
+    this.$vuetify.theme.dark = true
   }
 })
 export default class Home extends Vue {
@@ -35,8 +46,11 @@ export default class Home extends Vue {
 <style scoped>
 .searchBar {
   max-width: 70vw;
-  margin-top: 100px;
   margin-left: auto;
   margin-right: auto;
+}
+.header {
+  width: 60%;
+  margin: auto;
 }
 </style>

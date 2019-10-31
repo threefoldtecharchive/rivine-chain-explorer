@@ -1,5 +1,5 @@
 <template>
-  <table class="ui celled table">
+  <v-simple-table dark >
     <thead>
       <tr>
         <th colspan="3">Fulfillment</th>
@@ -19,7 +19,7 @@
         <td>{{ fulfillment.signature }}</td>
       </tr>
     </tbody>
-  </table>
+  </v-simple-table>
 </template>
 <script lang="ts">
 export default {

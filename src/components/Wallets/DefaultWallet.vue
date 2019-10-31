@@ -2,7 +2,7 @@
   <div>
     <h1>Hash</h1>
     <div>
-      <table class="ui celled table">
+      <v-simple-table dark >
         <thead>
           <tr>
             <th colspan="3" class="ten wide">Wallet Address</th>
@@ -56,19 +56,19 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </v-simple-table>
 
-      <table class="ui celled table" v-if="wallet.multisigAddressess">
+      <v-simple-table dark  v-if="wallet.multisigAddressess">
         <tbody>
           <tr v-for="(multisigAddress, index) in wallet.multisigAddressess">
             <td>Multisig Address #{{ index + 1 }}</td>
             <td>{{ multisigAddress }}</td>
           </tr>
         </tbody>
-      </table>
+      </v-simple-table>
 
       <div v-for="(coinOutput, idx) in wallet.coinOutputs" v-bind:key="idx">
-        <CoinOutput :output="coinOutput" class="tx-table"/>
+        <CoinOutput :output="coinOutput" class="tx-v-simple-table dark"/>
       </div>
     </div>
   </div>
@@ -125,7 +125,7 @@ export default class UnlockHash extends Vue {
 }
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

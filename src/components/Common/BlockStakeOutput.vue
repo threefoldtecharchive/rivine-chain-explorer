@@ -1,9 +1,9 @@
 <template>
   <div>
-    <table class="ui celled table">
+    <v-simple-table dark>
       <thead>
         <tr>
-          <th colspan="3" class="ten wide">Blockstake Output</th>
+          <th colspan="3" class="text-left">Blockstake Output</th>
         </tr>
       </thead>
       <tbody>
@@ -38,7 +38,7 @@
           <td>{{ output.spent ? 'Yes' : 'No' }}</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
   </div>
 </template>
 <script lang="ts">

@@ -1,7 +1,7 @@
 <template lang="html">
-  <div class="tx-table">
+  <div class="tx-v-simple-table dark">
     <h1>Hash</h1>
-    <table class="ui celled table" v-if="!isAtomicSwap">
+    <v-simple-table dark  v-if="!isAtomicSwap">
       <thead>
         <tr>
           <th colspan="3">Coin Output</th>
@@ -79,9 +79,9 @@
           <td v-else>No</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
-    <table class="ui celled table" v-if="isAtomicSwap">
+    <v-simple-table dark  v-if="isAtomicSwap">
       <thead>
         <tr>
           <th colspan="3">Coin Output</th>
@@ -155,9 +155,9 @@
           <td v-else>No</td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
-    <table class="ui celled table" v-if="coinOutputInfo.input">
+    <v-simple-table dark  v-if="coinOutputInfo.input">
       <thead>
         <tr>
           <th colspan="3">Coin Input</th>
@@ -176,7 +176,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
   </div>
 </template>
 
@@ -256,7 +256,7 @@ export default class CoinOutputHash extends Vue {
 }
 </script>
 <style scoped>
-.tx-table {
+.tx-v-simple-table dark {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;

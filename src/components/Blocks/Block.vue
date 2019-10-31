@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="container">
     <h1>Block</h1>
-    <table class="ui celled tablet stackable table">
+    <v-simple-table dark class="table">
       <thead>
         <tr>
-          <th colspan="3">Block statistics</th>
+          <th colspan="3" class="text-left">Block statistics</th>
         </tr>
       </thead>
       <tbody>
@@ -49,7 +49,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
     <div v-if="block.minerPayouts">
       <h2> Block creator rewards </h2>
@@ -57,7 +57,7 @@
         v-for="(output, index) in block.minerPayouts"
         v-bind:key="index"
       >
-        <MinerPayout :output="output" class="tx-table"/>
+        <MinerPayout :output="output" class="table"/>
       </div>
     </div>
 
@@ -67,7 +67,7 @@
         v-for="(tx, index) in block.transactions"
         v-bind:key="index"
       >
-        <Transaction :transaction="tx" showOutputs:="false" class="tx-table"/>
+        <Transaction :transaction="tx" showOutputs:="false" class="table"/>
       </div>
     </div>
   </div>
@@ -137,7 +137,7 @@ export default class Block extends Vue {
 }
 </script>
 <style scoped>
-.tx-table {
+.table {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -148,9 +148,7 @@ export default class Block extends Vue {
   color: blue;
 }
 .container {
-  width: 80%;
   margin: auto;
-  margin-top: 50px;
   text-align: center;
 }
 .container h1 {

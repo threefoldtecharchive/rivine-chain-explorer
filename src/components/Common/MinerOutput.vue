@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="ui celled table">
+    <v-simple-table dark >
       <thead>
         <tr>
           <th colspan="3" class="six wide">Miner Payout</th>
@@ -86,7 +86,7 @@
         </tr>
 
       </tbody>
-    </table>
+    </v-simple-table>
   </div>
 </template>
 <script lang="ts">
