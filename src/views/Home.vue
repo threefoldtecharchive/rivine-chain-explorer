@@ -14,7 +14,7 @@
           <div class="header">
             <h1>{{ Name }} Explorer</h1>
             <h2>Search any hash or block.</h2>
-            <div class="searchBar">
+            <div>
               <Search />
             </div>
           </div>
@@ -33,9 +33,6 @@ import { NAME } from '../common/config'
   components: {
     Search,
     Navigation
-  },
-  created () {
-    this.$vuetify.theme.dark = true
   }
 })
 export default class Home extends Vue {
@@ -44,11 +41,6 @@ export default class Home extends Vue {
 }
 </script>
 <style scoped>
-.searchBar {
-  max-width: 70vw;
-  margin-left: auto;
-  margin-right: auto;
-}
 .header {
   width: 60%;
   margin: auto;

@@ -1,6 +1,7 @@
 <template>
-  <div >
-    <div v-if="showOutputs">
+  <div>
+    <br/>
+    <div>
       <div v-if="transaction.blockStakeInputs" >
         <h3 v-if="transaction.blockStakeInputs.length > 0">Blockstake Inputs</h3>
         <div
@@ -8,6 +9,7 @@
           v-bind:key="index"
         >
           <Input :input="input" />
+          <br/>
         </div>
       </div>
 
@@ -19,6 +21,7 @@
           v-bind:key="index"
         >
           <Output :output="output" />
+          <br/>
         </div>
       </div>
 
@@ -29,6 +32,7 @@
           v-bind:key="index"
         >
           <Input :input="input" />
+          <br/>
         </div>
       </div>
 
@@ -37,9 +41,9 @@
         <div
           v-for="(output, index) in transaction.coinOutputs"
           v-bind:key="index"
-          
         >
           <Output :output="output" />
+          <br/>
         </div>
       </div>
     </div>
@@ -51,7 +55,7 @@ import Input from '../Common/Input.vue'
 import Output from '../Common/Output.vue'
 
 @Component({
-  props: ['transaction', 'showOutputs'],
+  props: ['transaction'],
   name: 'DefaultTransaction',
   components: {
     Input,

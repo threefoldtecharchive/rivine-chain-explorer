@@ -23,10 +23,3 @@ import { Component, Vue } from 'vue-property-decorator'
 // Export as class because Vue will understand this.$store etc..
 export default class CustodyFeeCondition extends Vue {}
 </script>
-<style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-</style>

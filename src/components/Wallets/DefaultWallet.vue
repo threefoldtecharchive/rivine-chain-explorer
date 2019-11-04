@@ -2,10 +2,10 @@
   <div>
     <h1>Hash</h1>
     <div>
-      <v-simple-table 
+      <v-simple-table >
         <thead>
           <tr>
-            <th colspan="3" class="ten wide">Wallet Address</th>
+            <th colspan="3">Wallet Address</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +69,7 @@
 
       <div v-for="(coinOutput, idx) in wallet.coinOutputs" v-bind:key="idx">
         <CoinOutput :output="coinOutput"/>
+        <br/>
       </div>
     </div>
   </div>
@@ -125,11 +126,6 @@ export default class UnlockHash extends Vue {
 }
 </script>
 <style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
 .container h1 {
   text-align: left;
   font-size: 30px;

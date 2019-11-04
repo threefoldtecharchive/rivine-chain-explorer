@@ -80,7 +80,7 @@
         </tr>
       </tbody>
     </v-simple-table>
-
+    <br/>
     <v-simple-table  v-if="isAtomicSwap">
       <thead>
         <tr>
@@ -156,7 +156,7 @@
         </tr>
       </tbody>
     </v-simple-table>
-
+    <br/>
     <v-simple-table  v-if="coinOutputInfo.input">
       <thead>
         <tr>
@@ -256,11 +256,6 @@ export default class CoinOutputHash extends Vue {
 }
 </script>
 <style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
 .container h1 {
   text-align: left;
   font-size: 30px;

@@ -61,10 +61,3 @@ import { Fragment } from 'vue-fragment'
 // Export as class because Vue will understand this.$store etc..
 export default class AtomicSwapOutputTable extends Vue {}
 </script>
-<style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-</style>

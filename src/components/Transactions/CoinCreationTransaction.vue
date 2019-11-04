@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showOutputs">
+  <div>
     <div>
       <h2>Coin Creation Fulfillment</h2>
       <Fulfillment :fulfillment="transaction.coinCreationFulfillment" />
@@ -8,6 +8,7 @@
       <h2>Coin Creation Outputs</h2>
       <Fragment v-for="(output, index) in transaction.coinCreationOutputs" v-bind:key="index">
         <Output :output="output" />
+        <br/>
       </Fragment>
     </div>
   </div>
@@ -20,7 +21,7 @@ import Condition from '../Conditions/Condition.vue'
 import Output from '../Common/Output.vue'
 
 @Component({
-  props: ['transaction', 'showOutputs'],
+  props: ['transaction'],
   name: 'CoinCreationTransaction',
   components: {
     Fulfillment,

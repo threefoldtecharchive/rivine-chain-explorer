@@ -1,113 +1,120 @@
 <template lang="html">
   <div>
     <Navigation />
-    <div class="container">
-      <div class="top">
-        <ChartInfo :data="infoData" />
-        <form class="ui form" @submit.prevent="fetchData()">
-          <div class="field">
-            <label>Show graphs of the latest blocks:</label>
-            <input
-              v-model="history"
-              type="number"
-              name="blocks"
-              placeholder="block"
-            />
-          </div>
-          <button class="ui button primary">Search</button>
+      <v-content>
+        <v-container
+          class="fill-height"
+          fluid
+        >
+          <div>
+            <div class="top">
+              <ChartInfo :data="infoData" />
+              <form class="ui form" @submit.prevent="fetchData()">
+                <div class="field">
+                  <label>Show graphs of the latest blocks:</label>
+                  <input
+                    v-model="history"
+                    type="number"
+                    name="blocks"
+                    placeholder="block"
+                  />
+                </div>
+                <button class="ui button primary">Search</button>
 
-          <div class="input-field">
-            <div class="field">
-              <label>Show graphs of the specfied block range:</label>
-              <input
-                type="number"
-                v-model="historyFrom"
-                name="from"
-                placeholder="from block"
-              />
-              <input
-                type="number"
-                v-model="historyUntil"
-                name="until"
-                placeholder="until block"
+                <div class="input-field">
+                  <div class="field">
+                    <label>Show graphs of the specfied block range:</label>
+                    <input
+                      type="number"
+                      v-model="historyFrom"
+                      name="from"
+                      placeholder="from block"
+                    />
+                    <input
+                      type="number"
+                      v-model="historyUntil"
+                      name="until"
+                      placeholder="until block"
+                    />
+                  </div>
+                  <button class="ui button primary">Search</button>
+                </div>
+              </form>
+            </div>
+            <div class="chart" v-if="!loading">
+              <div class="Chart__title">
+                Chain Height
+                <hr />
+              </div>
+              <LineChart
+                v-if="!loading"
+                :data="chainHeightData"
+                :options="chainHeightOptions"
+                :color="2"
               />
             </div>
-            <button class="ui button primary">Search</button>
+            <div class="chart" v-if="!loading">
+              <div class="Chart__title">
+                Block Creation Time (seconds since previous block)
+                <hr />
+              </div>
+              <LineChart
+                v-if="!loading"
+                :data="blockTimeData"
+                :options="blockTimeOptions"
+                :color="1"
+              />
+            </div>
+            <div class="chart" v-if="!loading">
+              <div class="Chart__title">
+                Estimate Active Blockstakes
+                <hr />
+              </div>
+              <LineChart
+                v-if="!loading"
+                :data="activeBsData"
+                :options="activeBsOptions"
+                :color="2"
+              />
+            </div>
+            <div class="chart" v-if="!loading">
+              <div class="Chart__title">
+                Block Transaction Count
+                <hr />
+              </div>
+              <LineChart
+                v-if="!loading"
+                :data="blockTransactionCountData"
+                :options="blockTransactionCountOptions"
+                :color="1"
+              />
+            </div>
+            <div class="chart" v-if="!loading">
+              <div class="Chart__title">
+                Block Difficulty
+                <hr />
+              </div>
+              <LineChart
+                v-if="!loading"
+                :data="blockDifficultyData"
+                :options="blockDifficultyOptions"
+                :color="2"
+              />
+            </div>
+            <div class="pie-chart" v-if="!loading">
+              <div class="Chart__title">
+                Block Creator Distribution
+                <hr />
+              </div>
+              <PieChart
+                v-if="!loading"
+                :data="blockCreatorPieGraphData"
+                :options="blockCreatorPieGraphOptions"
+              />
+            </div>
           </div>
-        </form>
-      </div>
-      <div class="chart" v-if="!loading">
-        <div class="Chart__title">
-          Chain Height
-          <hr />
-        </div>
-        <LineChart
-          v-if="!loading"
-          :data="chainHeightData"
-          :options="chainHeightOptions"
-          :color="2"
-        />
-      </div>
-      <div class="chart" v-if="!loading">
-        <div class="Chart__title">
-          Block Creation Time (seconds since previous block)
-          <hr />
-        </div>
-        <LineChart
-          v-if="!loading"
-          :data="blockTimeData"
-          :options="blockTimeOptions"
-          :color="1"
-        />
-      </div>
-      <div class="chart" v-if="!loading">
-        <div class="Chart__title">
-          Estimate Active Blockstakes
-          <hr />
-        </div>
-        <LineChart
-          v-if="!loading"
-          :data="activeBsData"
-          :options="activeBsOptions"
-          :color="2"
-        />
-      </div>
-      <div class="chart" v-if="!loading">
-        <div class="Chart__title">
-          Block Transaction Count
-          <hr />
-        </div>
-        <LineChart
-          v-if="!loading"
-          :data="blockTransactionCountData"
-          :options="blockTransactionCountOptions"
-          :color="1"
-        />
-      </div>
-      <div class="chart" v-if="!loading">
-        <div class="Chart__title">
-          Block Difficulty
-          <hr />
-        </div>
-        <LineChart
-          v-if="!loading"
-          :data="blockDifficultyData"
-          :options="blockDifficultyOptions"
-          :color="2"
-        />
-      </div>
-      <div class="pie-chart" v-if="!loading">
-        <div class="Chart__title">
-          Block Creator Distribution
-          <hr />
-        </div>
-        <PieChart
-          v-if="!loading"
-          :data="blockCreatorPieGraphData"
-          :options="blockCreatorPieGraphOptions"
-        />
-      </div>
-    </div>
+        </v-container>
+    </v-content>
   </div>
 </template>
 
@@ -435,13 +442,6 @@ export default {
 }
 </script>
 <style scoped>
-.container {
-  margin-top: 80px;
-  margin-left: auto;
-  margin-right: auto;
-  min-height: 100vh;
-  width: 85vw;
-}
 .top {
   display: flex;
   flex-direction: row;

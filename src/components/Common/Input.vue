@@ -50,6 +50,7 @@
       </tbody>
     </v-simple-table>
 
+    <br/>
     <Fulfillment :fulfillment="input.fulfillment" />
 
   </div>
@@ -83,10 +84,3 @@ import { toLocalDecimalNotation, formatReadableDate, formatTimeElapsed } from '.
 })
 export default class Input extends Vue {}
 </script>
-<style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-</style>

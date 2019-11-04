@@ -45,7 +45,7 @@
         </tr>
       </tbody>
     </v-simple-table>
-
+    <br/>
     <v-simple-table  v-if="blockStakeOutputInfo.input">
       <thead>
         <tr>
@@ -123,12 +123,7 @@ export default class BlockstakeOutputHash extends Vue {
 }
 </script>
 <style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-.container h1 {
+h1 {
   text-align: left;
   font-size: 30px;
 }

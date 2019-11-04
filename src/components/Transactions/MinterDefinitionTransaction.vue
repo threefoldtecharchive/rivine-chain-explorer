@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showOutputs">
+  <div>
     <div>
       <h2>Minter Definition Fulfillment</h2>
       <Fulfillment :fulfillment="transaction.minterDefinitionFulfillment" />
@@ -18,7 +18,7 @@ import Fulfillment from '../Fulfillments/Fulfillment.vue'
 import Condition from '../Conditions/Condition.vue'
 
 @Component({
-  props: ['transaction', 'showOutputs'],
+  props: ['transaction'],
   name: 'MinterDefinitionTransaction',
   components: {
     Fulfillment,

@@ -70,10 +70,3 @@ import { toLocalDecimalNotation } from '../../common/helpers'
 })
 export default class BlockStakeOutput extends Vue {}
 </script>
-<style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-</style>

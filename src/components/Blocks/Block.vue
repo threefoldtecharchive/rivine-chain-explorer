@@ -67,7 +67,7 @@
         v-for="(tx, index) in block.transactions"
         v-bind:key="index"
       >
-        <Transaction :transaction="tx" showOutputs:="false" class="table"/>
+        <TransactionSummary :transaction="tx" class="table"/>
       </div>
     </div>
   </div>
@@ -77,14 +77,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { mapState } from 'vuex'
 import { toLocalDecimalNotation } from '../../common/helpers'
-import Transaction from '../Transactions/Transaction.vue'
+import TransactionSummary from '../Transactions/TransactionSummary.vue'
 import MinerPayout from '../Common/MinerOutput.vue'
 
 @Component({
   name: 'Block',
   props: ['block'],
   components: {
-    Transaction,
+    TransactionSummary,
     MinerPayout
   },
   watch: {
@@ -141,19 +141,6 @@ export default class Block extends Vue {
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-.container {
-  margin: auto;
-  text-align: center;
-}
-.container h1 {
-  text-align: left;
-  font-size: 30px;
 }
 .container h2 {
   text-align: left;

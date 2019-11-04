@@ -12,30 +12,20 @@
           <Search category="hash" description="Hash" />
         </div>
 
-        <div
-          class="ui segment spinner"
-          v-if="this.$store.getters.LOADING"
-        >
-          <div class="ui active inverted dimmer">
-            <div class="ui text loader">Loading</div>
-          </div>
-          <p></p>
-        </div>
+        <v-skeleton-loader
+          v-if="this.$store.getters.LOADING === true"
+          type="table"
+          min-width="75vw"
+        ></v-skeleton-loader>
 
-        <div v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo">
-          <BlockstakeOutputHash />
-        </div>
+        <div v-else>
+          <BlockstakeOutputHash class="container" v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo" />
 
-        <div v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo">
-          <CoinOutputHash />
-        </div>
+          <CoinOutputHash class="container" v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo"/>
 
-        <div v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet">
-          <Wallet :wallet="this.$store.getters.HASH" />
-        </div>
+          <Wallet class="container" :wallet="this.$store.getters.HASH" v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet"/>
 
-        <div v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction">
-          <Transaction :transaction="this.$store.getters.HASH" :showOutputs="true" />
+          <Transaction class="container" :transaction="this.$store.getters.HASH" v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction"/>
         </div>
 
       </v-container>
@@ -52,6 +42,7 @@ import Transaction from '../components/Transactions/Transaction.vue'
 import Wallet from '../components/Wallets/Wallet.vue'
 import Navigation from '../components/Common/Navigation.vue'
 import Search from '../components/Common/Search.vue'
+import Fragment from 'vue-fragment'
 import { ResponseType, TransactionType } from 'rivine-ts-types'
 
 @Component({
@@ -62,7 +53,8 @@ import { ResponseType, TransactionType } from 'rivine-ts-types'
     Transaction,
     Wallet,
     Navigation,
-    Search
+    Search,
+    Fragment
   },
   watch: {
     '$store.state.block': function () {
@@ -76,7 +68,6 @@ export default class Hash extends Vue {
   transactionType = TransactionType
 
   created () {
-    console.log(this.$store.getters.HASH)
     if (!this.$route.params.hash) {
       this.$router.push('/')
     }
@@ -94,16 +85,6 @@ export default class Hash extends Vue {
 }
 </script>
 <style scoped>
-.container {
-  width: 80vw;
-  margin: auto;
-  text-align: center;
-}
-.searchBar {
-  width: 70vw;
-  margin-left: auto;
-  margin-right: auto;
-}
 .spinner {
   margin: "auto";
   margin-top: 50px;
@@ -112,10 +93,5 @@ export default class Hash extends Vue {
 .margin {
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
 }
 </style>

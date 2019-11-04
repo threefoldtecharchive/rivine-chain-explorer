@@ -116,10 +116,3 @@ import { toLocalDecimalNotation, formatReadableDate, formatTimeElapsed } from '.
 })
 export default class MinerOutput extends Vue {}
 </script>
-<style scoped>
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-</style>

@@ -7,7 +7,9 @@
         class="fill-height"
         fluid
       >
-        <Search category="block" description="Block Heights" class="searchBar" />
+        <div class="searchBar">
+          <Search category="block" description="Block Heights" />
+        </div>
         <Block :block="this.$store.getters.BLOCK" />
       </v-container>
     </v-content>
@@ -19,12 +21,14 @@ import { Component, Vue } from 'vue-property-decorator'
 import Navigation from '../components/Common/Navigation.vue'
 import Search from '../components/Common/Search.vue'
 import Block from '../components/Blocks/Block.vue'
+import Fragment from 'vue-fragment'
 
 @Component({
   components: {
     Navigation,
     Search,
-    Block
+    Block,
+    Fragment
   }
 })
 export default class Blocks extends Vue {
@@ -41,10 +45,3 @@ export default class Blocks extends Vue {
   }
 }
 </script>
-<style scoped>
-.searchBar {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>

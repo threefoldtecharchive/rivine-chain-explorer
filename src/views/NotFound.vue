@@ -2,18 +2,25 @@
   <div class="pusher">
     <div class="ui inverted vertical masthead center aligned segment">
       <navigation />
-      <div class="ui text container notfound">
-        <div v-for="err in getError()" v-bind:key="err">
-          <h4>{{ err }}</h4>
-          <br>
-        </div>
-        <h4>Were you looking for an identifier instead? Please take into account the following:
-            All transaction‐, Block‐, Coin Output‐ and Blockstake Ouput‐identifiers have a fixed length of 64 characters.
-        </h4>
-        <div class="searchBar">
-          <search />
-        </div>
-      </div>
+        <v-content>
+          <v-container
+            class="fill-height"
+            fluid
+          >
+            <div class="ui text container notfound">
+              <div v-for="err in getError()" v-bind:key="err">
+                <h4>{{ err }}</h4>
+                <br>
+              </div>
+              <h4>Were you looking for an identifier instead? Please take into account the following:
+                  All transaction‐, Block‐, Coin Output‐ and Blockstake Ouput‐identifiers have a fixed length of 64 characters.
+              </h4>
+              <div class="searchBar">
+                <search />
+              </div>
+            </div>
+          </v-container>
+        </v-content>
     </div>
   </div>
 </template>

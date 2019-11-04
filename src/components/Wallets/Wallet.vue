@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <BlockCreatorWallet :wallet="wallet" v-if="wallet.isBlockCreator"/>
     <DefaultWallet :wallet="wallet" v-else/>
   </div>

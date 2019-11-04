@@ -5,35 +5,43 @@
       <h1>No unconfirmed Transactions</h1>
       <hr/>
     </div> -->
-    <div class="container">
-      <h1>Recent Blocks</h1>
-      <div
-        v-for="(block, idx) in flatten(recentBlockTransactions)"
-        v-bind:key="idx"
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
       >
-        <v-simple-table>
-          <thead>
-            <tr>
-              <th colspan="3">Block: {{ block.height }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Timestamp</td>
-              <td>
-                {{ block.timestamp }}
-              </td>
-            </tr>
-            <tr v-for="(tx, index) in block.txs" v-bind:key="index">
-              <td>#{{ index + 1 }} Transaction ID</td>
-              <td class="clickable" v-on:click="routeToHashPage(tx.id)">
-                {{ tx.id }}
-              </td>
-            </tr>
-          </tbody>
-        </v-simple-table>
-      </div>
-    </div>
+        <div class="container">
+          <h1>Recent Blocks</h1>
+          <div
+            v-for="(block, idx) in flatten(recentBlockTransactions)"
+            v-bind:key="idx"
+          >
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th colspan="3">Block: {{ block.height }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Timestamp</td>
+                  <td>
+                    {{ block.timestamp }}
+                  </td>
+                </tr>
+                <tr v-for="(tx, index) in block.txs" v-bind:key="index">
+                  <td>#{{ index + 1 }} Transaction ID</td>
+                  <td class="clickable" v-on:click="routeToHashPage(tx.id)">
+                    {{ tx.id }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+            <br />
+          </div>
+        </div>
+      </v-container>
+    </v-content>
   </div>
 </template>
 
@@ -119,20 +127,9 @@ export default class Transactions extends Vue {
 }
 </script>
 <style scoped>
-.container {
-  width: 80%;
-  margin: auto;
-  margin-top: 100px;
-  text-align: center;
-}
 .spinner {
   margin: "auto";
   margin-top: 50px;
   height: 500px;
-}
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
 }
 </style>

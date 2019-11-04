@@ -22,21 +22,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- <v-app-bar
-      app
-      clipped-left
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Explorer</v-toolbar-title>
-      <div class="right">
-        <v-container fluid>
-          <v-switch v-model="switch1" :label="`Switch 1: ${switch1.toString()}`"></v-switch>
-        </v-container>
-      </div>
-
-    </v-app-bar> -->
     <v-app-bar
-      color="deep-purple accent-4"
+      color="deep-purple accent-3"
       dark
       app
       clipped-left
@@ -45,10 +32,10 @@
       <v-toolbar-title>Explorer</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon v-if="dark">
-        <v-icon v-on:click="someHandler">mdi-white-balance-sunny</v-icon>
+        <v-icon v-on:click="changeMode">mdi-white-balance-sunny</v-icon>
       </v-btn>
       <v-btn icon v-else>
-        <v-icon v-on:click="someHandler">mdi-moon-waning-crescent</v-icon>
+        <v-icon v-on:click="changeMode">mdi-moon-waning-crescent</v-icon>
       </v-btn>
     </v-app-bar>
   </Fragment>
@@ -78,16 +65,17 @@ import { Fragment } from 'vue-fragment'
         { title: 'Charts', icon: 'mdi-chart-line-variant', text: 'Charts', link: '/charts' }
       ],
       mini: true,
-      dark: true
+      dark: this.$store.getters.DARKMODE
     }
   },
   created () {
-    this.$vuetify.theme.dark = true
+    this.$vuetify.theme.dark = this.$store.getters.DARKMODE
   },
   methods: {
-    someHandler () {
-      this.$vuetify.theme.dark = !this.dark
-      this.dark = !this.dark
+    changeMode () {
+      this.$vuetify.theme.dark = !this.$store.getters.DARKMODE
+      this.dark = !this.$store.getters.DARKMODE
+      this.$store.commit('SET_DARK_MODE', this.$vuetify.theme.dark)
     }
   }
 })
