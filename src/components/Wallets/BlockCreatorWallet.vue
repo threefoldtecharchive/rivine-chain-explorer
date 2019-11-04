@@ -2,7 +2,7 @@
   <div>
     <h1>Hash</h1>
     <div>
-      <v-simple-table dark >
+      <v-simple-table 
         <thead>
           <tr>
             <th colspan="3" class="eight wide">Wallet Address</th>
@@ -62,14 +62,14 @@
         Fee/Reward Payout Appearances
       </h3>
       <div v-for="(mp, idx) in wallet.minerPayouts" v-bind:key="mp.id">
-        <MinerOutput :output="mp" class="tx-v-simple-table dark" />
+        <MinerOutput :output="mp" />
       </div>
 
       <h3 v-if="wallet.coinOutputsBlockCreator.length > 0">
         Coin Output Appearances
       </h3>
       <div v-for="(co, idx) in wallet.coinOutputsBlockCreator" v-bind:key="co.id">
-         <CoinOutput :output="co" class="tx-v-simple-table dark" />
+         <CoinOutput :output="co" />
       </div>
 
       <h3 v-if="wallet.blockStakesOutputsBlockCreator.length > 0">
@@ -79,7 +79,7 @@
         v-for="(sbo, idx) in wallet.blockStakesOutputsBlockCreator"
         v-bind:key="sbo.id"
       >
-        <BlockStakeOutput :output="sbo" class="tx-v-simple-table dark" />
+        <BlockStakeOutput :output="sbo" />
       </div>
 
     </div>
@@ -140,11 +140,6 @@ export default class UnlockHash extends Vue {
 }
 </script>
 <style scoped>
-.tx-v-simple-table dark {
-  text-align: left;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 .clickable {
   cursor: pointer;
   text-decoration: underline;

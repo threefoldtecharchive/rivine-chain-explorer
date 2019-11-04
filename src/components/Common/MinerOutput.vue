@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-simple-table dark >
+    <v-simple-table >
       <thead>
         <tr>
           <th colspan="3" class="six wide">Miner Payout</th>

@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container">
     <h1>Block</h1>
-    <v-simple-table dark class="table">
+    <v-simple-table class="table">
       <thead>
         <tr>
           <th colspan="3" class="text-left">Block statistics</th>

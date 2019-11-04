@@ -1,5 +1,5 @@
 <template>
-  <v-simple-table dark >
+  <v-simple-table >
     <thead>
       <tr>
         <th colspan="3">Multi Signature Fulfillment</th>
