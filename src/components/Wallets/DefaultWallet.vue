@@ -57,7 +57,7 @@
           </tr>
         </tbody>
       </v-simple-table>
-
+      <br />
       <v-simple-table  v-if="wallet.multisigAddressess">
         <tbody>
           <tr v-for="(multisigAddress, index) in wallet.multisigAddressess">
@@ -66,7 +66,7 @@
           </tr>
         </tbody>
       </v-simple-table>
-
+      <br />
       <div v-for="(coinOutput, idx) in wallet.coinOutputs" v-bind:key="idx">
         <CoinOutput :output="coinOutput"/>
         <br/>

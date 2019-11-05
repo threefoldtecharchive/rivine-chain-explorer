@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <BlockCreatorWallet :wallet="wallet" v-if="wallet.isBlockCreator"/>
+    <CustodyVoidWallet :wallet="wallet" v-else-if="wallet.isCustodyVoid"/>
     <DefaultWallet :wallet="wallet" v-else/>
   </div>
 </template>
@@ -10,6 +11,7 @@ import { TransactionType } from 'rivine-ts-types'
 import { PRECISION, UNIT } from '../../common/config'
 import BlockCreatorWallet from './BlockCreatorWallet.vue'
 import DefaultWallet from './DefaultWallet.vue'
+import CustodyVoidWallet from './CustodyVoidWallet.vue'
 
 export default {
   data () {
@@ -20,7 +22,8 @@ export default {
   props: ['wallet'],
   components: {
     BlockCreatorWallet,
-    DefaultWallet
+    DefaultWallet,
+    CustodyVoidWallet
   },
   name: 'wallet'
 }

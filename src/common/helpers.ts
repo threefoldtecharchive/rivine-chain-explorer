@@ -76,9 +76,14 @@ export function getUnlockhashFromCondition (condition: Condition): string {
 }
 
 export function getUnlockHash (outputInfo: BlockstakeOutputInfo | CoinOutputInfo): string {
+  debugger
   if (outputInfo.output.isBlockCreatorReward) {
     if (outputInfo.output.unlockhash) {
       return outputInfo.output.unlockhash
+    }
+  } else if (outputInfo.output.isCustodyFee) {
+    if (outputInfo.output.condition.custodyFeeVoidAddress) {
+      return outputInfo.output.condition.custodyFeeVoidAddress
     }
   } else {
     if (outputInfo.output.condition) {
