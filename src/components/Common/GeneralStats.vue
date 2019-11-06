@@ -46,21 +46,21 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { pick } from "lodash";
+import { Vue, Component } from 'vue-property-decorator'
+import { pick } from 'lodash'
 
 @Component
 export default class GeneralStats extends Vue {
-  getExplorer() {
+  getExplorer () {
     return pick(this.$store.getters.EXPLORER, [
-      "height",
-      "blockid",
-      "difficulty"
-    ]);
+      'height',
+      'blockid',
+      'difficulty'
+    ])
   }
 
-  created() {
-    this.$store.dispatch("SET_EXPLORER");
+  created () {
+    this.$store.dispatch('SET_EXPLORER')
   }
 }
 </script>

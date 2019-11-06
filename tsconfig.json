@@ -10,8 +10,10 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "noImplicitAny": false,
     "baseUrl": ".",
     "types": [
+      "vuetify",
       "webpack-env"
     ],
     "paths": {
@@ -27,11 +29,8 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src//*.ts",
+    "src//*.vue"
   ],
   "exclude": [
     "node_modules"

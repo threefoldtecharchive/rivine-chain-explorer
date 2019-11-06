@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import { API_URL } from "../../common/config";
+import axios from 'axios'
+import { API_URL } from '../../common/config'
 
 export default {
   props: {

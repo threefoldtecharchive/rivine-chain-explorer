@@ -2,112 +2,96 @@
   <div>
     <navigation />
 
-    <div class="searchBar">
-      <Search category="hash" description="Hash" />
-    </div>
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
 
-    <div
-      class="ui segment container spinner"
-      v-if="this.$store.getters.LOADING"
-    >
-      <div class="ui active inverted dimmer">
-        <div class="ui text loader">Loading</div>
-      </div>
-      <p></p>
-    </div>
+        <div class="searchBar">
+          <Search category="hash" description="Hash" />
+        </div>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'blockstakeoutputid'">
-      <BlockstakeOutputHash />
-    </div>
+        <v-skeleton-loader
+          v-if="this.$store.getters.LOADING === true"
+          type="table"
+          min-width="75vw"
+        ></v-skeleton-loader>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'coinoutputid'">
-      <CoinOutputHash />
-    </div>
+        <div v-else>
+          <BlockstakeOutputHash class="container" v-if="this.$store.getters.HASH.kind() === responseType.BlockstakeOutputInfo" />
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'unlockhash'">
-      <UnlockHash />
-    </div>
+          <CoinOutputHash class="container" v-else-if="this.$store.getters.HASH.kind() === responseType.CoinOutputInfo"/>
 
-    <div v-else-if="this.$store.getters.HASH.hashtype === 'transactionid'">
-      <TransactionIdHash />
-    </div>
+          <Wallet class="container" :wallet="this.$store.getters.HASH" v-else-if="this.$store.getters.HASH.kind() === responseType.Wallet"/>
+
+          <Transaction class="container" :transaction="this.$store.getters.HASH" v-else-if="this.$store.getters.HASH.kind() === responseType.Transaction"/>
+        </div>
+
+      </v-container>
+    </v-content>
+
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import BlockstakeOutputHash from "./HashTypes/BlockstakeOutputHash.vue";
-import CoinOutputHash from "./HashTypes/CoinOutputHash.vue";
-import UnlockHash from "./HashTypes/UnlockHash.vue";
-import TransactionIdHash from "./HashTypes/TransactionIdHash.vue";
-import Navigation from "../components/Navigation.vue";
-import Search from "../components/Search.vue";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import BlockstakeOutputHash from '../components/Outputs/BlockstakeOutputHash.vue'
+import CoinOutputHash from '../components/Outputs/CoinOutputHash.vue'
+import Transaction from '../components/Transactions/Transaction.vue'
+import Wallet from '../components/Wallets/Wallet.vue'
+import Navigation from '../components/Common/Navigation.vue'
+import Search from '../components/Common/Search.vue'
+import Fragment from 'vue-fragment'
+import { ResponseType, TransactionType } from 'rivine-ts-types'
 
 @Component({
-  name: "Hash",
+  name: 'Hash',
   components: {
     BlockstakeOutputHash,
     CoinOutputHash,
-    UnlockHash,
-    TransactionIdHash,
+    Transaction,
+    Wallet,
     Navigation,
-    Search
+    Search,
+    Fragment
   },
   watch: {
-    "$store.state.block": function() {
-      this.$router.push("/block/" + this.$store.state.block.block.height);
+    '$store.state.block': function () {
+      this.$router.push('/block/' + this.$store.state.block.block.height)
     }
   }
 })
 export default class Hash extends Vue {
-  loading: boolean = false;
+  loading: boolean = false
+  responseType = ResponseType
+  transactionType = TransactionType
 
-  created() {
+  created () {
     if (!this.$route.params.hash) {
-      this.$router.push("/");
+      this.$router.push('/')
     }
     if (!this.$store.getters.HASH.hashtype) {
-      this.loading = true;
-      this.$store.dispatch("SET_HASH", this.$route.params.hash).then(() => {
-        this.loading = false;
-      });
+      this.loading = true
+      this.$store.dispatch('SET_HASH', this.$route.params.hash).then(() => {
+        this.loading = false
+      })
     }
 
-    if (this.$store.getters.HASH === "") {
-      this.$router.push("/notfound");
+    if (this.$store.getters.HASH === '') {
+      this.$router.push('/notfound')
     }
   }
 }
 </script>
 <style scoped>
-.container {
-  width: 80%;
-  margin: auto;
-  margin-top: 50px;
-  text-align: center;
-}
-.searchBar {
-  width: 80vw;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-}
 .spinner {
   margin: "auto";
   margin-top: 50px;
   height: 500px;
 }
-.tx-table {
+.margin {
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
-}
-.container h1 {
-  text-align: left;
-  font-size: 30px;
 }
 </style>
