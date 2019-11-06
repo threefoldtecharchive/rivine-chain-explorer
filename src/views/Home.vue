@@ -7,6 +7,7 @@
         class="fill-height"
         fluid
       >
+        <HomeGrid />
         <v-row
           align="center"
           justify="center"
@@ -27,12 +28,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Search from '../components/Common/Search.vue'
 import Navigation from '../components/Common/Navigation.vue'
+import HomeGrid from './HomeGrid.vue'
 import { NAME } from '../common/config'
 
 @Component({
   components: {
     Search,
-    Navigation
+    Navigation,
+    HomeGrid
   }
 })
 export default class Home extends Vue {

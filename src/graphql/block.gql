@@ -1,0 +1,9 @@
+query block {
+  block {
+    Header {
+      ID
+      BlockHeight
+      BlockTime
+    }
+  }
+}
