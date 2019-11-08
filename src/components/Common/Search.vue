@@ -1,7 +1,6 @@
 <template>
   <v-form v-on:submit.prevent="handleSearch">
-    <div class="ui icon input searchBar">
-      <i class="search icon"></i>
+    <div>
       <v-text-field
         v-model="SearchVal"
         type="search"
@@ -12,6 +11,7 @@
         icon-pack="fas"
         icon="search"
         v-validate="'required'"
+        background-color="transparant"
       />
     </div>
     <p v-if="error">{{ error }}</p>
@@ -45,7 +45,7 @@ export default class Search extends Vue {
       this.$store.dispatch('SET_HASH', this.SearchVal)
       this.$router.push('/hashes/' + this.SearchVal)
     } else if (parseInt(this.SearchVal) || this.category === 'block') {
-      this.$store.dispatch('SET_BLOCK_HEIGHT', this.SearchVal)
+      // this.$store.dispatch('SET_BLOCK_HEIGHT', this.SearchVal)
       this.$router.push('/block/' + this.SearchVal)
     } else {
       this.$store.dispatch('SET_ERROR', `${this.SearchVal}`)
@@ -58,12 +58,3 @@ export default class Search extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.searchBar {
-  width: 100%;
-}
-.searchButton {
-  margin-top: 5%;
-}
-</style>

@@ -13,8 +13,11 @@
 }
 
 .searchBar {
-  width: 76vw;
+  width: 40vw;
   margin: auto;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 
 .container {
@@ -80,6 +83,6 @@
 
 @media only screen and (min-width: 2320px) {
   .searchBar {
-    width: 50vw;
+    width: 20vw;
   }
 }

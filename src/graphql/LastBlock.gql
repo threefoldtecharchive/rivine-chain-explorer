@@ -1,6 +1,6 @@
-query block {
+{
   block {
-    Header {
+  	Header {
       ID
       BlockHeight
       BlockTime

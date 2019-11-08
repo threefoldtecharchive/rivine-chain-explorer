@@ -2,8 +2,8 @@
   <div class="apollo-example">
     <!-- Apollo watched Graphql query -->
     <ApolloQuery
-      :query="require('../../graphql/block.gql')"
-      :variables="{ block }"
+      :query="require('../../graphql/LastBlock.gql')"
+      :variables="{ ref }"
     >
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
@@ -48,7 +48,7 @@
 export default {
   data () {
     return {
-      block: {}
+      ref: 5
     }
   },
 

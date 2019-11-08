@@ -19,24 +19,29 @@
           <td>Miner Payout Id</td>
           <td
             class="clickable"
-            v-on:click="routeToHashPage(output.id)"
-          >{{ output.id }}</td>
+            v-on:click="routeToHashPage(output.Output.ID)"
+          >{{ output.Output.ID }}</td>
         </tr>
 
         <tr>
           <td>Payout Address</td>
           <td
             class="clickable"
-            v-on:click="routeToHashPage(output.unlockhash)"
-          >{{ output.unlockhash }}</td>
+            v-on:click="routeToHashPage(output.Output.Condition.UnlockHash)"
+          >{{ output.Output.Condition.UnlockHash }}</td>
         </tr>
 
         <tr>
           <td>Value</td>
-          <td>{{ renderValue(output.value) }}</td>
+          <td>{{ renderValue(output.Output.Value) }}</td>
         </tr>
 
-        <tr v-if="!output.isBlockCreatorReward && output.sourceTransactionIds">
+        <tr>
+          <td>Source Description</td>
+          <td>{{ output.Type }}</td>
+        </tr>
+
+        <!-- <tr v-if="!output.isBlockCreatorReward && output.sourceTransactionIds">
           <td>Source Transaction Identifiers</td>
           <td>
             <span
@@ -48,9 +53,9 @@
               {{ id }}
             </span>
           </td>
-        </tr>
+        </tr> -->
 
-        <tr v-if="output.creationTime">
+        <!-- <tr v-if="output.creationTime">
           <td>Creation Time</td>
           <td>{{ formatReadableDate(output.creationTime) }}</td>
         </tr>
@@ -78,7 +83,7 @@
         <tr v-if="output.description">
           <td>Source Description</td>
           <td>{{ output.description }}</td>
-        </tr>
+        </tr> -->
 
         <tr v-if="output.spent != undefined">
           <td>Has been spent</td>
@@ -108,6 +113,7 @@ import { toLocalDecimalNotation, formatReadableDate, formatTimeElapsed } from '.
       this.$router.push('/hashes/' + val)
     },
     renderValue: function (value: any) {
+      value = value / Math.pow(10, PRECISION)
       return `${toLocalDecimalNotation(value)} ${UNIT}`
     },
     formatReadableDate,

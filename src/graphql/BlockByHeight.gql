@@ -1,0 +1,58 @@
+query($id: ReferencePoint) {
+  block(reference: $id) {
+    Facts {
+      ChainSnapshot {
+        EstimatedActiveBlockStakes
+      }
+    }
+  	Header {
+      ID
+      ParentID
+      Parent {
+        Header {
+          ID
+          BlockHeight
+      		BlockTime
+        }
+      }
+      Child {
+        Header {
+          ID
+          BlockHeight
+      		BlockTime
+        }
+      }
+      BlockHeight
+      BlockTime
+      Payouts {
+        Output {
+          ID
+          Value
+          Condition {
+            UnlockHash
+          }
+        }
+        Type
+      }
+    }
+    Transactions {
+      __typename
+      ID
+      Version
+    	CoinInputs {
+          ID
+      }
+      CoinOutputs {
+          ID
+      }
+      ... on StandardTransaction {
+        BlockStakeOutputs {
+          ID
+        }
+        BlockStakeInputs {
+          ID
+        }
+      }
+    }
+  }
+}

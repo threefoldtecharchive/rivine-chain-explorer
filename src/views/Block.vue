@@ -7,10 +7,7 @@
         class="fill-height"
         fluid
       >
-        <div class="searchBar">
-          <Search category="block" description="Block Heights" />
-        </div>
-        <Block :block="this.$store.getters.BLOCK" />
+        <BlockGql :block="this.$store.getters.BLOCK" />
       </v-container>
     </v-content>
   </div>
@@ -21,6 +18,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import Navigation from '../components/Common/Navigation.vue'
 import Search from '../components/Common/Search.vue'
 import Block from '../components/Blocks/Block.vue'
+import BlockGql from '../components/Blocks/BlockGql.vue'
 import Fragment from 'vue-fragment'
 
 @Component({
@@ -28,6 +26,7 @@ import Fragment from 'vue-fragment'
     Navigation,
     Search,
     Block,
+    BlockGql,
     Fragment
   }
 })
@@ -35,13 +34,6 @@ export default class Blocks extends Vue {
   created () {
     window.scrollTo(0, 0)
     this.$store.dispatch('SET_EXPLORER')
-  }
-
-  beforeCreate () {
-    const { height } = this.$route.params
-    if (height) {
-      this.$store.dispatch('SET_BLOCK_HEIGHT', height)
-    }
   }
 }
 </script>

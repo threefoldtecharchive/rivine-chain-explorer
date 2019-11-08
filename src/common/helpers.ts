@@ -7,9 +7,8 @@ import {
 
 export function toLocalDecimalNotation (x: any) {
   if (!x) return
-  const w = parseFloat(x)
-  const v = Number(w)
-  return v.toLocaleString(navigator.language, {
+
+  return x.toLocaleString(navigator.language, {
     maximumFractionDigits: PRECISION
   })
 }

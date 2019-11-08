@@ -28,9 +28,13 @@
       app
       clipped-left
     >
+
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Explorer</v-toolbar-title>
       <v-spacer></v-spacer>
+
+      <v-icon>mdi-magnify</v-icon>
+      <Search class="searchBar"/>
       <v-btn icon v-if="dark">
         <v-icon v-on:click="changeMode">mdi-white-balance-sunny</v-icon>
       </v-btn>
