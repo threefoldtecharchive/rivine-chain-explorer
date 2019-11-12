@@ -1,0 +1,43 @@
+query($id: Hash!) {
+  output(id: $id) {
+    ID
+    Value
+    Type
+    Condition {
+      Version
+      UnlockHash
+      ... on UnlockHashCondition {
+        PublicKey
+      }
+      ... on NilCondition {
+        Version
+      }
+      ... on AtomicSwapCondition {
+        Version
+      }
+      ... on LockTimeCondition {
+        Version
+      }
+    }
+    ChildInput {
+      Fulfillment {
+        Version
+        ... on SingleSignatureFulfillment {
+          PublicKey
+          Signature
+        }
+      }
+    }
+    Parent {
+      __typename
+    	... on StandardTransaction {
+        ID
+      }
+      ... on Block {
+        Header {
+          ID
+        }
+      }
+    }
+  }
+}

@@ -6,7 +6,8 @@
     "serve": "npx --max-old-space-size=8192 vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "tslint -p .",
-    "fix": "tslint -p . --fix"
+    "fix": "tslint -p . --fix",
+    "build-fragment" : "node src/graphql/schemaTypes.js"
   },
   "dependencies": {
     "@types/lodash": "^4.14.136",

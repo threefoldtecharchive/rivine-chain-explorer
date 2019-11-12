@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div>
     <navigation />
 
@@ -7,33 +7,30 @@
         class="fill-height"
         fluid
       >
-        <BlockGql />
+        <HashGql />
       </v-container>
     </v-content>
+
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import HashGql from '../components/Hashes/HashGql.vue'
 import Navigation from '../components/Common/Navigation.vue'
 import Search from '../components/Common/Search.vue'
-import Block from '../components/Blocks/Block.vue'
-import BlockGql from '../components/Blocks/BlockGql.vue'
 import Fragment from 'vue-fragment'
+import { ResponseType, TransactionType } from 'rivine-ts-types'
+import { OutputType } from '../graphql/outputTypes'
 
 @Component({
+  name: 'Hash',
   components: {
+    HashGql,
     Navigation,
     Search,
-    Block,
-    BlockGql,
     Fragment
   }
 })
-export default class Blocks extends Vue {
-  created () {
-    window.scrollTo(0, 0)
-    this.$store.dispatch('SET_EXPLORER')
-  }
-}
+export default class Hash extends Vue {}
 </script>

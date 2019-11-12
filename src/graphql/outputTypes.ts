@@ -1,0 +1,6 @@
+export enum OutputType {
+  COIN,
+  BLOCK_STAKE,
+  BLOCK_CREATION_REWARD,
+  TRANSACTION_FEE
+}

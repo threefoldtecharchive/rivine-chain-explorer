@@ -15,6 +15,13 @@ export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0
 
 Vue.prototype.$filesRoot = filesRoot
 
+
+import {IntrospectionFragmentMatcher} from 'apollo-cache-inmemory';
+import introspectionQueryResultData from '../../../src/fragmentTypes.json';
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+});
+
 // Config
 const defaultOptions = {
   // You can use `https` for secure connection (recommended in production)
@@ -38,7 +45,7 @@ const defaultOptions = {
   // link: myLink
 
   // Override default cache
-  // cache: myCache
+  cache: new InMemoryCache({fragmentMatcher})
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...

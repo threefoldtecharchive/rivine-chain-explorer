@@ -3,7 +3,9 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Block from './views/Block.vue'
 import NotFound from './views/NotFound.vue'
-import Hash from './views/Hash.vue'
+// import Hash from './views/Hash.vue'
+import HashGql from './views/HashGql.vue'
+
 import Charts from './views/Charts.vue'
 import transactions from './views/Transactions.vue'
 
@@ -31,7 +33,7 @@ export default new Router({
     {
       path: '/hashes/:hash?',
       name: 'hash',
-      component: Hash
+      component: HashGql
     },
     {
       path: '/charts',
