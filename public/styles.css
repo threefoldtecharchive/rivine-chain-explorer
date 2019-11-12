@@ -17,6 +17,20 @@
   margin: auto;
 }
 
+.rowcontainer {
+  width: 80%;
+  margin: auto;
+}
+
+.rowcontainer-chart {
+  width: 90%;
+  margin: auto;
+  margin-top: 50px;
+  padding: 30px;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 1%;
+}
+
 .container {
   margin: auto;
   text-align: center;
@@ -83,3 +97,13 @@
     width: 50vw;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .rowcontainer {
+    width: 95%;
+  }
+  .rowcontainer-chart {
+    width: 100%;
+  }
+}
+

@@ -8,4 +8,5 @@ module.exports = {
       new VuetifyLoaderPlugin()
     ],
   },
+  lintOnSave: false
 }

@@ -41,13 +41,16 @@ export default {
 
 <style scoped>
 .info {
-  padding: 50px;
+  padding: 20px;
   background-color: #4f5566;
   border-radius: 2%;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3);
   color: #fff;
   text-align: center;
   min-width: 30vw;
+}
+.info-title {
+  font-size: 28px;
 }
 .detail-info {
   display: flex;
@@ -58,7 +61,7 @@ export default {
   flex-direction: column;
   margin: 5px;
   color: #00c4c9;
-  font-size: 20px;
+  font-size: 18px;
 }
 .info-label {
   text-transform: uppercase;

@@ -1,124 +1,159 @@
 <template lang="html">
   <div>
     <Navigation />
+      <br />
       <v-content>
         <v-container
           class="fill-height"
           fluid
         >
-          <div>
-            <div class="top">
-              <ChartInfo :data="infoData" />
-              <form class="ui form" @submit.prevent="fetchData()">
+
+        <v-row class="mb-6">
+          <v-col
+            v-for="n in 2"
+            :key="n"
+            :lg="6"
+            :md="12"
+            :sm="12"
+            :cols="12"
+          >
+            <ChartInfo v-if="n === 1" :data="infoData" class="rowcontainer"/>
+
+            <v-form v-if="n === 2" @submit.prevent="fetchData()" class="rowcontainer">
+              <div class="field">
+                <label>Show graphs of the latest blocks:</label>
+                <v-text-field
+                  v-model="history"
+                  type="number"
+                  name="blocks"
+                  placeholder="block"
+                />
+              </div>
+              <v-btn small color="primary" @click="fetchData">Search</v-btn>
+
+              <div class="input-field">
                 <div class="field">
-                  <label>Show graphs of the latest blocks:</label>
-                  <input
-                    v-model="history"
+                  <label>Show graphs of the specfied block range:</label>
+                  <v-text-field
                     type="number"
-                    name="blocks"
-                    placeholder="block"
+                    v-model="historyFrom"
+                    name="from"
+                    placeholder="from block"
+                  />
+                  <v-text-field
+                    type="number"
+                    v-model="historyUntil"
+                    name="until"
+                    placeholder="until block"
                   />
                 </div>
-                <button class="ui button primary">Search</button>
+                <v-btn small color="primary" @click="fetchData">Search</v-btn>
+              </div>
+            </v-form>
+          </v-col>
+        </v-row>
 
-                <div class="input-field">
-                  <div class="field">
-                    <label>Show graphs of the specfied block range:</label>
-                    <input
-                      type="number"
-                      v-model="historyFrom"
-                      name="from"
-                      placeholder="from block"
-                    />
-                    <input
-                      type="number"
-                      v-model="historyUntil"
-                      name="until"
-                      placeholder="until block"
-                    />
-                  </div>
-                  <button class="ui button primary">Search</button>
-                </div>
-              </form>
-            </div>
-            <div class="chart" v-if="!loading">
-              <div class="Chart__title">
-                Chain Height
-                <hr />
-              </div>
-              <LineChart
-                v-if="!loading"
-                :data="chainHeightData"
-                :options="chainHeightOptions"
-                :color="2"
-              />
-            </div>
-            <div class="chart" v-if="!loading">
-              <div class="Chart__title">
-                Block Creation Time (seconds since previous block)
-                <hr />
-              </div>
-              <LineChart
-                v-if="!loading"
-                :data="blockTimeData"
-                :options="blockTimeOptions"
-                :color="1"
-              />
-            </div>
-            <div class="chart" v-if="!loading">
-              <div class="Chart__title">
-                Estimate Active Blockstakes
-                <hr />
-              </div>
-              <LineChart
-                v-if="!loading"
-                :data="activeBsData"
-                :options="activeBsOptions"
-                :color="2"
-              />
-            </div>
-            <div class="chart" v-if="!loading">
-              <div class="Chart__title">
-                Block Transaction Count
-                <hr />
-              </div>
-              <LineChart
-                v-if="!loading"
-                :data="blockTransactionCountData"
-                :options="blockTransactionCountOptions"
-                :color="1"
-              />
-            </div>
-            <div class="chart" v-if="!loading">
-              <div class="Chart__title">
-                Block Difficulty
-                <hr />
-              </div>
-              <LineChart
-                v-if="!loading"
-                :data="blockDifficultyData"
-                :options="blockDifficultyOptions"
-                :color="2"
-              />
-            </div>
-            <div class="pie-chart" v-if="!loading">
-              <div class="Chart__title">
-                Block Creator Distribution
-                <hr />
-              </div>
-              <PieChart
-                v-if="!loading"
-                :data="blockCreatorPieGraphData"
-                :options="blockCreatorPieGraphOptions"
-              />
-            </div>
-          </div>
-        </v-container>
+        <v-row >
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+              Chain Height
+            </v-card-title>
+            <LineChart
+              v-if="!loading"
+              :data="chainHeightData"
+              :options="chainHeightOptions"
+              :color="2"
+            />
+          </v-card>
+        </v-row>
+
+        <v-row>
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+              Block Creation Time (seconds since previous block)
+            </v-card-title>
+            <LineChart
+              v-if="!loading"
+              :data="blockTimeData"
+              :options="blockTimeOptions"
+              :color="1"
+            />
+          </v-card>
+        </v-row>
+
+        <v-row>
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+              Estimate Active Blockstakes
+            </v-card-title>
+            <LineChart
+              v-if="!loading"
+              :data="activeBsData"
+              :options="activeBsOptions"
+              :color="2"
+            />
+          </v-card>
+        </v-row>
+
+        <v-row>
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+              Block Transaction Count
+            </v-card-title>
+            <LineChart
+              v-if="!loading"
+              :data="blockTransactionCountData"
+              :options="blockTransactionCountOptions"
+              :color="1"
+            />
+          </v-card>
+        </v-row>
+
+        <v-row>
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+              Block Difficulty
+            </v-card-title>
+            <LineChart
+              v-if="!loading"
+              :data="blockDifficultyData"
+              :options="blockDifficultyOptions"
+              :color="2"
+            />
+          </v-card>
+        </v-row>
+
+        <v-row>
+          <v-card
+            class="mx-auto rowcontainer-chart"
+          >
+            <v-card-title>
+             Block Creator Distribution
+            </v-card-title>
+            <PieChart
+              v-if="!loading"
+              :data="blockCreatorPieGraphData"
+              :options="blockCreatorPieGraphOptions"
+            />
+          </v-card>
+        </v-row>
+      </v-container>
     </v-content>
   </div>
 </template>
 
 <script lang='ts'>
+/* eslint:disable */
 import axios from 'axios'
 import { API_URL } from '../common/config'
 import Navigation from '../components/Common/Navigation.vue'
@@ -442,21 +477,8 @@ export default {
 }
 </script>
 <style scoped>
-.top {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 .input-field {
   margin-top: 20px;
-}
-.chart {
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 1%;
-  padding: 30px;
-  margin-top: 50px;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3);
 }
 .pie-chart {
   margin-left: auto;
@@ -469,7 +491,7 @@ export default {
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3);
 }
 .Chart__title {
-  color: black;
+  color: white;
   margin-bottom: rem(40);
   font-weight: 600;
   font-size: rem(16);
